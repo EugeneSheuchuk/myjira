@@ -1,0 +1,26 @@
+.MenuItem {
+  width: 220px;
+  min-height: 40px;
+  padding: 0 10px;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+
+  img {
+    display: block;
+    width: 20px;
+    height: 20px;
+    justify-self: center;
+  }
+}
+
+.MenuItem:hover {
+  cursor:pointer;
+  background-color: rgba(169, 169, 169, 0.2);
+  border-radius: 10px;
+}
+
+.MenuItem_name {
+  padding:  0 10px;
+}
