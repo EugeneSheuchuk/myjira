@@ -1,6 +1,10 @@
+.ImgButton_container {
+  padding: 7px;
+}
+
 .ImgButton {
+  position: relative;
   background-size: cover;
   background-repeat: no-repeat;
-  color: white;
-  filter: saturate(3);
+  z-index: 5;
 }

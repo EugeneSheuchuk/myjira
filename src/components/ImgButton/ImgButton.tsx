@@ -1,31 +1,58 @@
-import React, {MouseEvent} from 'react';
+import React, { MouseEvent, KeyboardEvent } from 'react';
 import './ImgButton.scss';
 
 type TProps = {
-    styleClassName?: string;
-    width: number;
-    height: number;
-    imgUrl: string;
-    action?: Function;
+  styleClassName?: string;
+  width: number;
+  height: number;
+  imgUrl: string;
+  action?: Function;
+  title: string;
+  tabIndex: number;
 };
 
-class ImgButton extends React.Component<TProps> {
-    render() {
-        const { styleClassName, width, height, imgUrl, action } = this.props;
-        const style = {
-            backgroundImage: `url('${imgUrl}')`,
-            width: `${width}px`,
-            height: `${height}px`,
+const ImgButton: React.FC<TProps> = ({
+  styleClassName,
+  width,
+  height,
+  imgUrl,
+  action,
+  title,
+  tabIndex,
+}) => {
+  const containerStyle = {
+    backgroundImage: `url('${imgUrl}')`,
+    width: `${width}px`,
+    height: `${height}px`,
+  };
 
-        };
-        const componentAction = action ? action : (e:MouseEvent):void => {};
+  const imgStyle = {
+    backgroundImage: `url('${imgUrl}')`,
+    width: '100%',
+    height: '100%',
+  };
 
-        return (
-            <div className={`ImgButton ${styleClassName}`}
-                 style={style}
-                 onClick={(e:MouseEvent<HTMLDivElement>) => componentAction(e)}/>
-        );
-    }
-}
+  const defaultFunc = () => {};
+  // eslint-disable-next-line
+  const pressEnter = (e: KeyboardEvent, title: string): void => {
+    if (e.key === 'Enter') componentAction(e, title);
+  };
+
+  const componentAction = action || defaultFunc;
+
+  return (
+    <div
+      className="ImgButton_container"
+      style={containerStyle}
+      onClick={(e: MouseEvent<HTMLDivElement>) => componentAction(e, title)}
+      title={title}
+      role="button"
+      tabIndex={tabIndex}
+      onKeyPress={(e: KeyboardEvent) => pressEnter(e, title)}
+    >
+      <div className={`ImgButton ${styleClassName}`} style={imgStyle} />
+    </div>
+  );
+};
 
 export default ImgButton;
