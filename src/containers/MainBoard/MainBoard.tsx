@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './MainBoard.scss';
 import Roadmap from '../Roadmap/Roadmap';
 import Board from '../Board/Board';
@@ -12,7 +12,7 @@ const MainBoard: React.FC = () => {
     <div className="MainBoard">
       <Switch>
         <Route exact path="/">
-          <Roadmap />
+          <Redirect to="roadmap" />
         </Route>
         <Route path="/roadmap">
           <Roadmap />
