@@ -1,9 +1,9 @@
 import React, { KeyboardEvent } from 'react';
 import { NavLink } from 'react-router-dom';
 import './MenuItem.scss';
-import { TMenuItemProps } from '../../types/types';
+import { MenuItemProps } from '../../types/types';
 
-const MenuItem: React.FC<TMenuItemProps> = ({
+const MenuItem: React.FC<MenuItemProps> = ({
   path = '/',
   imgURL,
   name,
@@ -24,10 +24,10 @@ const MenuItem: React.FC<TMenuItemProps> = ({
       className="MenuItem"
       onKeyPress={(e: KeyboardEvent) => pressEnter(e)}
       tabIndex={tabIndex}
-      activeClassName="MenuItem_active"
+      activeClassName="MenuItem-active"
     >
-      <img src={imgURL} className="MenuItem_icon" alt={`${name}`} />
-      <div className="MenuItem_name">{name}</div>
+      <img src={imgURL} alt={`${name}`} />
+      <div>{name}</div>
     </NavLink>
   );
 };

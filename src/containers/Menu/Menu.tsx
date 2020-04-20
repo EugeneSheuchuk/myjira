@@ -7,7 +7,7 @@ import Board from '../../assets/images/board.png';
 import AddItem from '../../assets/images/additem.png';
 import Page from '../../assets/images/page.webp';
 import Code from '../../assets/images/code.png';
-import { TMenuItemProps } from '../../types/types';
+import { MenuItemProps } from '../../types/types';
 import MenuItemLink from '../../components/MenuItemLink/MenuItemLink';
 
 type TState = {
@@ -23,7 +23,7 @@ class Menu extends React.Component<{}, TState> {
   }
 
   render() {
-    const links: Array<TMenuItemProps> = [
+    const links: Array<MenuItemProps> = [
       {
         url: 'https://github.com/EugeneSheuchuk/myjira',
         imgURL: Code,
@@ -32,7 +32,7 @@ class Menu extends React.Component<{}, TState> {
       },
     ];
 
-    const viewidLinks = links.map((item: TMenuItemProps, index: number) => (
+    const viewidLinks = links.map((item: MenuItemProps, index: number) => (
       <MenuItemLink
         url={item.url}
         imgURL={item.imgURL}

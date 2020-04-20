@@ -1,4 +1,4 @@
-@import '../../styles/Colors';
+@import '../../styles/сolors';
 
 .Sidebar {
   background-color: $main_blue;
@@ -13,7 +13,7 @@
   justify-items: center;
 }
 
-.Sidebar_buttons_top {
+.Sidebar-buttonsTop {
   align-self: start;
 
   div {
@@ -32,7 +32,7 @@
   }
 }
 
-.Sidebar_buttons_bottom {
+.Sidebar-buttonsBottom {
   align-self: end;
 
   div {

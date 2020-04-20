@@ -1,4 +1,4 @@
-@import '../../styles/Colors';
+@import '../../styles/сolors';
 @import '../MenuItem/MenuItem';
 
 .MenuItemLink {
@@ -15,8 +15,4 @@
 
 .MenuItemLink:active {
   @extend .MenuItem:focus;
-}
-
-.MenuItemLink_name {
-  @extend .MenuItem_name;
 }

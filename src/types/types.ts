@@ -1,4 +1,4 @@
-export type TMenuItemProps = {
+export type MenuItemProps = {
   url?: string;
   path?: string;
   imgURL: string;

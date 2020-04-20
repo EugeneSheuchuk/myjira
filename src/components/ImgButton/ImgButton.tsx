@@ -42,7 +42,7 @@ const ImgButton: React.FC<TProps> = ({
 
   return (
     <div
-      className="ImgButton_container"
+      className="ImgButton-container"
       style={containerStyle}
       onClick={(e: MouseEvent<HTMLDivElement>) => componentAction(e, title)}
       title={title}

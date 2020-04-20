@@ -1,8 +1,8 @@
 import React from 'react';
 import './MenuItemLink.scss';
-import { TMenuItemProps } from '../../types/types';
+import { MenuItemProps } from '../../types/types';
 
-const MenuItemLink: React.FC<TMenuItemProps> = ({
+const MenuItemLink: React.FC<MenuItemProps> = ({
   url,
   imgURL,
   name,

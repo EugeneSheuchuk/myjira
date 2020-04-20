@@ -1,4 +1,4 @@
-@import '../../styles/Colors';
+@import '../../styles/сolors';
 
 .MenuItem {
   width: 200px;
@@ -20,6 +20,10 @@
     height: 20px;
     justify-self: center;
   }
+
+  div {
+    padding: 0 10px;
+  }
 }
 
 .MenuItem:hover {
@@ -32,10 +36,7 @@
   color: $main_blue;
 }
 
-.MenuItem_active {
+.MenuItem-active {
   background-color: lighten($main_blue, 30%);
 }
 
-.MenuItem_name {
-  padding: 0 10px;
-}

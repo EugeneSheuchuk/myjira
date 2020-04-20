@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
   render() {
     return (
       <div className="Sidebar">
-        <div className="Sidebar_buttons_top">
+        <div className="Sidebar-buttonsTop">
           <ImgButton
             action={this.click}
             title="MyJIRA"
@@ -55,7 +55,7 @@ class Sidebar extends React.Component {
             tabIndex={0}
           />
         </div>
-        <div className="Sidebar_buttons_bottom">
+        <div className="Sidebar-buttonsBottom">
           <ImgButton
             action={this.click}
             title="Notifications"
