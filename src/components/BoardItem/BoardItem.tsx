@@ -1,6 +1,6 @@
 import React from 'react';
 import './BoardItem.scss';
-import { BoardType } from '../../store/boardReducer';
+import { BoardType } from '../../types/boardReducerTypes';
 
 const BoardItem: React.FC<BoardType> = ({ boardName }) => {
   return (

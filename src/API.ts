@@ -1,4 +1,4 @@
-import { BoardType } from './store/boardReducer';
+import { BoardType } from './types/boardReducerTypes';
 
 const boards: Array<BoardType> = [
   {

@@ -1,7 +1,7 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import * as ACTIONS from './actionTypes';
-import { BoardType } from './boardReducer';
 import API from '../API';
+import { BoardType } from '../types/boardReducerTypes';
 
 type ActionSetBoards = {
   type: typeof ACTIONS.BOARDREDUCER_SET_BOARDS;
@@ -12,11 +12,11 @@ export const setBoards = (data: Array<BoardType>): ActionSetBoards => ({
   payload: data,
 });
 
-export const getBoardsFromServer = ()
-:ThunkAction<void, {}, {}, ActionSetBoards> => {
+export const getBoardsFromServer = ():
+ThunkAction<void, {}, {}, ActionSetBoards> => {
   return async (
     dispatch: ThunkDispatch<{}, {}, ActionSetBoards>
-  ): Promise<any> => {
+  ): Promise<void> => {
     try {
       const response = await API.getBoards();
       dispatch(setBoards(response));
@@ -26,3 +26,5 @@ export const getBoardsFromServer = ()
     }
   };
 };
+
+export type BoardReducerActionsType = ActionSetBoards;

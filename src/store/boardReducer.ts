@@ -1,21 +1,16 @@
-import * as ACTIONS from './actionTypes.js';
+import * as ACTIONS from './actionTypes';
+import { BoardReducerActionsType } from './actions';
+import { Boards } from '../types/boardReducerTypes';
 
-type Task = {
-  taskName: string;
-};
-export type BoardType = {
-  boardName: string;
-  tasks: Array<Task>;
-};
-export type Boards = {
-  boards: Array<BoardType>;
-};
 
 const initialState: Boards = {
   boards: [],
 };
 
-const boardReducer = (state = initialState, action: any): Boards => {
+const boardReducer = (
+  state = initialState,
+  action: BoardReducerActionsType
+): Boards => {
   switch (action.type) {
     case ACTIONS.BOARDREDUCER_SET_BOARDS:
       return {
