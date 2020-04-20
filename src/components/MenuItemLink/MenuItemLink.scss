@@ -1,0 +1,18 @@
+@import '../../styles/сolors';
+@import '../MenuItem/MenuItem';
+
+.MenuItemLink {
+  @extend .MenuItem;
+}
+
+.MenuItemLink:hover {
+  @extend .MenuItem:hover;
+}
+
+.MenuItemLink:focus {
+  @extend .MenuItem:focus;
+}
+
+.MenuItemLink:active {
+  @extend .MenuItem:focus;
+}

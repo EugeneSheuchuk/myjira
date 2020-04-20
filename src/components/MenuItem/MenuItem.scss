@@ -1,0 +1,42 @@
+@import '../../styles/сolors';
+
+.MenuItem {
+  width: 200px;
+  min-height: 40px;
+  padding: 0 10px;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  margin: 10px;
+
+  img {
+    display: block;
+    width: 20px;
+    height: 20px;
+    justify-self: center;
+  }
+
+  div {
+    padding: 0 10px;
+  }
+}
+
+.MenuItem:hover {
+  background-color: rgba(169, 169, 169, 0.2);
+}
+
+.MenuItem:focus {
+  outline: none;
+  border: 2px solid $main_blue;
+  color: $main_blue;
+}
+
+.MenuItem-active {
+  background-color: lighten($main_blue, 30%);
+}
+
