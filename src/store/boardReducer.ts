@@ -1,7 +1,7 @@
 type Task = {
     taskName: string;
 };
-type BoardTask = {
+export type BoardTask = {
     boardName: string;
     tasks: Array<Task>;
 };
