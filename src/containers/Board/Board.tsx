@@ -1,5 +1,6 @@
 import React from 'react';
 import './Board.scss';
+import { connect } from 'react-redux';
 
 class Board extends React.Component {
   render() {
@@ -19,4 +20,5 @@ class Board extends React.Component {
   }
 }
 
-export default Board;
+
+export default connect(null, null)(Board);
