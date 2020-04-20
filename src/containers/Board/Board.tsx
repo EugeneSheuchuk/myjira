@@ -3,7 +3,7 @@ import './Board.scss';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getBoardsFromState } from '../../store/selectors';
-import { getBoardsFromServer } from '../../store/actions';
+import { getBoardsFromServer, ActionSetBoards } from '../../store/actions';
 import BoardItem from '../../components/BoardItem/BoardItem';
 import { IState } from '../../store/rootReducer';
 import { BoardType } from '../../types/boardReducerTypes';
@@ -37,9 +37,13 @@ const mapStateToProps = (state: IState) => ({
   boards: getBoardsFromState(state),
 });
 
-// what params take ThunkDispatch?
-// eslint-disable-next-line
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => ({
+// what params take ThunkDispatch
+// S - type of State
+// E - all types of data which action takes
+// A - all types of action which may involve in component props
+const mapDispatchToProps = (dispatch: ThunkDispatch<IState,
+Array<BoardType>,
+ActionSetBoards>) => ({
   getBoards() {
     dispatch(getBoardsFromServer());
   },

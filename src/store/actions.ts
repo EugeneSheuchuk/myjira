@@ -3,7 +3,7 @@ import * as ACTIONS from './actionTypes';
 import API from '../API';
 import { BoardType } from '../types/boardReducerTypes';
 
-type ActionSetBoards = {
+export type ActionSetBoards = {
   type: typeof ACTIONS.BOARDREDUCER_SET_BOARDS;
   payload: Array<BoardType>;
 };
