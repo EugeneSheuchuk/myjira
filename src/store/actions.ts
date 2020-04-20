@@ -1,26 +1,28 @@
-import * as ACTIONS from './actionTypes';
-import { BoardTask } from './boardReducer';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
+import * as ACTIONS from './actionTypes';
+import { BoardType } from './boardReducer';
 import API from '../API';
 
 type ActionSetBoards = {
-    type: typeof ACTIONS.BOARDREDUCER_SET_BOARDS;
-    payload: Array<BoardTask>;
-}
-export const setBoards = (data: Array<BoardTask>): ActionSetBoards => (
-    { type: ACTIONS.BOARDREDUCER_SET_BOARDS, payload: data }
-);
+  type: typeof ACTIONS.BOARDREDUCER_SET_BOARDS;
+  payload: Array<BoardType>;
+};
+export const setBoards = (data: Array<BoardType>): ActionSetBoards => ({
+  type: ACTIONS.BOARDREDUCER_SET_BOARDS,
+  payload: data,
+});
 
-export const getBoards = (): ThunkAction<void, {}, {}, AnyAction> => {
-    // Invoke API
-    return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<any> => {
-        try {
-            const response = await API.getBoards();
-            dispatch(setBoards(response));
-        } catch (e) {
-            // eslint-disable-next-line
-            console.log(e);
-        }
+export const getBoardsFromServer = ()
+:ThunkAction<void, {}, {}, ActionSetBoards> => {
+  return async (
+    dispatch: ThunkDispatch<{}, {}, ActionSetBoards>
+  ): Promise<any> => {
+    try {
+      const response = await API.getBoards();
+      dispatch(setBoards(response));
+    } catch (e) {
+      // eslint-disable-next-line
+      console.log(e);
     }
+  };
 };

@@ -1,24 +1,47 @@
 import React from 'react';
 import './Board.scss';
+import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
+import { getBoardsFromState } from '../../store/selectors';
+import { getBoardsFromServer } from '../../store/actions';
+import { BoardType } from '../../store/boardReducer';
+import BoardItem from '../../components/BoardItem/BoardItem';
 
-class Board extends React.Component {
+interface IProps {
+  boards: Array<BoardType>;
+  getBoards: () => void;
+}
+
+class Board extends React.Component<IProps> {
+  componentDidMount(): void {
+    this.props.getBoards();
+  }
+
   render() {
-    return (
-      <div className="Board">
-        <div className="Board-item">
-          <div className="Board-itemName">TO DO</div>
-        </div>
-        <div className="Board-item">
-          <div className="Board-itemName">IN PROGRESS</div>
-        </div>
-        <div className="Board-item">
-          <div className="Board-itemName">DONE</div>
-        </div>
-      </div>
-    );
+    const { boards } = this.props;
+    const viewBoards = boards.map((item) => {
+      return (
+        <BoardItem
+          boardName={item.boardName}
+          tasks={item.tasks}
+          key={item.boardName}
+        />
+      );
+    });
+    return <div className="Board">{viewBoards}</div>;
   }
 }
 
+const mapStateToProps = (state: any) => ({
+  boards: getBoardsFromState(state),
+});
 
-export default connect(null, null)(Board);
+// what params take ThunkDispatch?
+// eslint-disable-next-line
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => ({
+  getBoards() {
+    dispatch(getBoardsFromServer());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
