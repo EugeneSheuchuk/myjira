@@ -1,0 +1,25 @@
+.AddButton {
+  padding: 5px;
+  width: auto;
+
+  div {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.AddButton:hover {
+  cursor: pointer;
+  background-color: lightgray;
+  border-radius: 5px;
+}
+
+.AddButton-img {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.AddButton-description {
+  margin-left: 10px;
+  width: auto;
+}

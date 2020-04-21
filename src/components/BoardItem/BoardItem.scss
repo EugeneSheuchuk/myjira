@@ -1,12 +1,17 @@
 .BoardItem {
   display: inline-block;
-  background-color: lightgray;
+  background-color: lighten(lightgray, 12%);
   width: 300px;
   min-height: 200px;
   border-radius: 10px;
   margin: 0 10px 10px 0;
   padding: 10px;
 }
+
+.BoardItem-tasks {
+  margin-bottom: 10px;
+}
+
 .BoardItem-name {
   padding-left: 20px;
   position: relative;
