@@ -4,7 +4,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getBoardsFromState } from '../../store/selectors';
 import { getBoardsFromServer, ActionSetBoards } from '../../store/actions';
-import BoardItem from '../../components/BoardItem/BoardItem';
+import BoardItem from './BoardItem/BoardItem';
 import { IState } from '../../store/rootReducer';
 import { BoardType } from '../../types/boardReducerTypes';
 
