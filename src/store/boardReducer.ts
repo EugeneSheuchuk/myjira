@@ -2,7 +2,6 @@ import * as ACTIONS from './actionTypes';
 import { BoardReducerActionsType } from './actions';
 import { Boards } from '../types/boardReducerTypes';
 
-
 const initialState: Boards = {
   boards: [],
 };

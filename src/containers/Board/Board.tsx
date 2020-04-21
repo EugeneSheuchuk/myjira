@@ -42,9 +42,9 @@ const mapStateToProps = (state: IState) => ({
 // S - type of State
 // E - all types of data which action takes
 // A - all types of action which may involve in component props
-const mapDispatchToProps = (dispatch: ThunkDispatch<IState,
-Array<BoardType>,
-ActionSetBoards>) => ({
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<IState, Array<BoardType>, ActionSetBoards>
+) => ({
   getBoards() {
     dispatch(getBoardsFromServer());
   },
