@@ -23,6 +23,7 @@ class Board extends React.Component<IProps> {
     const viewBoards = boards.map((item) => {
       return (
         <BoardItem
+          id={item.id}
           boardName={item.boardName}
           tasks={item.tasks}
           key={item.boardName}

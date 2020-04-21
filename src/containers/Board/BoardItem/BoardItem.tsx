@@ -3,10 +3,13 @@ import './BoardItem.scss';
 import Add from '../../../assets/images/add.png';
 import { BoardType } from '../../../types/boardReducerTypes';
 import AddButton from '../../../components/AddButton/AddButton';
+import { Task } from '../../../types/boardReducerTypes';
+import API from '../../../API';
 
 type State = {
   isAddingTask: boolean
   newTaskText: string
+  tasks: Array<Task>
 }
 
 class BoardItem extends React.Component<BoardType, State> {
@@ -15,6 +18,7 @@ class BoardItem extends React.Component<BoardType, State> {
     this.state = {
       isAddingTask: false,
       newTaskText: '',
+      tasks: props.tasks
     };
   }
 
@@ -24,12 +28,45 @@ class BoardItem extends React.Component<BoardType, State> {
     this.setState({ isAddingTask: true });
   };
 
-  typeText = (e:React.FormEvent<HTMLTextAreaElement>) => {
+  typeText = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const text = e.currentTarget.value;
     this.setState({ newTaskText: text });
   };
 
+  addNewTask = async () => {
+    const res = await API.addNewTask(this.props.id, this.state.newTaskText);
+    if (res) {
+      const tasks = await API.getBoardTasks(this.props.id);
+      this.setState({
+        tasks: tasks,
+        isAddingTask: false,
+        newTaskText: ''
+      });
+    }
+  };
+
+  onPressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.keyCode === 13) {
+      if (this.state.newTaskText.trim() === '') {
+        this.setState({ isAddingTask: false});
+        return;
+      }
+      this.addNewTask();
+    } else if (e.keyCode === 27) {
+      this.setState({ isAddingTask: false, newTaskText: ''});
+    }
+  };
+
+  onBlure = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    if(this.state.newTaskText.trim() === '') {
+      this.setState({ isAddingTask: false});
+      return
+    }
+    this.addNewTask();
+  };
+
   render() {
+    console.log(this.state);
     const { boardName } = this.props;
     const { isAddingTask, newTaskText } = this.state;
     const newTask = isAddingTask
@@ -37,7 +74,10 @@ class BoardItem extends React.Component<BoardType, State> {
                   placeholder='What needs to be done?'
                   autoFocus={true}
                   value={newTaskText}
-                  onChange={(e) => this.typeText(e)}/>
+                  onKeyDown={this.onPressKey}
+                  onChange={this.typeText}
+                  onBlur={this.onBlure}
+                  />
       : null;
     return (
       <div className="BoardItem">
