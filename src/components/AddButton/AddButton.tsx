@@ -6,9 +6,11 @@ type Props = {
   description?: string
   width: number
   height: number
+  action: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
-const AddButton: React.FC<Props> = ({ imgURL, description, width, height}) => {
+const AddButton: React.FC<Props> = (
+{ imgURL, description, width, height, action}) => {
   const text = description
     ? (<div className='AddButton-description'>{description}</div>)
     : null;
@@ -19,7 +21,7 @@ const AddButton: React.FC<Props> = ({ imgURL, description, width, height}) => {
   };
 
   return (
-    <div className='AddButton'>
+    <div className='AddButton' onClick={(e)=> action(e)}>
       <div className='AddButton-img' style={style}/>
       {text}
     </div>

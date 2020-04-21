@@ -1,15 +1,14 @@
+@import '../../../styles/сolors';
+
 .BoardItem {
   display: inline-block;
+  vertical-align: top;
   background-color: lighten(lightgray, 12%);
   width: 300px;
   min-height: 200px;
   border-radius: 10px;
   margin: 0 10px 10px 0;
   padding: 10px;
-}
-
-.BoardItem-tasks {
-  margin-bottom: 10px;
 }
 
 .BoardItem-name {
@@ -27,4 +26,21 @@
   position: absolute;
   bottom: -5px;
   left: 0;
+}
+
+.BoardItem-tasks {
+  margin-bottom: 10px;
+}
+
+.BoardItem-newTaskText {
+  resize: none;
+  width: 100%;
+  height: 100px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.BoardItem-newTaskText:focus {
+  outline: none;
+  border: 2px solid $main_blue;
 }
