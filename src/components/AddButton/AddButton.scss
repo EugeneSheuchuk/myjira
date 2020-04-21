@@ -11,6 +11,10 @@
   }
 }
 
+.AddButton:focus {
+  border: 1px solid $boards_background_color;
+}
+
 .AddButton:hover {
   cursor: pointer;
   background-color: lightgray;

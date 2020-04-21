@@ -8,20 +8,45 @@ import BoardItem from './BoardItem/BoardItem';
 import { IState } from '../../store/rootReducer';
 import { BoardType } from '../../types/boardReducerTypes';
 import AddButton from '../../components/AddButton/AddButton';
+import AddBoard from '../../components/AddBoard/AddBoard';
 
 interface IProps {
   boards: Array<BoardType>;
   getBoards: () => void;
 }
 
-class Board extends React.Component<IProps> {
+type StateType = {
+  isAddingBoard: boolean
+}
+
+class Board extends React.Component<IProps, StateType> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      isAddingBoard: false
+    };
+  }
+
   componentDidMount(): void {
     this.props.getBoards();
   }
 
+  changeIsAddingBoard = () => this.setState({isAddingBoard: true});
+
+  cancelIsAddingBoard = () => this.setState({isAddingBoard: false});
+
+  addBoardByMouse = (e: React.MouseEvent<HTMLDivElement>) => {
+    this.changeIsAddingBoard()
+  };
+
+  addBoardByKeyboard = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.keyCode === 13) this.changeIsAddingBoard();
+  };
+
   render() {
     const { boards } = this.props;
-    const viewBoards = boards.map((item) => {
+    const { isAddingBoard } = this.state;
+    const viewBoards = boards.map(item => {
       return (
         <BoardItem
           id={item.id}
@@ -31,10 +56,20 @@ class Board extends React.Component<IProps> {
         />
       );
     });
+
+    const newBoard = isAddingBoard
+      ? <AddBoard cancel={this.cancelIsAddingBoard}/>
+      : null;
+
+
     return (
       <div className="Board">
         {viewBoards}
-        <AddButton  width={25} height={25} action={()=>{}} keyAction={()=>{}}/>
+        {newBoard}
+        <AddButton  width={25}
+                    height={25}
+                    action={this.addBoardByMouse}
+                    keyAction={this.addBoardByKeyboard}/>
       </div>
     );
   }

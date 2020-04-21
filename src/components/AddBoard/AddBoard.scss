@@ -1,0 +1,5 @@
+@import '../../containers/Board/BoardItem/BoardItem';
+
+.AddBoard {
+  @extend .BoardItem;
+}
