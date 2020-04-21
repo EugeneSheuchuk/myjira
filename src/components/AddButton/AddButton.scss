@@ -1,6 +1,9 @@
+@import '../../styles/сolors';
+
 .AddButton {
   padding: 5px;
   width: auto;
+  background-color: $boards_background_color;
 
   div {
     display: inline-block;

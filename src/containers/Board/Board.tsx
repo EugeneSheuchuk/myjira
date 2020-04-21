@@ -7,6 +7,7 @@ import { getBoardsFromServer, ActionSetBoards } from '../../store/actions';
 import BoardItem from './BoardItem/BoardItem';
 import { IState } from '../../store/rootReducer';
 import { BoardType } from '../../types/boardReducerTypes';
+import AddButton from '../../components/AddButton/AddButton';
 
 interface IProps {
   boards: Array<BoardType>;
@@ -30,7 +31,12 @@ class Board extends React.Component<IProps> {
         />
       );
     });
-    return <div className="Board">{viewBoards}</div>;
+    return (
+      <div className="Board">
+        {viewBoards}
+        <AddButton  width={25} height={25} action={()=>{}} keyAction={()=>{}}/>
+      </div>
+    );
   }
 }
 
