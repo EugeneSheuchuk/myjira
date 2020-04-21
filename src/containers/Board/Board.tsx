@@ -17,14 +17,14 @@ interface IProps {
 }
 
 type StateType = {
-  isAddingBoard: boolean
-}
+  isAddingBoard: boolean;
+};
 
 class Board extends React.Component<IProps, StateType> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      isAddingBoard: false
+      isAddingBoard: false,
     };
   }
 
@@ -32,12 +32,12 @@ class Board extends React.Component<IProps, StateType> {
     this.props.getBoards();
   }
 
-  changeIsAddingBoard = () => this.setState({isAddingBoard: true});
+  changeIsAddingBoard = () => this.setState({ isAddingBoard: true });
 
-  cancelIsAddingBoard = () => this.setState({isAddingBoard: false});
+  cancelIsAddingBoard = () => this.setState({ isAddingBoard: false });
 
   addBoardByMouse = (e: React.MouseEvent<HTMLDivElement>) => {
-    this.changeIsAddingBoard()
+    this.changeIsAddingBoard();
   };
 
   addBoardByKeyboard = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -57,7 +57,7 @@ class Board extends React.Component<IProps, StateType> {
   render() {
     const { boards } = this.props;
     const { isAddingBoard } = this.state;
-    const viewBoards = boards.map(item => {
+    const viewBoards = boards.map((item) => {
       return (
         <BoardItem
           id={item.id}
@@ -68,19 +68,20 @@ class Board extends React.Component<IProps, StateType> {
       );
     });
 
-    const newBoard = isAddingBoard
-      ? <AddBoard cancel={this.cancelIsAddingBoard} add={this.addNewBoard}/>
-      : null;
-
+    const newBoard = isAddingBoard ? (
+      <AddBoard cancel={this.cancelIsAddingBoard} add={this.addNewBoard} />
+    ) : null;
 
     return (
       <div className="Board">
         {viewBoards}
         {newBoard}
-        <AddButton  width={25}
-                    height={25}
-                    action={this.addBoardByMouse}
-                    keyAction={this.addBoardByKeyboard}/>
+        <AddButton
+          width={25}
+          height={25}
+          action={this.addBoardByMouse}
+          keyAction={this.addBoardByKeyboard}
+        />
       </div>
     );
   }

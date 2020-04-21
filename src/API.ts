@@ -36,7 +36,7 @@ const API: IAPI = {
     boards.push({
       id,
       boardName,
-      tasks: []
+      tasks: [],
     });
     id += 1;
     return Promise.resolve(true);

@@ -7,7 +7,7 @@ type Props = {
   width: number;
   height: number;
   action: (e: React.MouseEvent<HTMLDivElement>) => void;
-  keyAction: (e:React.KeyboardEvent<HTMLDivElement>) => void;
+  keyAction: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 };
 
 const AddButton: React.FC<Props> = ({
@@ -31,7 +31,7 @@ const AddButton: React.FC<Props> = ({
       className="AddButton"
       onClick={(e) => action(e)}
       onKeyDown={(e) => keyAction(e)}
-      role='button'
+      role="button"
       tabIndex={0}
     >
       <div className="AddButton-img" style={style} />

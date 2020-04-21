@@ -12,14 +12,13 @@ export const setBoards = (data: Array<BoardType>): ActionSetBoards => ({
   payload: data,
 });
 
-export const getBoardsFromServer = ():
-ThunkAction<void, {}, {}, ActionSetBoards> => {
+export const getBoardsFromServer = ()
+:ThunkAction<void, {}, {}, ActionSetBoards > => {
   return async (
     dispatch: ThunkDispatch<{}, {}, ActionSetBoards>
   ): Promise<void> => {
     try {
       const response = await API.getBoards();
-      debugger
       dispatch(setBoards(response));
     } catch (e) {
       // eslint-disable-next-line
