@@ -9,6 +9,7 @@ import { IState } from '../../store/rootReducer';
 import { BoardType } from '../../types/boardReducerTypes';
 import AddButton from '../../components/AddButton/AddButton';
 import AddBoard from '../../components/AddBoard/AddBoard';
+import API from '../../API';
 
 interface IProps {
   boards: Array<BoardType>;
@@ -43,6 +44,16 @@ class Board extends React.Component<IProps, StateType> {
     if (e.keyCode === 13) this.changeIsAddingBoard();
   };
 
+  addNewBoard = async (boardName: string) => {
+    const res = await API.addNewBoard(boardName);
+    if (res) {
+      this.cancelIsAddingBoard();
+      this.props.getBoards();
+    } else {
+      this.cancelIsAddingBoard();
+    }
+  };
+
   render() {
     const { boards } = this.props;
     const { isAddingBoard } = this.state;
@@ -58,7 +69,7 @@ class Board extends React.Component<IProps, StateType> {
     });
 
     const newBoard = isAddingBoard
-      ? <AddBoard cancel={this.cancelIsAddingBoard}/>
+      ? <AddBoard cancel={this.cancelIsAddingBoard} add={this.addNewBoard}/>
       : null;
 
 

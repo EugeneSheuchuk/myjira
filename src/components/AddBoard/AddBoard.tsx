@@ -2,7 +2,8 @@ import React from 'react';
 import './AddBoard.scss';
 
 type PropsType = {
-  cancel: () => void
+  cancel: () => void;
+  add: (boardName: string) => void;
 };
 
 type StateType = {
@@ -22,15 +23,22 @@ class AddBoard extends React.Component<PropsType, StateType> {
     this.setState({ boardName })
   };
   pressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if(e.keyCode === 27) {
+    if (e.keyCode === 27) {
       this.props.cancel();
-      return;
+    } else if (e.keyCode === 13) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (this.state.boardName.trim() === '') {
+        this.props.cancel();
+      } else {
+        this.props.add(this.state.boardName);
+      }
     }
   };
 
   render() {
     console.log(this.state);
-    const { cancel } = this.props;
+    const { cancel, add } = this.props;
     const { boardName } = this.state;
     return(
       <div className="AddBoard">
@@ -41,7 +49,8 @@ class AddBoard extends React.Component<PropsType, StateType> {
           onChange={this.typeBoardName}
           onKeyDown={this.pressKey}/>
         <div className="AddBoard-choose">
-          <span className="AddBoard-choose-add">Add</span>
+          <span className="AddBoard-choose-add"
+                onClick={() => add(boardName)}>Add</span>
           <span className="AddBoard-choose-cancel"
                 onClick={cancel}>Cancel</span>
         </div>

@@ -19,6 +19,7 @@ ThunkAction<void, {}, {}, ActionSetBoards> => {
   ): Promise<void> => {
     try {
       const response = await API.getBoards();
+      debugger
       dispatch(setBoards(response));
     } catch (e) {
       // eslint-disable-next-line
