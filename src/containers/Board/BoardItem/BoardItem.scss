@@ -1,16 +1,20 @@
+@import '../../../styles/сolors';
+
 .BoardItem {
   display: inline-block;
-  background-color: lightgray;
+  vertical-align: top;
+  background-color: lighten(lightgray, 12%);
   width: 300px;
   min-height: 200px;
   border-radius: 10px;
   margin: 0 10px 10px 0;
   padding: 10px;
 }
+
 .BoardItem-name {
   padding-left: 20px;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .BoardItem-name:after {
@@ -22,4 +26,21 @@
   position: absolute;
   bottom: -5px;
   left: 0;
+}
+
+.BoardItem-tasks {
+  margin-bottom: 10px;
+}
+
+.BoardItem-newTask {
+  resize: none;
+  width: 100%;
+  height: 100px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.BoardItem-newTask:focus {
+  outline: none;
+  border: 2px solid $main_blue;
 }

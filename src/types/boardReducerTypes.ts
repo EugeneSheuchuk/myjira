@@ -1,9 +1,11 @@
-type Task = {
-  taskName: string;
+export type TaskType = {
+  taskId: number;
+  taskText: string;
 };
 export type BoardType = {
+  id: number;
   boardName: string;
-  tasks: Array<Task>;
+  tasks: Array<TaskType>;
 };
 export type Boards = {
   boards: Array<BoardType>;

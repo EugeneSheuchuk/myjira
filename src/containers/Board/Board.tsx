@@ -4,7 +4,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getBoardsFromState } from '../../store/selectors';
 import { getBoardsFromServer, ActionSetBoards } from '../../store/actions';
-import BoardItem from '../../components/BoardItem/BoardItem';
+import BoardItem from './BoardItem/BoardItem';
 import { IState } from '../../store/rootReducer';
 import { BoardType } from '../../types/boardReducerTypes';
 
@@ -23,6 +23,7 @@ class Board extends React.Component<IProps> {
     const viewBoards = boards.map((item) => {
       return (
         <BoardItem
+          id={item.id}
           boardName={item.boardName}
           tasks={item.tasks}
           key={item.boardName}
@@ -41,9 +42,9 @@ const mapStateToProps = (state: IState) => ({
 // S - type of State
 // E - all types of data which action takes
 // A - all types of action which may involve in component props
-const mapDispatchToProps = (dispatch: ThunkDispatch<IState,
-Array<BoardType>,
-ActionSetBoards>) => ({
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<IState, Array<BoardType>, ActionSetBoards>
+) => ({
   getBoards() {
     dispatch(getBoardsFromServer());
   },
