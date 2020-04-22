@@ -37,19 +37,24 @@ class Board extends React.Component<IProps, StateType> {
     this.scrollDown(this.state.boardHeight);
   }
 
-  changeIsAddingBoard = () => this.setState({ isAddingBoard: true });
+  componentDidUpdate(): void {
+    this.scrollRight();
+  }
+
+  changeIsAddingBoard = () => this.setState(
+    { isAddingBoard: true },
+    () => this.scrollRight(),
+    );
 
   cancelIsAddingBoard = () => this.setState({ isAddingBoard: false });
 
   addBoardByMouse = (e: React.MouseEvent<HTMLDivElement>) => {
     this.changeIsAddingBoard();
-    this.scrollRight();
   };
 
   addBoardByKeyboard = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.keyCode === 13) {
       this.changeIsAddingBoard();
-      this.scrollRight();
     }
   };
 
@@ -74,7 +79,7 @@ class Board extends React.Component<IProps, StateType> {
   scrollRight = () => {
     const elem = this.state.containerRef;
     if (elem.current === null) return;
-    elem.current.scrollTo({left: elem.current.scrollWidth});
+    elem.current.scrollLeft = elem.current.scrollWidth;
   };
 
   render() {
