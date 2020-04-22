@@ -2,7 +2,8 @@
 @import '../../styles/сolors';
 
 .AddBoard {
-  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
   vertical-align: top;
   margin-right: 10px;
   border-radius: 10px;
