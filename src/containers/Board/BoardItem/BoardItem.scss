@@ -3,7 +3,7 @@
 .BoardItem {
   display: inline-block;
   vertical-align: top;
-  background-color: lighten(lightgray, 12%);
+  background-color: $boards_background_color;
   width: 300px;
   min-height: 200px;
   border-radius: 10px;

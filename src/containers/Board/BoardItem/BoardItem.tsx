@@ -1,6 +1,5 @@
 import React from 'react';
 import './BoardItem.scss';
-import Add from '../../../assets/images/add.png';
 import { BoardType, TaskType } from '../../../types/boardReducerTypes';
 import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
@@ -100,7 +99,6 @@ class BoardItem extends React.Component<BoardType, State> {
         {viewedTasks}
         {newTask}
         <AddButton
-          imgURL={Add}
           width={16}
           height={16}
           description="Create issue"

@@ -7,19 +7,56 @@ import { getBoardsFromServer, ActionSetBoards } from '../../store/actions';
 import BoardItem from './BoardItem/BoardItem';
 import { IState } from '../../store/rootReducer';
 import { BoardType } from '../../types/boardReducerTypes';
+import AddButton from '../../components/AddButton/AddButton';
+import AddBoard from '../../components/AddBoard/AddBoard';
+import API from '../../API';
 
 interface IProps {
   boards: Array<BoardType>;
   getBoards: () => void;
 }
 
-class Board extends React.Component<IProps> {
+type StateType = {
+  isAddingBoard: boolean;
+};
+
+class Board extends React.Component<IProps, StateType> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      isAddingBoard: false,
+    };
+  }
+
   componentDidMount(): void {
     this.props.getBoards();
   }
 
+  changeIsAddingBoard = () => this.setState({ isAddingBoard: true });
+
+  cancelIsAddingBoard = () => this.setState({ isAddingBoard: false });
+
+  addBoardByMouse = (e: React.MouseEvent<HTMLDivElement>) => {
+    this.changeIsAddingBoard();
+  };
+
+  addBoardByKeyboard = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.keyCode === 13) this.changeIsAddingBoard();
+  };
+
+  addNewBoard = async (boardName: string) => {
+    const res = await API.addNewBoard(boardName);
+    if (res) {
+      this.cancelIsAddingBoard();
+      this.props.getBoards();
+    } else {
+      this.cancelIsAddingBoard();
+    }
+  };
+
   render() {
     const { boards } = this.props;
+    const { isAddingBoard } = this.state;
     const viewBoards = boards.map((item) => {
       return (
         <BoardItem
@@ -30,7 +67,23 @@ class Board extends React.Component<IProps> {
         />
       );
     });
-    return <div className="Board">{viewBoards}</div>;
+
+    const newBoard = isAddingBoard ? (
+      <AddBoard cancel={this.cancelIsAddingBoard} add={this.addNewBoard} />
+    ) : null;
+
+    return (
+      <div className="Board">
+        {viewBoards}
+        {newBoard}
+        <AddButton
+          width={25}
+          height={25}
+          action={this.addBoardByMouse}
+          keyAction={this.addBoardByKeyboard}
+        />
+      </div>
+    );
   }
 }
 

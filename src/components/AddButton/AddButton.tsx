@@ -1,17 +1,16 @@
 import React from 'react';
 import './AddButton.scss';
+import Add from '../../assets/images/add.png';
 
 type Props = {
-  imgURL: string;
   description?: string;
   width: number;
   height: number;
   action: (e: React.MouseEvent<HTMLDivElement>) => void;
-  keyAction: (e:React.KeyboardEvent<HTMLDivElement>) => void;
+  keyAction: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 };
 
 const AddButton: React.FC<Props> = ({
-  imgURL,
   description,
   width,
   height,
@@ -22,7 +21,7 @@ const AddButton: React.FC<Props> = ({
     <div className="AddButton-description">{description}</div>
   ) : null;
   const style = {
-    backgroundImage: `url(${imgURL})`,
+    backgroundImage: `url(${Add})`,
     width: `${width}px`,
     height: `${height}px`,
   };
@@ -32,7 +31,7 @@ const AddButton: React.FC<Props> = ({
       className="AddButton"
       onClick={(e) => action(e)}
       onKeyDown={(e) => keyAction(e)}
-      role='button'
+      role="button"
       tabIndex={0}
     >
       <div className="AddButton-img" style={style} />

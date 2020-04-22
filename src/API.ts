@@ -23,6 +23,7 @@ const boards: Array<BoardType> = [
 // Is it necessary to describe what the function returns? And if promis returns an error?
 interface IAPI {
   getBoards: () => Promise<Array<BoardType>>;
+  addNewBoard: (boardName: string) => Promise<boolean>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
   getBoardTasks: (boardId: number) => Promise<Array<TaskType>>;
 }
@@ -30,6 +31,15 @@ interface IAPI {
 const API: IAPI = {
   getBoards() {
     return Promise.resolve(boards);
+  },
+  addNewBoard(boardName) {
+    boards.push({
+      id,
+      boardName,
+      tasks: [],
+    });
+    id += 1;
+    return Promise.resolve(true);
   },
   addNewTask(boardId, task) {
     let isAddTask = false;
