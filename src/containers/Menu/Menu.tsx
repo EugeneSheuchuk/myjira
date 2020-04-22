@@ -10,17 +10,11 @@ import Code from '../../assets/images/code.png';
 import { MenuItemProps } from '../../types/types';
 import MenuItemLink from '../../components/MenuItemLink/MenuItemLink';
 
-type TState = {
+type PropsType = {
   width: number;
-};
+}
 
-class Menu extends React.Component<{}, TState> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      width: 240,
-    };
-  }
+class Menu extends React.Component<PropsType> {
 
   render() {
     const links: Array<MenuItemProps> = [
@@ -43,7 +37,7 @@ class Menu extends React.Component<{}, TState> {
     ));
 
     return (
-      <div className="Menu" style={{ width: `${this.state.width}px` }}>
+      <div className="Menu" style={{width: `${this.props.width}px`}}>
         <MenuItem
           path="/roadmap"
           imgURL={Roadmap}

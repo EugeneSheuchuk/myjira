@@ -66,6 +66,7 @@ class BoardItem extends React.Component<BoardType, State> {
 
   onBlure = (e: React.FormEvent<HTMLTextAreaElement>) => {
     if (this.state.newTaskText.trim() === '') {
+      debugger
       this.setState({ isAddingTask: false });
       return;
     }

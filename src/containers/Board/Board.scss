@@ -2,14 +2,13 @@
 
 .Board {
   padding: 10px;
-  display: flex;
   position: relative;
+  overflow: auto;
 }
 
 .Board > div:last-child {
   position: relative;
   display: inline-block;
-
   border-radius: 10px;
   height: 35px;
 }

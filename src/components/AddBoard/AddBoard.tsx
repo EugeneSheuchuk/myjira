@@ -37,6 +37,14 @@ class AddBoard extends React.Component<PropsType, StateType> {
     }
   };
 
+  onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    if (this.state.boardName.trim() === '') {
+      this.props.cancel();
+    } else {
+      this.props.add(this.state.boardName);
+    }
+  };
+
   pressCancel = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     if (e.keyCode === 13) this.props.cancel();
   };
@@ -56,6 +64,7 @@ class AddBoard extends React.Component<PropsType, StateType> {
           autoFocus={true}
           onChange={this.typeBoardName}
           onKeyDown={this.pressKey}
+          onBlur={this.onBlur}
         />
         <div className="AddBoard-choose">
           <span
