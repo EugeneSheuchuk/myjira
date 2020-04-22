@@ -12,7 +12,7 @@ class App extends React.Component<{}, StateType> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      width: 225
+      width: 225,
     };
   }
 
@@ -25,10 +25,10 @@ class App extends React.Component<{}, StateType> {
 
     return (
       <div className="App">
-        <Sidebar/>
-        <Menu width={width}/>
+        <Sidebar />
+        <Menu width={width} />
         <div className="App-article" style={style}>
-          <MainBoard/>
+          <MainBoard />
         </div>
       </div>
     );

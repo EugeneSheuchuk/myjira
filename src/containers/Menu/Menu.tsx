@@ -12,10 +12,9 @@ import MenuItemLink from '../../components/MenuItemLink/MenuItemLink';
 
 type PropsType = {
   width: number;
-}
+};
 
-class Menu extends React.Component<PropsType> {
-
+class Menu extends React.PureComponent<PropsType> {
   render() {
     const links: Array<MenuItemProps> = [
       {
@@ -37,7 +36,7 @@ class Menu extends React.Component<PropsType> {
     ));
 
     return (
-      <div className="Menu" style={{width: `${this.props.width}px`}}>
+      <div className="Menu" style={{ width: `${this.props.width}px` }}>
         <MenuItem
           path="/roadmap"
           imgURL={Roadmap}

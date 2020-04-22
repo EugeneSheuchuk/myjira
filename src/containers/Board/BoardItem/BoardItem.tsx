@@ -6,7 +6,8 @@ import API from '../../../API';
 import Task from '../../../components/Task/Task';
 
 interface IProps extends BoardType {
-  scrollDown: () => void
+  scrollDown: (size: number) => void;
+  boardHeight: number;
 }
 
 type State = {
@@ -32,15 +33,16 @@ class BoardItem extends React.Component<IProps, State> {
   isScrolling = () => {
     const { borderRef, containerRef } = this.state;
     if (borderRef.current === null || containerRef.current === null) return;
-    if (window.innerHeight - 70 < borderRef.current.scrollHeight &&
-      window.innerHeight - 70 < containerRef.current.scrollHeight) {
-      this.props.scrollDown();
+    if (
+      window.innerHeight - 70 < borderRef.current.scrollHeight &&
+      window.innerHeight - 70 < containerRef.current.scrollHeight
+    ) {
+      this.props.scrollDown(containerRef.current.scrollHeight);
     }
   };
 
-  changeIsAddingTask = () => this.setState(
-    { isAddingTask: true },
-    () => this.isScrolling());
+  changeIsAddingTask = () =>
+    this.setState({ isAddingTask: true }, () => this.isScrolling());
 
   addNewTaskTextByMouse = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -63,15 +65,18 @@ class BoardItem extends React.Component<IProps, State> {
     const res = await API.addNewTask(this.props.id, this.state.newTaskText);
     if (res) {
       const tasks = await API.getBoardTasks(this.props.id);
-      this.setState({
-        tasks,
-        isAddingTask: false,
-        newTaskText: '',
-      }, () => this.isScrolling());
+      this.setState(
+        {
+          tasks,
+          isAddingTask: false,
+          newTaskText: '',
+        },
+        () => this.isScrolling()
+      );
     }
   };
 
-    onPressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  onPressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.keyCode === 13) {
       if (this.state.newTaskText.trim() === '') {
         this.setState({ isAddingTask: false });
@@ -91,11 +96,15 @@ class BoardItem extends React.Component<IProps, State> {
     this.addNewTask();
   };
 
-
-
   render() {
-    const { boardName } = this.props;
-    const { isAddingTask, newTaskText, tasks, borderRef, containerRef } = this.state;
+    const { boardName, boardHeight } = this.props;
+    const {
+      isAddingTask,
+      newTaskText,
+      tasks,
+      borderRef,
+      containerRef,
+    } = this.state;
 
     const newTask = isAddingTask ? (
       <textarea
@@ -115,14 +124,18 @@ class BoardItem extends React.Component<IProps, State> {
 
     return (
       <div className="BoardItem-container" ref={borderRef}>
-        <div className="BoardItem" ref={containerRef}>
+        <div
+          className="BoardItem"
+          ref={containerRef}
+          style={{ minHeight: `${boardHeight}px` }}
+        >
           <div className="BoardItem-name">
             <span>{boardName}</span>
-          <div/>
+            <div />
           </div>
           <div className="BoardItem-tasks">
-          {viewedTasks}
-          {newTask}
+            {viewedTasks}
+            {newTask}
           </div>
           <AddButton
             width={16}

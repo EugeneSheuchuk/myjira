@@ -19,6 +19,7 @@ interface IProps {
 type StateType = {
   isAddingBoard: boolean;
   containerRef: RefObject<HTMLDivElement>;
+  boardHeight: number;
 };
 
 class Board extends React.Component<IProps, StateType> {
@@ -27,12 +28,13 @@ class Board extends React.Component<IProps, StateType> {
     this.state = {
       isAddingBoard: false,
       containerRef: createRef<HTMLDivElement>(),
+      boardHeight: 200,
     };
   }
 
   componentDidMount(): void {
     this.props.getBoards();
-    this.scrollDown();
+    this.scrollDown(this.state.boardHeight);
   }
 
   changeIsAddingBoard = () => this.setState({ isAddingBoard: true });
@@ -57,16 +59,17 @@ class Board extends React.Component<IProps, StateType> {
     }
   };
 
-  scrollDown = () => {
+  scrollDown = (size: number) => {
     const elem = this.state.containerRef;
     if (elem.current === null) return;
-    console.log('scroll');
-    elem.current.scrollTop = elem.current.scrollHeight
+    elem.current.scrollTop = elem.current.scrollHeight;
+    const newSize = size - 50 < 200 ? 200 : size - 50;
+    this.setState({ boardHeight: newSize });
   };
 
   render() {
     const { boards } = this.props;
-    const { isAddingBoard, containerRef } = this.state;
+    const { isAddingBoard, containerRef, boardHeight } = this.state;
     const viewBoards = boards.map((item) => {
       return (
         <BoardItem
@@ -75,6 +78,7 @@ class Board extends React.Component<IProps, StateType> {
           tasks={item.tasks}
           key={item.boardName}
           scrollDown={this.scrollDown}
+          boardHeight={boardHeight}
         />
       );
     });

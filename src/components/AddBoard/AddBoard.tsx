@@ -70,7 +70,7 @@ class AddBoard extends React.Component<PropsType, StateType> {
           <span
             className="AddBoard-choose-add"
             onClick={() => add(boardName)}
-            role='button'
+            role="button"
             tabIndex={0}
             onKeyDown={this.pressAdd}
           >
@@ -79,7 +79,7 @@ class AddBoard extends React.Component<PropsType, StateType> {
           <span
             className="AddBoard-choose-cancel"
             onClick={cancel}
-            role='button'
+            role="button"
             tabIndex={0}
             onKeyDown={this.pressCancel}
           >
