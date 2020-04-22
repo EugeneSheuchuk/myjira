@@ -5,14 +5,18 @@ import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
 import Task from '../../../components/Task/Task';
 
+interface IProps extends BoardType {
+  scrollDown: () => void
+}
+
 type State = {
   isAddingTask: boolean;
   newTaskText: string;
   tasks: Array<TaskType>;
 };
 
-class BoardItem extends React.Component<BoardType, State> {
-  constructor(props: BoardType) {
+class BoardItem extends React.Component<IProps, State> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       isAddingTask: false,
@@ -21,7 +25,9 @@ class BoardItem extends React.Component<BoardType, State> {
     };
   }
 
-  changeIsAddingTask = () => this.setState({ isAddingTask: true });
+  changeIsAddingTask = () => this.setState(
+    { isAddingTask: true },
+    () => this.props.scrollDown());
 
   addNewTaskTextByMouse = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -48,11 +54,11 @@ class BoardItem extends React.Component<BoardType, State> {
         tasks,
         isAddingTask: false,
         newTaskText: '',
-      });
+      }, () => this.props.scrollDown());
     }
   };
 
-  onPressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    onPressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.keyCode === 13) {
       if (this.state.newTaskText.trim() === '') {
         this.setState({ isAddingTask: false });
@@ -66,12 +72,13 @@ class BoardItem extends React.Component<BoardType, State> {
 
   onBlure = (e: React.FormEvent<HTMLTextAreaElement>) => {
     if (this.state.newTaskText.trim() === '') {
-      debugger
       this.setState({ isAddingTask: false });
       return;
     }
     this.addNewTask();
   };
+
+
 
   render() {
     const { boardName } = this.props;
@@ -94,18 +101,20 @@ class BoardItem extends React.Component<BoardType, State> {
     ));
 
     return (
-      <div className="BoardItem">
-        <div className="BoardItem-name">{boardName}</div>
-        <div className="BoardItem-tasks" />
-        {viewedTasks}
-        {newTask}
-        <AddButton
-          width={16}
-          height={16}
-          description="Create issue"
-          action={this.addNewTaskTextByMouse}
-          keyAction={this.addNewTaskTextByKeyBoard}
-        />
+      <div className="BoardItem-container">
+        <div className="BoardItem">
+          <div className="BoardItem-name">{boardName}</div>
+          <div className="BoardItem-tasks" />
+          {viewedTasks}
+          {newTask}
+          <AddButton
+            width={16}
+            height={16}
+            description="Create issue"
+            action={this.addNewTaskTextByMouse}
+            keyAction={this.addNewTaskTextByKeyBoard}
+          />
+        </div>
       </div>
     );
   }

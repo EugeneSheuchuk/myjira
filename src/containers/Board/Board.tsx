@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, RefObject } from 'react';
 import './Board.scss';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
@@ -18,6 +18,7 @@ interface IProps {
 
 type StateType = {
   isAddingBoard: boolean;
+  containerRef: RefObject<HTMLDivElement>;
 };
 
 class Board extends React.Component<IProps, StateType> {
@@ -25,11 +26,13 @@ class Board extends React.Component<IProps, StateType> {
     super(props);
     this.state = {
       isAddingBoard: false,
+      containerRef: createRef<HTMLDivElement>(),
     };
   }
 
   componentDidMount(): void {
     this.props.getBoards();
+    this.scrollDown();
   }
 
   changeIsAddingBoard = () => this.setState({ isAddingBoard: true });
@@ -54,9 +57,15 @@ class Board extends React.Component<IProps, StateType> {
     }
   };
 
+  scrollDown = () => {
+    const elem = this.state.containerRef;
+    if (elem.current === null) return;
+    elem.current.scrollTop = elem.current.scrollHeight
+  };
+
   render() {
     const { boards } = this.props;
-    const { isAddingBoard } = this.state;
+    const { isAddingBoard, containerRef } = this.state;
     const viewBoards = boards.map((item) => {
       return (
         <BoardItem
@@ -64,6 +73,7 @@ class Board extends React.Component<IProps, StateType> {
           boardName={item.boardName}
           tasks={item.tasks}
           key={item.boardName}
+          scrollDown={this.scrollDown}
         />
       );
     });
@@ -73,7 +83,7 @@ class Board extends React.Component<IProps, StateType> {
     ) : null;
 
     return (
-      <div className="Board">
+      <div className="Board" ref={containerRef}>
         {viewBoards}
         {newBoard}
         <AddButton
