@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, RefObject } from 'react';
 import './BoardItem.scss';
 import { BoardType, TaskType } from '../../../types/boardReducerTypes';
 import AddButton from '../../../components/AddButton/AddButton';
@@ -13,6 +13,8 @@ type State = {
   isAddingTask: boolean;
   newTaskText: string;
   tasks: Array<TaskType>;
+  borderRef: RefObject<HTMLDivElement>;
+  containerRef: RefObject<HTMLDivElement>;
 };
 
 class BoardItem extends React.Component<IProps, State> {
@@ -22,12 +24,22 @@ class BoardItem extends React.Component<IProps, State> {
       isAddingTask: false,
       newTaskText: '',
       tasks: props.tasks,
+      borderRef: createRef<HTMLDivElement>(),
+      containerRef: createRef<HTMLDivElement>(),
     };
   }
 
+  isScrolling = () => {
+    const { borderRef, containerRef } = this.state;
+    if (borderRef.current === null || containerRef.current === null) return;
+    if (borderRef.current.scrollHeight ===  containerRef.current.scrollHeight) {
+      this.props.scrollDown();
+    }
+  };
+
   changeIsAddingTask = () => this.setState(
     { isAddingTask: true },
-    () => this.props.scrollDown());
+    () => this.isScrolling());
 
   addNewTaskTextByMouse = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -54,7 +66,7 @@ class BoardItem extends React.Component<IProps, State> {
         tasks,
         isAddingTask: false,
         newTaskText: '',
-      }, () => this.props.scrollDown());
+      }, () => this.isScrolling());
     }
   };
 
@@ -82,7 +94,7 @@ class BoardItem extends React.Component<IProps, State> {
 
   render() {
     const { boardName } = this.props;
-    const { isAddingTask, newTaskText, tasks } = this.state;
+    const { isAddingTask, newTaskText, tasks, borderRef, containerRef } = this.state;
 
     const newTask = isAddingTask ? (
       <textarea
@@ -101,8 +113,8 @@ class BoardItem extends React.Component<IProps, State> {
     ));
 
     return (
-      <div className="BoardItem-container">
-        <div className="BoardItem">
+      <div className="BoardItem-container" ref={borderRef}>
+        <div className="BoardItem" ref={containerRef}>
           <div className="BoardItem-name">{boardName}</div>
           <div className="BoardItem-tasks" />
           {viewedTasks}
