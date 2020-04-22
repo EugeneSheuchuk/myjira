@@ -32,7 +32,8 @@ class BoardItem extends React.Component<IProps, State> {
   isScrolling = () => {
     const { borderRef, containerRef } = this.state;
     if (borderRef.current === null || containerRef.current === null) return;
-    if (borderRef.current.scrollHeight ===  containerRef.current.scrollHeight) {
+    if (window.innerHeight - 70 < borderRef.current.scrollHeight &&
+      window.innerHeight - 70 < containerRef.current.scrollHeight) {
       this.props.scrollDown();
     }
   };
@@ -115,10 +116,14 @@ class BoardItem extends React.Component<IProps, State> {
     return (
       <div className="BoardItem-container" ref={borderRef}>
         <div className="BoardItem" ref={containerRef}>
-          <div className="BoardItem-name">{boardName}</div>
-          <div className="BoardItem-tasks" />
+          <div className="BoardItem-name">
+            <span>{boardName}</span>
+          <div/>
+          </div>
+          <div className="BoardItem-tasks">
           {viewedTasks}
           {newTask}
+          </div>
           <AddButton
             width={16}
             height={16}

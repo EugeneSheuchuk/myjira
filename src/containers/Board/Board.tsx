@@ -60,6 +60,7 @@ class Board extends React.Component<IProps, StateType> {
   scrollDown = () => {
     const elem = this.state.containerRef;
     if (elem.current === null) return;
+    console.log('scroll');
     elem.current.scrollTop = elem.current.scrollHeight
   };
 
@@ -83,15 +84,17 @@ class Board extends React.Component<IProps, StateType> {
     ) : null;
 
     return (
-      <div className="Board" ref={containerRef}>
-        {viewBoards}
-        {newBoard}
-        <AddButton
-          width={25}
-          height={25}
-          action={this.addBoardByMouse}
-          keyAction={this.addBoardByKeyboard}
-        />
+      <div className="Board-container" ref={containerRef}>
+        <div className="Board">
+          {viewBoards}
+          {newBoard}
+          <AddButton
+            width={25}
+            height={25}
+            action={this.addBoardByMouse}
+            keyAction={this.addBoardByKeyboard}
+          />
+        </div>
       </div>
     );
   }

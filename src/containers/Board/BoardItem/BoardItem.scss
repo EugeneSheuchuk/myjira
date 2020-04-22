@@ -1,39 +1,45 @@
 @import '../../../styles/сolors';
 
 .BoardItem-container {
-  display: inline-block;
+  width: 280px;
   vertical-align: top;
-  width: 300px;
-  height: 100%;
-  margin-right: 10px;
+  background-color: $boards_background_color;
+  display: table-cell;
+  border-radius: 15px;
 }
 
 .BoardItem {
-  background-color: $boards_background_color;
-  width: 100%;
+  width: 280px;
   min-height: 200px;
   border-radius: 10px;
   padding: 10px;
+
+  div:last-child {
+    margin-bottom: 5px;
+  }
 }
 
 .BoardItem-name {
-  padding-left: 20px;
-  position: relative;
+  position: sticky;
+  overflow: hidden;
+  z-index: 2;
+  background-color: $boards_background_color;
   margin-bottom: 15px;
-}
+  width: 260px;
+  span{
+    padding-left: 20px;
+  }
 
-.BoardItem-name:after {
-  display: block;
-  content: '';
-  height: 1px;
-  width: 100%;
-  border-bottom: 2px solid darkgray;
-  position: absolute;
-  bottom: -5px;
-  left: 0;
+  div {
+    height: 1px;
+    width: inherit;
+    border-bottom: 2px solid darkgray;
+    padding-top: 5px;
+  }
 }
 
 .BoardItem-tasks {
+  margin-top: 15px;
   margin-bottom: 10px;
 }
 
