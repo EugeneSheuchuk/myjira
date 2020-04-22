@@ -41,10 +41,8 @@ class Board extends React.Component<IProps, StateType> {
     this.scrollRight();
   }
 
-  changeIsAddingBoard = () => this.setState(
-    { isAddingBoard: true },
-    () => this.scrollRight(),
-    );
+  changeIsAddingBoard = () =>
+    this.setState({ isAddingBoard: true }, () => this.scrollRight());
 
   cancelIsAddingBoard = () => this.setState({ isAddingBoard: false });
 

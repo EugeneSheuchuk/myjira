@@ -12,8 +12,8 @@ export const setBoards = (data: Array<BoardType>): ActionSetBoards => ({
   payload: data,
 });
 
-export const getBoardsFromServer
-= (): ThunkAction<void, {}, {}, ActionSetBoards> => {
+export const getBoardsFromServer =
+  (): ThunkAction<void, {}, {}, ActionSetBoards > => {
   return async (
     dispatch: ThunkDispatch<{}, {}, ActionSetBoards>
   ): Promise<void> => {
