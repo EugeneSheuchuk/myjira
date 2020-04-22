@@ -43,10 +43,14 @@ class Board extends React.Component<IProps, StateType> {
 
   addBoardByMouse = (e: React.MouseEvent<HTMLDivElement>) => {
     this.changeIsAddingBoard();
+    this.scrollRight();
   };
 
   addBoardByKeyboard = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.keyCode === 13) this.changeIsAddingBoard();
+    if (e.keyCode === 13) {
+      this.changeIsAddingBoard();
+      this.scrollRight();
+    }
   };
 
   addNewBoard = async (boardName: string) => {
@@ -65,6 +69,12 @@ class Board extends React.Component<IProps, StateType> {
     elem.current.scrollTop = elem.current.scrollHeight;
     const newSize = size - 50 < 200 ? 200 : size - 50;
     this.setState({ boardHeight: newSize });
+  };
+
+  scrollRight = () => {
+    const elem = this.state.containerRef;
+    if (elem.current === null) return;
+    elem.current.scrollTo({left: elem.current.scrollWidth});
   };
 
   render() {
