@@ -19,12 +19,11 @@ class App extends React.Component<{}, StateType> {
   }
 
   toggleResizeBorder = (action: boolean) => {
-    this.setState({isResizing: action})
+    this.setState({isResizing: action});
   };
 
   resizeBorder = (e: React.MouseEvent) => {
     const { width, isResizing } = this.state;
-    console.log(e.movementX);
     if (isResizing) {
       this.setState( {width: width + e.movementX});
     }
@@ -38,14 +37,13 @@ class App extends React.Component<{}, StateType> {
     };
 
     return (
-      <div className="App">
+      <div className="App" onMouseMove={this.resizeBorder}>
         <Sidebar />
         <Menu width={width} />
         <div className='App-menuBorder'
              style={{left: `calc(64px + ${width}px)`}}
              onMouseDown={() => this.toggleResizeBorder(true)}
-             onMouseUp={() => this.toggleResizeBorder(false)}
-             onMouseMove={this.resizeBorder}>
+             onMouseUp={() => this.toggleResizeBorder(false)}>
           <div/>
         </div>
         <div className="App-article" style={style}>
