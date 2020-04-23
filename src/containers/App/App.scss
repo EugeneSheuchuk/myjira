@@ -52,10 +52,21 @@
   div {
     border-left-color: $main_blue;
   }
+
   .App-menuBorder-button {
     border-color: darkgray;
     visibility: visible;
     color: $main_blue;
   }
-}
 
+  .App-menuBorder-button:hover {
+    cursor: pointer;
+    background-color: $main_blue;
+    color: white;
+    border: none;
+
+    span {
+      top: 0;
+    }
+  }
+}
