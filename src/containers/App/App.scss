@@ -48,6 +48,10 @@
   }
 }
 
+.App-menuBorder:focus {
+  outline: none;
+}
+
 .App-menuBorder:hover {
   div {
     border-left-color: $main_blue;
