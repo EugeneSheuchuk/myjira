@@ -7,6 +7,7 @@ import MainBoard from '../MainBoard/MainBoard';
 type StateType = {
   width: number;
   isResizing: boolean;
+  isOpenMenu: boolean;
 };
 
 class App extends React.Component<{}, StateType> {
@@ -15,6 +16,7 @@ class App extends React.Component<{}, StateType> {
     this.state = {
       width: 225,
       isResizing: false,
+      isOpenMenu: true
     };
   }
 
@@ -30,7 +32,7 @@ class App extends React.Component<{}, StateType> {
   };
 
   render() {
-    const { width } = this.state;
+    const { width, isOpenMenu } = this.state;
     const style = {
       left: `${width + 84}px`,
       width: `calc(100vw - ${width + 84}px)`,
@@ -44,6 +46,10 @@ class App extends React.Component<{}, StateType> {
              style={{left: `calc(64px + ${width}px)`}}
              onMouseDown={() => this.toggleResizeBorder(true)}
              onMouseUp={() => this.toggleResizeBorder(false)}>
+          <div className='App-menuBorder-button'
+               style={{left: `calc(64px + ${width}px - 11px)`}}>
+            {isOpenMenu ? <span>&#8249;</span> : <span>&#8250;</span>}
+          </div>
           <div/>
         </div>
         <div className="App-article" style={style}>

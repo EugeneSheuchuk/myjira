@@ -25,10 +25,37 @@
   div:hover {
     cursor: col-resize;
   }
+
+  .App-menuBorder-button {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: white;
+    top: 110px;
+    z-index: 5;
+    border: 1px solid darkgray;
+    visibility: hidden;
+    text-align: center;
+    font-size: 18px;
+    color: darkgray;
+
+    span {
+      position: relative;
+      top: -1px;
+      font-weight: bold;
+    }
+  }
 }
 
 .App-menuBorder:hover {
   div {
     border-left-color: $main_blue;
   }
+  .App-menuBorder-button {
+    border-color: darkgray;
+    visibility: visible;
+    color: $main_blue;
+  }
 }
+
