@@ -1,3 +1,5 @@
+@import '../../styles/сolors';
+
 .App {
   width: 100vw;
   height: 100vh;
@@ -7,4 +9,26 @@
   position: fixed;
   top: 0;
   width: 100%;
+}
+
+.App-menuBorder {
+  width: 20px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+
+  div {
+    height: 100vh;
+    border-left: 2px solid darkgray;
+  }
+
+  div:hover {
+    cursor: col-resize;
+  }
+}
+
+.App-menuBorder:hover {
+  div {
+    border-left-color: $main_blue;
+  }
 }
