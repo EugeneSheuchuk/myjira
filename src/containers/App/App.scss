@@ -1,8 +1,76 @@
+@import '../../styles/сolors';
+
 .App {
-  min-width: 100vw;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
 }
 
 .App-article {
-  display: flex;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.App-menuBorder {
+  width: 20px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+
+  div {
+    height: 100vh;
+    border-left: 2px solid darkgray;
+  }
+
+  div:hover {
+    cursor: col-resize;
+  }
+
+  .App-menuBorder-button {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: white;
+    top: 110px;
+    z-index: 5;
+    border: 1px solid darkgray;
+    visibility: hidden;
+    text-align: center;
+    font-size: 18px;
+    color: darkgray;
+
+    span {
+      position: relative;
+      top: -1px;
+      font-weight: bold;
+    }
+  }
+}
+
+.App-menuBorder:focus {
+  outline: none;
+}
+
+.App-menuBorder:hover {
+  div {
+    border-left-color: $main_blue;
+  }
+
+  .App-menuBorder-button {
+    border-color: darkgray;
+    visibility: visible;
+    color: $main_blue;
+  }
+
+  .App-menuBorder-button:hover {
+    cursor: pointer;
+    background-color: $main_blue;
+    color: white;
+    border: none;
+
+    span {
+      top: 0;
+    }
+  }
 }

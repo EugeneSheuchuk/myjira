@@ -2,7 +2,13 @@
 @import '../../styles/сolors';
 
 .AddBoard {
-  @extend .BoardItem;
+  min-width: 300px;
+  max-width: 300px;
+  vertical-align: top;
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: $boards_background_color;
+  padding: 5px;
 
   textarea {
     width: 100%;

@@ -1,27 +1,48 @@
-import React from 'react';
+import React, { createRef, RefObject } from 'react';
 import './BoardItem.scss';
 import { BoardType, TaskType } from '../../../types/boardReducerTypes';
 import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
 import Task from '../../../components/Task/Task';
 
+interface IProps extends BoardType {
+  scrollDown: (size: number) => void;
+  boardHeight: number;
+}
+
 type State = {
   isAddingTask: boolean;
   newTaskText: string;
   tasks: Array<TaskType>;
+  borderRef: RefObject<HTMLDivElement>;
+  containerRef: RefObject<HTMLDivElement>;
 };
 
-class BoardItem extends React.Component<BoardType, State> {
-  constructor(props: BoardType) {
+class BoardItem extends React.Component<IProps, State> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       isAddingTask: false,
       newTaskText: '',
       tasks: props.tasks,
+      borderRef: createRef<HTMLDivElement>(),
+      containerRef: createRef<HTMLDivElement>(),
     };
   }
 
-  changeIsAddingTask = () => this.setState({ isAddingTask: true });
+  isScrolling = () => {
+    const { borderRef, containerRef } = this.state;
+    if (borderRef.current === null || containerRef.current === null) return;
+    if (
+      window.innerHeight - 70 < borderRef.current.scrollHeight &&
+      window.innerHeight - 70 < containerRef.current.scrollHeight
+    ) {
+      this.props.scrollDown(containerRef.current.scrollHeight);
+    }
+  };
+
+  changeIsAddingTask = () =>
+    this.setState({ isAddingTask: true }, () => this.isScrolling());
 
   addNewTaskTextByMouse = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -44,11 +65,14 @@ class BoardItem extends React.Component<BoardType, State> {
     const res = await API.addNewTask(this.props.id, this.state.newTaskText);
     if (res) {
       const tasks = await API.getBoardTasks(this.props.id);
-      this.setState({
-        tasks,
-        isAddingTask: false,
-        newTaskText: '',
-      });
+      this.setState(
+        {
+          tasks,
+          isAddingTask: false,
+          newTaskText: '',
+        },
+        () => this.isScrolling()
+      );
     }
   };
 
@@ -73,8 +97,14 @@ class BoardItem extends React.Component<BoardType, State> {
   };
 
   render() {
-    const { boardName } = this.props;
-    const { isAddingTask, newTaskText, tasks } = this.state;
+    const { boardName, boardHeight } = this.props;
+    const {
+      isAddingTask,
+      newTaskText,
+      tasks,
+      borderRef,
+      containerRef,
+    } = this.state;
 
     const newTask = isAddingTask ? (
       <textarea
@@ -93,18 +123,28 @@ class BoardItem extends React.Component<BoardType, State> {
     ));
 
     return (
-      <div className="BoardItem">
-        <div className="BoardItem-name">{boardName}</div>
-        <div className="BoardItem-tasks" />
-        {viewedTasks}
-        {newTask}
-        <AddButton
-          width={16}
-          height={16}
-          description="Create issue"
-          action={this.addNewTaskTextByMouse}
-          keyAction={this.addNewTaskTextByKeyBoard}
-        />
+      <div className="BoardItem-container" ref={borderRef}>
+        <div
+          className="BoardItem"
+          ref={containerRef}
+          style={{ minHeight: `${boardHeight}px` }}
+        >
+          <div className="BoardItem-name">
+            <span>{boardName}</span>
+            <div />
+          </div>
+          <div className="BoardItem-tasks">
+            {viewedTasks}
+            {newTask}
+          </div>
+          <AddButton
+            width={16}
+            height={16}
+            description="Create issue"
+            action={this.addNewTaskTextByMouse}
+            keyAction={this.addNewTaskTextByKeyBoard}
+          />
+        </div>
       </div>
     );
   }

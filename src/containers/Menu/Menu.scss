@@ -1,5 +1,11 @@
+@import '../../styles/сolors';
+
 .Menu {
-  margin-left: 64px;
-  min-height: 100vh;
+  height: 100vh;
   padding-top: 10px;
+  background-color: $boards_background_color;
+  position: fixed;
+  top: 0;
+  left: 64px;
+  overflow: hidden;
 }

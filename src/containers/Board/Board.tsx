@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, RefObject } from 'react';
 import './Board.scss';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
@@ -18,6 +18,8 @@ interface IProps {
 
 type StateType = {
   isAddingBoard: boolean;
+  containerRef: RefObject<HTMLDivElement>;
+  boardHeight: number;
 };
 
 class Board extends React.Component<IProps, StateType> {
@@ -25,14 +27,22 @@ class Board extends React.Component<IProps, StateType> {
     super(props);
     this.state = {
       isAddingBoard: false,
+      containerRef: createRef<HTMLDivElement>(),
+      boardHeight: 200,
     };
   }
 
   componentDidMount(): void {
     this.props.getBoards();
+    this.scrollDown(this.state.boardHeight);
   }
 
-  changeIsAddingBoard = () => this.setState({ isAddingBoard: true });
+  componentDidUpdate(): void {
+    this.scrollRight();
+  }
+
+  changeIsAddingBoard = () =>
+    this.setState({ isAddingBoard: true }, () => this.scrollRight());
 
   cancelIsAddingBoard = () => this.setState({ isAddingBoard: false });
 
@@ -41,7 +51,9 @@ class Board extends React.Component<IProps, StateType> {
   };
 
   addBoardByKeyboard = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.keyCode === 13) this.changeIsAddingBoard();
+    if (e.keyCode === 13) {
+      this.changeIsAddingBoard();
+    }
   };
 
   addNewBoard = async (boardName: string) => {
@@ -54,9 +66,23 @@ class Board extends React.Component<IProps, StateType> {
     }
   };
 
+  scrollDown = (size: number) => {
+    const elem = this.state.containerRef;
+    if (elem.current === null) return;
+    elem.current.scrollTop = elem.current.scrollHeight;
+    const newSize = size - 50 < 200 ? 200 : size - 50;
+    this.setState({ boardHeight: newSize });
+  };
+
+  scrollRight = () => {
+    const elem = this.state.containerRef;
+    if (elem.current === null) return;
+    elem.current.scrollLeft = elem.current.scrollWidth;
+  };
+
   render() {
     const { boards } = this.props;
-    const { isAddingBoard } = this.state;
+    const { isAddingBoard, containerRef, boardHeight } = this.state;
     const viewBoards = boards.map((item) => {
       return (
         <BoardItem
@@ -64,6 +90,8 @@ class Board extends React.Component<IProps, StateType> {
           boardName={item.boardName}
           tasks={item.tasks}
           key={item.boardName}
+          scrollDown={this.scrollDown}
+          boardHeight={boardHeight}
         />
       );
     });
@@ -73,15 +101,17 @@ class Board extends React.Component<IProps, StateType> {
     ) : null;
 
     return (
-      <div className="Board">
-        {viewBoards}
-        {newBoard}
-        <AddButton
-          width={25}
-          height={25}
-          action={this.addBoardByMouse}
-          keyAction={this.addBoardByKeyboard}
-        />
+      <div className="Board-container" ref={containerRef}>
+        <div className="Board">
+          {viewBoards}
+          {newBoard}
+          <AddButton
+            width={25}
+            height={25}
+            action={this.addBoardByMouse}
+            keyAction={this.addBoardByKeyboard}
+          />
+        </div>
       </div>
     );
   }
