@@ -42,6 +42,19 @@
     margin: 0 auto;
     border-bottom: 2px solid darkgray;
   }
+
+  input[type='text'] {
+    width: 95%;
+    margin-left: 8px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    outline: none;
+    padding: 5px 10px;
+  }
+
+  input[type='text']:focus {
+    border-color: $main_blue;
+  }
 }
 
 .BoardItem-tasks {

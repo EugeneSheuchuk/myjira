@@ -8,6 +8,7 @@ import Task from '../../../components/Task/Task';
 interface IProps extends BoardType {
   scrollDown: (size: number) => void;
   boardHeight: number;
+  updateBoards: () => void;
 }
 
 type State = {
@@ -16,6 +17,8 @@ type State = {
   tasks: Array<TaskType>;
   borderRef: RefObject<HTMLDivElement>;
   containerRef: RefObject<HTMLDivElement>;
+  isEditBoardName: boolean;
+  newBoardText: string;
 };
 
 class BoardItem extends React.Component<IProps, State> {
@@ -27,6 +30,8 @@ class BoardItem extends React.Component<IProps, State> {
       tasks: props.tasks,
       borderRef: createRef<HTMLDivElement>(),
       containerRef: createRef<HTMLDivElement>(),
+      isEditBoardName: false,
+      newBoardText: '',
     };
   }
 
@@ -96,6 +101,34 @@ class BoardItem extends React.Component<IProps, State> {
     this.addNewTask();
   };
 
+  editBoardName = () => {
+    const { boardName } = this.props;
+    this.setState({
+      isEditBoardName: true,
+      newBoardText: boardName,
+    });
+  };
+
+  newBoardName = (e: React.FormEvent<HTMLInputElement>) => {
+    const newText = e.currentTarget.value;
+    this.setState({ newBoardText: newText});
+  };
+
+  saveNewBoardName = async () => {
+    const { id, boardName } = this.props;
+    const { newBoardText } = this.state;
+    if (newBoardText.trim() === '' || newBoardText === boardName) {
+      this.setState({ isEditBoardName: false, newBoardText: '' });
+    } else {
+      const result = await API.saveNewBoardText(id, newBoardText);
+      if (result) {
+        this.setState({isEditBoardName: false});
+        this.props.updateBoards();
+      }
+    }
+  };
+
+
   render() {
     const { boardName, boardHeight } = this.props;
     const {
@@ -104,6 +137,8 @@ class BoardItem extends React.Component<IProps, State> {
       tasks,
       borderRef,
       containerRef,
+      isEditBoardName,
+      newBoardText,
     } = this.state;
 
     const newTask = isAddingTask ? (
@@ -122,6 +157,14 @@ class BoardItem extends React.Component<IProps, State> {
       <Task taskId={item.taskId} taskText={item.taskText} key={item.taskId} />
     ));
 
+    const viewBoardName = !isEditBoardName
+      ? <span>{boardName}</span>
+      : <input type='text'
+               value={newBoardText}
+               autoFocus={true}
+               onChange={this.newBoardName}
+               onBlur={this.saveNewBoardName}/>;
+
     return (
       <div className="BoardItem-container" ref={borderRef}>
         <div
@@ -129,8 +172,8 @@ class BoardItem extends React.Component<IProps, State> {
           ref={containerRef}
           style={{ minHeight: `${boardHeight}px` }}
         >
-          <div className="BoardItem-name">
-            <span>{boardName}</span>
+          <div className="BoardItem-name" onClick={this.editBoardName}>
+            {viewBoardName}
             <div />
           </div>
           <div className="BoardItem-tasks">

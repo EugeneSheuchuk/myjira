@@ -26,6 +26,7 @@ interface IAPI {
   addNewBoard: (boardName: string) => Promise<boolean>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
   getBoardTasks: (boardId: number) => Promise<Array<TaskType>>;
+  saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
 }
 
 const API: IAPI = {
@@ -61,6 +62,14 @@ const API: IAPI = {
     });
     return Promise.resolve(tasks);
   },
+  saveNewBoardText(boardId, newBoardName) {
+    boards.forEach((item) => {
+      if (item.id === boardId) {
+        item.boardName = newBoardName;
+      }
+    });
+    return Promise.resolve(true);
+  }
 };
 
 export default API;

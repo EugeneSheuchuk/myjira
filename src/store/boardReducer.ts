@@ -14,7 +14,7 @@ const boardReducer = (
     case ACTIONS.BOARDREDUCER_SET_BOARDS:
       return {
         ...state,
-        boards: action.payload,
+        boards: [...action.payload],
       };
     default:
       return state;
