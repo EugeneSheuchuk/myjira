@@ -9,9 +9,8 @@
   position: relative;
   z-index: 50;
   top: 5px;
-  right: 45px;
+  width: min-content;
   background-color: white;
-  min-width: 80px;
   min-height: 20px;
   border: 1px solid lightgray;
   border-radius: 10px;
@@ -22,6 +21,7 @@
 }
 
 .DropDownMenu-option {
+  white-space: nowrap;
   margin-bottom: 5px;
   padding: 5px 10px;
 }

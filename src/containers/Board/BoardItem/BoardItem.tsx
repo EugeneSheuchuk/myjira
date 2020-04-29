@@ -186,8 +186,11 @@ class BoardItem extends React.Component<IProps, State> {
       />
     ) : null;
 
+
     const viewedTasks = tasks.map((item) => (
-      <Task taskId={item.taskId} taskText={item.taskText} key={item.taskId} />
+      <Task taskId={item.taskId}
+            taskText={item.taskText}
+            key={item.taskId} />
     ));
 
     const viewBoardName = !isEditBoardName ? (
@@ -201,7 +204,7 @@ class BoardItem extends React.Component<IProps, State> {
         onBlur={this.saveNewBoardName}
       />
     );
-    const dropMenu: DropDownProps = [
+    const boardDropMenu: DropDownProps = [
       {
         actionName: 'Edit',
         action: this.editBoardName,
@@ -235,8 +238,9 @@ class BoardItem extends React.Component<IProps, State> {
           </div>
           {isEditBoardName ? null : (
             <DropDownMenu
-              actions={dropMenu}
+              actions={boardDropMenu}
               visibility={isOnFocusElement ? 'visible' : visibleDropDownMenu}
+              styleClassName='BoardItem-name-dropDown'
             />
           )}
           <div className="BoardItem-tasks">

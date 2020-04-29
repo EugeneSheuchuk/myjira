@@ -6,6 +6,7 @@ import More from '../../assets/images/more.png';
 interface IProps {
   actions: DropDownProps;
   visibility: 'visible' | 'hidden';
+  styleClassName: string;
 }
 
 type StateType = {
@@ -73,12 +74,12 @@ class DropDownMenu extends React.Component<IProps, StateType> {
   };
 
   render() {
-    const { actions, visibility } = this.props;
+    const { actions, visibility, styleClassName } = this.props;
     const { isClicked, isMouseAboveElement, isOnFocusElement } = this.state;
     const menu = actions.map((item: DropDownItem) => {
       return (
         <li
-          className="DropDownMenu-option"
+          className='DropDownMenu-option'
           onClick={(e) => item.action(e)}
           onKeyDown={(e) => this.pressEnterOnMenuItem(e, item.action)}
           role='button'
@@ -109,7 +110,7 @@ class DropDownMenu extends React.Component<IProps, StateType> {
 
     return (
       <div
-        className="DropDownMenu"
+        className={`${styleClassName} DropDownMenu`}
         style={style}
         onClick={this.clickMenu}
         onKeyDown={this.pressEnterOnMenu}

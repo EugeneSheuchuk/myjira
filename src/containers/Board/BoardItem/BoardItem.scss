@@ -67,7 +67,7 @@
   border-top-right-radius: 5px;
 }
 
-.DropDownMenu {
+.BoardItem-name-dropDown {
   position: absolute;
   top: 7px;
   left: 257px;
@@ -83,6 +83,10 @@
     top: 3px;
     left: 7px;
   }
+
+  ul {
+    right: 30px;
+  }
 }
 
 .BoardItem-tasks {
@@ -91,7 +95,7 @@
   margin-bottom: 10px;
   background-color: $boards_background_color;
 
-  div {
+  .Task {
     width: 90%;
     margin: 10px auto;
   }
