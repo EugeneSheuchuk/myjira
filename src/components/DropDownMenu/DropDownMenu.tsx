@@ -11,7 +11,8 @@ interface IProps {
 type StateType = {
   isClicked: boolean;
   isMouseAboveElement: boolean;
-  isOnFocusElement: boolean
+  isOnFocusElement: boolean;
+  isOnFocusOptions: boolean
 };
 
 class DropDownMenu extends React.Component<IProps, StateType> {
@@ -20,7 +21,8 @@ class DropDownMenu extends React.Component<IProps, StateType> {
     this.state = {
       isClicked: false,
       isMouseAboveElement: false,
-      isOnFocusElement: false
+      isOnFocusElement: false,
+      isOnFocusOptions: false
     };
   }
 
@@ -44,7 +46,22 @@ class DropDownMenu extends React.Component<IProps, StateType> {
   };
 
   onBlurElement = () => {
+    const { isOnFocusOptions } = this.state;
+    if (!isOnFocusOptions) {
+      this.setState({ isClicked: false, isOnFocusElement: false });
+    }
+  };
+
+  onFocusOptions = () => {
+    this.setState({ isOnFocusOptions: true });
+  };
+
+  onBlurOptions = () => {
     this.setState({ isClicked: false, isOnFocusElement: false });
+  };
+
+  mouseOutOptions = () => {
+    this.setState({ isOnFocusOptions: false });
   };
 
   pressEnterOnMenuItem = (e: React.KeyboardEvent, callback: Function) => {
@@ -63,7 +80,7 @@ class DropDownMenu extends React.Component<IProps, StateType> {
         <li
           className="DropDownMenu-option"
           onClick={(e) => item.action(e)}
-          onKeyDown={(e) =>this.pressEnterOnMenuItem(e, item.action)}
+          onKeyDown={(e) => this.pressEnterOnMenuItem(e, item.action)}
           role='button'
           tabIndex={0}
           key={item.actionName}
@@ -74,19 +91,19 @@ class DropDownMenu extends React.Component<IProps, StateType> {
     });
 
     let style = {
-      visibility: `${visibility}`,
+      visibility: `${visibility}`
     } as React.CSSProperties;
 
     if (isClicked) {
       style = {
         visibility: 'visible',
-        backgroundColor: 'darkgray',
+        backgroundColor: 'darkgray'
       } as React.CSSProperties;
     } else if (isMouseAboveElement || isOnFocusElement) {
       style = {
         visibility: 'visible',
         cursor: 'pointer',
-        backgroundColor: 'darkgray',
+        backgroundColor: 'darkgray'
       } as React.CSSProperties;
     }
 
@@ -104,7 +121,19 @@ class DropDownMenu extends React.Component<IProps, StateType> {
         tabIndex={0}
       >
         <img src={More} alt="more" />
-        {isClicked ? <ul className="DropDownMenu-container">{menu}</ul> : null}
+        {
+          isClicked
+            ? <ul
+              className="DropDownMenu-container"
+              onFocus={this.onFocusOptions}
+              onMouseOver={this.onFocusOptions}
+              onMouseOut={this.mouseOutOptions}
+              onBlur={this.onBlurOptions}
+            >
+              {menu}
+            </ul>
+            : null
+        }
       </div>
     );
   }
