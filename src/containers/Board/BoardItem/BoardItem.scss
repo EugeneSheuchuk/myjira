@@ -32,11 +32,14 @@
   line-height: 40px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  span {
+
+  .BoardItem-name-text {
     padding-left: 20px;
+    display: block;
+    width: 80%;
   }
 
-  div {
+  .BoardItem-name-border {
     height: 1px;
     width: 95%;
     margin: 0 auto;
@@ -54,6 +57,24 @@
 
   input[type='text']:focus {
     border-color: $main_blue;
+  }
+}
+
+.DropDownMenu {
+  position: absolute;
+  top: 7px;
+  left: 257px;
+  width: 35px;
+  height: 27px;
+  z-index: 10;
+  border-radius: 5px;
+
+  img {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 3px;
+    left: 7px;
   }
 }
 

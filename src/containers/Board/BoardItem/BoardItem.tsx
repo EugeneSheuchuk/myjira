@@ -4,6 +4,8 @@ import { BoardType, TaskType } from '../../../types/boardReducerTypes';
 import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
 import Task from '../../../components/Task/Task';
+import DropDownMenu from '../../../components/DropDownMenu/DropDownMenu';
+import { DropDownProps } from '../../../types/types';
 
 interface IProps extends BoardType {
   scrollDown: (size: number) => void;
@@ -19,6 +21,7 @@ type State = {
   containerRef: RefObject<HTMLDivElement>;
   isEditBoardName: boolean;
   newBoardText: string;
+  visibleDropDownMenu: 'visible' | 'hidden';
 };
 
 class BoardItem extends React.Component<IProps, State> {
@@ -32,6 +35,7 @@ class BoardItem extends React.Component<IProps, State> {
       containerRef: createRef<HTMLDivElement>(),
       isEditBoardName: false,
       newBoardText: '',
+      visibleDropDownMenu: 'hidden',
     };
   }
 
@@ -128,6 +132,13 @@ class BoardItem extends React.Component<IProps, State> {
     }
   };
 
+  mouseAboveElement = (e: React.MouseEvent) => {
+    this.setState({ visibleDropDownMenu: 'visible' });
+  };
+
+  mouseOutElement = (e: React.MouseEvent) => {
+    this.setState({ visibleDropDownMenu: 'hidden' });
+  };
 
   render() {
     const { boardName, boardHeight } = this.props;
@@ -158,12 +169,22 @@ class BoardItem extends React.Component<IProps, State> {
     ));
 
     const viewBoardName = !isEditBoardName
-      ? <span>{boardName}</span>
+      ? <span className="BoardItem-name-text">{boardName}</span>
       : <input type='text'
                value={newBoardText}
                autoFocus={true}
                onChange={this.newBoardName}
                onBlur={this.saveNewBoardName}/>;
+    const dropMenu: DropDownProps = [
+      {
+        actionName: 'Edit',
+        action: ()=>{}
+      },
+      {
+        actionName: 'Delete',
+        action: ()=>{}
+      }
+    ];
 
     return (
       <div className="BoardItem-container" ref={borderRef}>
@@ -172,10 +193,20 @@ class BoardItem extends React.Component<IProps, State> {
           ref={containerRef}
           style={{ minHeight: `${boardHeight}px` }}
         >
-          <div className="BoardItem-name" onClick={this.editBoardName}>
+          <div className="BoardItem-name"
+               onClick={this.editBoardName}
+               onMouseOver={this.mouseAboveElement}
+               onMouseOut={this.mouseOutElement}>
             {viewBoardName}
-            <div />
+            <div className="BoardItem-name-border" />
           </div>
+          {
+            isEditBoardName
+            ? null
+            : <DropDownMenu
+                actions={dropMenu}
+                visibility={this.state.visibleDropDownMenu}/>
+          }
           <div className="BoardItem-tasks">
             {viewedTasks}
             {newTask}
