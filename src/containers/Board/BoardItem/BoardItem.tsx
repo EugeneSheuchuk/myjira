@@ -22,6 +22,7 @@ type State = {
   isEditBoardName: boolean;
   newBoardText: string;
   visibleDropDownMenu: 'visible' | 'hidden';
+  isOnFocusElement: boolean;
 };
 
 class BoardItem extends React.Component<IProps, State> {
@@ -36,6 +37,7 @@ class BoardItem extends React.Component<IProps, State> {
       isEditBoardName: false,
       newBoardText: '',
       visibleDropDownMenu: 'hidden',
+      isOnFocusElement: false,
     };
   }
 
@@ -150,6 +152,14 @@ class BoardItem extends React.Component<IProps, State> {
     this.setState({ visibleDropDownMenu: 'hidden' });
   };
 
+  onFocusElement = () => {
+    this.setState({ isOnFocusElement: true });
+  };
+
+  onBlurElement = () => {
+    this.setState({ isOnFocusElement: false });
+  };
+
   render() {
     const { boardName, boardHeight } = this.props;
     const {
@@ -160,6 +170,8 @@ class BoardItem extends React.Component<IProps, State> {
       containerRef,
       isEditBoardName,
       newBoardText,
+      isOnFocusElement,
+      visibleDropDownMenu,
     } = this.state;
 
     const newTask = isAddingTask ? (
@@ -213,8 +225,8 @@ class BoardItem extends React.Component<IProps, State> {
             onKeyDown={this.pressEditBoardName}
             onMouseOver={this.mouseAboveElement}
             onMouseOut={this.mouseOutElement}
-            onFocus={()=>{}}
-            onBlur={()=>{}}
+            onFocus={this.onFocusElement}
+            onBlur={this.onBlurElement}
             role='button'
             tabIndex={0}
           >
@@ -224,7 +236,7 @@ class BoardItem extends React.Component<IProps, State> {
           {isEditBoardName ? null : (
             <DropDownMenu
               actions={dropMenu}
-              visibility={this.state.visibleDropDownMenu}
+              visibility={isOnFocusElement ? 'visible' : visibleDropDownMenu}
             />
           )}
           <div className="BoardItem-tasks">
