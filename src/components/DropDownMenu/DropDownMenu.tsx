@@ -4,14 +4,14 @@ import { DropDownItem, DropDownProps } from '../../types/types';
 import More from '../../assets/images/more.png';
 
 interface IProps {
-  actions: DropDownProps
+  actions: DropDownProps;
   visibility: 'visible' | 'hidden';
 }
 
 type StateType = {
   isClicked: boolean;
-  isMouseAboveElement: boolean,
-}
+  isMouseAboveElement: boolean;
+};
 
 class DropDownMenu extends React.Component<IProps, StateType> {
   constructor(props: IProps) {
@@ -20,9 +20,10 @@ class DropDownMenu extends React.Component<IProps, StateType> {
       isClicked: false,
       isMouseAboveElement: false,
     };
-  };
+  }
 
-  clickMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+  clickMenu = (e: React.MouseEvent<HTMLDivElement>
+  | React.KeyboardEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ isClicked: true });
@@ -36,42 +37,81 @@ class DropDownMenu extends React.Component<IProps, StateType> {
     this.setState({ isMouseAboveElement: false });
   };
 
+  pressEnterOnMenuItem = (e: React.KeyboardEvent, callback: Function) => {
+    if (e.keyCode === 13) callback();
+  };
+
+  pressEnterOnMenu = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.keyCode === 13) this.clickMenu(e);
+  };
+
   render() {
     const { actions, visibility } = this.props;
     const { isClicked, isMouseAboveElement } = this.state;
     const menu = actions.map((item: DropDownItem) => {
-      return <li className='DropDownMenu-option'
-                  onClick={(e) => item.action(e)}
-                  key={item.actionName}>
-        {item.actionName}
-      </li>;
+      return (
+        <li
+          className="DropDownMenu-option"
+          onClick={(e) => item.action(e)}
+          onKeyDown={(e) =>this.pressEnterOnMenuItem(e, item.action)}
+          role='button'
+          tabIndex={0}
+          key={item.actionName}
+        >
+          {item.actionName}
+        </li>
+      );
     });
-    const style = isClicked
-      ? {
+
+    let style = {
+      visibility: `${visibility}`,
+    } as React.CSSProperties;
+
+    if (isClicked) {
+      style = {
         visibility: 'visible',
         backgroundColor: 'darkgray',
-      } as React.CSSProperties
-      : isMouseAboveElement
-        ? {
-            visibility: 'visible',
-            cursor: 'pointer',
-            backgroundColor: 'darkgray',
-        } as React.CSSProperties
-        : {
-          visibility: `${visibility}`,
-        } as React.CSSProperties;
+      } as React.CSSProperties;
+    } else if (isMouseAboveElement) {
+      style = {
+        visibility: 'visible',
+        cursor: 'pointer',
+        backgroundColor: 'darkgray',
+      } as React.CSSProperties;
+    }
+    // const style = isClicked
+    //   ? ({
+    //       visibility: 'visible',
+    //       backgroundColor: 'darkgray',
+    //     } as React.CSSProperties)
+    //   : isMouseAboveElement
+    //   ? ({
+    //       visibility: 'visible',
+    //       cursor: 'pointer',
+    //       backgroundColor: 'darkgray',
+    //     } as React.CSSProperties)
+    //   : ({
+    //       visibility: `${visibility}`,
+    //     } as React.CSSProperties);
 
     return (
-      <div className='DropDownMenu'
-           style={style}
-           onClick={this.clickMenu}
-           onMouseOver={this.mouseAboveElement}
-           onMouseOut={this.mouseOutElement}>
-        <img src={More} alt='more'/>
-        {isClicked ? <ul className='DropDownMenu-container'>{menu}</ul> : null}
+      <div
+        className="DropDownMenu"
+        style={style}
+        onClick={this.clickMenu}
+        onKeyDown={this.pressEnterOnMenu}
+        onMouseOver={this.mouseAboveElement}
+        onMouseOut={this.mouseOutElement}
+        onBlur={()=>{}}
+        onFocus={()=>{}}
+        role='button'
+        tabIndex={0}
+      >
+        <img src={More} alt="more" />
+        {isClicked ? <ul className="DropDownMenu-container">{menu}</ul> : null}
       </div>
     );
-  };
+  }
 }
 
 export default DropDownMenu;

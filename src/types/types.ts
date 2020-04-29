@@ -11,8 +11,9 @@ export type MenuItemProps = {
 
 export type DropDownItem = {
   actionName: string;
-  action: (e: React.MouseEvent<HTMLLIElement>
-    | React.KeyboardEvent<HTMLLIElement>) => void;
+  action: (
+    e: React.MouseEvent<HTMLLIElement> | React.KeyboardEvent<HTMLLIElement>
+  ) => void;
 };
 
 export type DropDownProps = Array<DropDownItem>;

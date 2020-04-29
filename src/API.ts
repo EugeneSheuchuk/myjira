@@ -3,7 +3,7 @@ import { BoardType, TaskType } from './types/boardReducerTypes';
 let id: number = 3;
 let taskId: number = 0;
 
-const boards: Array<BoardType> = [
+let boards: Array<BoardType> = [
   {
     id: 0,
     boardName: 'TO DO',
@@ -27,6 +27,7 @@ interface IAPI {
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
   getBoardTasks: (boardId: number) => Promise<Array<TaskType>>;
   saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
+  deleteBoard: (boardId: number) => Promise<boolean>;
 }
 
 const API: IAPI = {
@@ -65,11 +66,16 @@ const API: IAPI = {
   saveNewBoardText(boardId, newBoardName) {
     boards.forEach((item) => {
       if (item.id === boardId) {
+        // eslint-disable-next-line
         item.boardName = newBoardName;
       }
     });
     return Promise.resolve(true);
-  }
+  },
+  deleteBoard(boardId) {
+    boards = boards.filter((item) => item.id !== boardId);
+    return Promise.resolve(true);
+  },
 };
 
 export default API;

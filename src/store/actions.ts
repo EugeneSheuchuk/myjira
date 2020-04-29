@@ -13,7 +13,7 @@ export const setBoards = (data: Array<BoardType>): ActionSetBoards => ({
 });
 
 export const getBoardsFromServer = ()
-: ThunkAction<void, {}, {}, ActionSetBoards> => {
+: ThunkAction< void, {}, {}, ActionSetBoards> => {
   return async (
     dispatch: ThunkDispatch<{}, {}, ActionSetBoards>
   ): Promise<void> => {

@@ -113,9 +113,13 @@ class BoardItem extends React.Component<IProps, State> {
     });
   };
 
+  pressEditBoardName = (e: React.KeyboardEvent) => {
+    if (e.keyCode === 13) this.editBoardName();
+  };
+
   newBoardName = (e: React.FormEvent<HTMLInputElement>) => {
     const newText = e.currentTarget.value;
-    this.setState({ newBoardText: newText});
+    this.setState({ newBoardText: newText });
   };
 
   saveNewBoardName = async () => {
@@ -126,10 +130,16 @@ class BoardItem extends React.Component<IProps, State> {
     } else {
       const result = await API.saveNewBoardText(id, newBoardText);
       if (result) {
-        this.setState({isEditBoardName: false});
+        this.setState({ isEditBoardName: false });
         this.props.updateBoards();
       }
     }
+  };
+
+  deleteBoard = async () => {
+    const { id, updateBoards } = this.props;
+    const result = API.deleteBoard(id);
+    if (result) updateBoards();
   };
 
   mouseAboveElement = (e: React.MouseEvent) => {
@@ -168,22 +178,26 @@ class BoardItem extends React.Component<IProps, State> {
       <Task taskId={item.taskId} taskText={item.taskText} key={item.taskId} />
     ));
 
-    const viewBoardName = !isEditBoardName
-      ? <span className="BoardItem-name-text">{boardName}</span>
-      : <input type='text'
-               value={newBoardText}
-               autoFocus={true}
-               onChange={this.newBoardName}
-               onBlur={this.saveNewBoardName}/>;
+    const viewBoardName = !isEditBoardName ? (
+      <span className="BoardItem-name-text">{boardName}</span>
+    ) : (
+      <input
+        type="text"
+        value={newBoardText}
+        autoFocus={true}
+        onChange={this.newBoardName}
+        onBlur={this.saveNewBoardName}
+      />
+    );
     const dropMenu: DropDownProps = [
       {
         actionName: 'Edit',
-        action: ()=>{}
+        action: this.editBoardName,
       },
       {
         actionName: 'Delete',
-        action: ()=>{}
-      }
+        action: this.deleteBoard,
+      },
     ];
 
     return (
@@ -193,20 +207,26 @@ class BoardItem extends React.Component<IProps, State> {
           ref={containerRef}
           style={{ minHeight: `${boardHeight}px` }}
         >
-          <div className="BoardItem-name"
-               onClick={this.editBoardName}
-               onMouseOver={this.mouseAboveElement}
-               onMouseOut={this.mouseOutElement}>
+          <div
+            className="BoardItem-name"
+            onClick={this.editBoardName}
+            onKeyDown={this.pressEditBoardName}
+            onMouseOver={this.mouseAboveElement}
+            onMouseOut={this.mouseOutElement}
+            onFocus={()=>{}}
+            onBlur={()=>{}}
+            role='button'
+            tabIndex={0}
+          >
             {viewBoardName}
             <div className="BoardItem-name-border" />
           </div>
-          {
-            isEditBoardName
-            ? null
-            : <DropDownMenu
-                actions={dropMenu}
-                visibility={this.state.visibleDropDownMenu}/>
-          }
+          {isEditBoardName ? null : (
+            <DropDownMenu
+              actions={dropMenu}
+              visibility={this.state.visibleDropDownMenu}
+            />
+          )}
           <div className="BoardItem-tasks">
             {viewedTasks}
             {newTask}

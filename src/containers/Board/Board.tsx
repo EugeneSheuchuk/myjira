@@ -121,7 +121,7 @@ class Board extends React.Component<IProps, StateType> {
 const mapStateToProps = (state: IState) => {
   return {
     boards: getBoardsFromState(state),
-  }
+  };
 };
 
 // what params take ThunkDispatch

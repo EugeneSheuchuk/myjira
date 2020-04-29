@@ -60,6 +60,13 @@
   }
 }
 
+.BoardItem-name:focus {
+  outline: none;
+  border: 2px solid $main_blue;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
 .DropDownMenu {
   position: absolute;
   top: 7px;
