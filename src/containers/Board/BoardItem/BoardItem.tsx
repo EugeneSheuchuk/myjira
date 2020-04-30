@@ -41,12 +41,17 @@ class BoardItem extends React.Component<IProps, State> {
     };
   }
 
-  isScrolling = () => {
+  componentDidMount(): void {
+    this.isScrolling();
+  }
+
+    isScrolling = () => {
     const { borderRef, containerRef } = this.state;
     if (borderRef.current === null || containerRef.current === null) return;
+    //80 - approximate sum 'add task' button height and  height 'new task text' field
     if (
-      window.innerHeight - 70 < borderRef.current.scrollHeight &&
-      window.innerHeight - 70 < containerRef.current.scrollHeight
+      window.innerHeight < borderRef.current.scrollHeight &&
+      window.innerHeight - 80 < containerRef.current.scrollHeight
     ) {
       this.props.scrollDown(containerRef.current.scrollHeight);
     }
@@ -75,15 +80,12 @@ class BoardItem extends React.Component<IProps, State> {
   addNewTask = async () => {
     const res = await API.addNewTask(this.props.id, this.state.newTaskText);
     if (res) {
-      const tasks = await API.getBoardTasks(this.props.id);
-      this.setState(
-        {
-          tasks,
-          isAddingTask: false,
-          newTaskText: '',
-        },
-        () => this.isScrolling()
-      );
+        this.setState(
+          {
+            isAddingTask: false,
+            newTaskText: '',
+          });
+      this.props.updateBoards();
     }
   };
 
@@ -219,7 +221,6 @@ class BoardItem extends React.Component<IProps, State> {
       <div className="BoardItem-container" ref={borderRef}>
         <div
           className="BoardItem"
-          ref={containerRef}
           style={{ minHeight: `${boardHeight}px` }}
         >
           <div
@@ -243,17 +244,17 @@ class BoardItem extends React.Component<IProps, State> {
               styleClassName='BoardItem-name-dropDown'
             />
           )}
-          <div className="BoardItem-tasks">
+          <div className="BoardItem-tasks" ref={containerRef}>
             {viewedTasks}
             {newTask}
+            <AddButton
+              width={16}
+              height={16}
+              description="Create issue"
+              action={this.addNewTaskTextByMouse}
+              keyAction={this.addNewTaskTextByKeyBoard}
+            />
           </div>
-          <AddButton
-            width={16}
-            height={16}
-            description="Create issue"
-            action={this.addNewTaskTextByMouse}
-            keyAction={this.addNewTaskTextByKeyBoard}
-          />
         </div>
       </div>
     );

@@ -11,13 +11,7 @@
 .BoardItem {
   width: inherit;
   position: relative;
-
-  > div:last-child {
-    margin-bottom: 15px;
-    width: 90%;
-    margin-left: 15px;
-    padding: 10px;
-  }
+  padding-bottom: 10px;
 }
 
 .BoardItem-name {
@@ -92,12 +86,18 @@
 .BoardItem-tasks {
   word-wrap: break-spaces;
   margin-top: 15px;
-  margin-bottom: 10px;
   background-color: $boards_background_color;
 
   .Task {
     width: 90%;
     margin: 10px auto;
+  }
+
+  .AddButton {
+    margin-bottom: 15px;
+    width: 90%;
+    margin-left: 15px;
+    padding: 10px;
   }
 }
 
