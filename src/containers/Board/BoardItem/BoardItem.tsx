@@ -11,12 +11,12 @@ interface IProps extends BoardType {
   scrollDown: (size: number) => void;
   boardHeight: number;
   updateBoards: () => void;
+  tasks: Array<TaskType>;
 }
 
 type State = {
   isAddingTask: boolean;
   newTaskText: string;
-  tasks: Array<TaskType>;
   borderRef: RefObject<HTMLDivElement>;
   containerRef: RefObject<HTMLDivElement>;
   isEditBoardName: boolean;
@@ -31,7 +31,6 @@ class BoardItem extends React.Component<IProps, State> {
     this.state = {
       isAddingTask: false,
       newTaskText: '',
-      tasks: props.tasks,
       borderRef: createRef<HTMLDivElement>(),
       containerRef: createRef<HTMLDivElement>(),
       isEditBoardName: false,
@@ -163,11 +162,10 @@ class BoardItem extends React.Component<IProps, State> {
   };
 
   render() {
-    const { boardName, boardHeight } = this.props;
+    const { boardName, boardHeight, updateBoards, id, tasks } = this.props;
     const {
       isAddingTask,
       newTaskText,
-      tasks,
       borderRef,
       containerRef,
       isEditBoardName,
@@ -192,6 +190,8 @@ class BoardItem extends React.Component<IProps, State> {
     const viewedTasks = tasks.map((item) => (
       <Task taskId={item.taskId}
             taskText={item.taskText}
+            updateBoards={updateBoards}
+            boardId={id}
             key={item.taskId} />
     ));
 

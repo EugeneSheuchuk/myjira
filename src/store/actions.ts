@@ -19,7 +19,9 @@ export const getBoardsFromServer = ()
   ): Promise<void> => {
     try {
       const response = await API.getBoards();
-      dispatch(setBoards(response));
+      const string = JSON.stringify(response);
+      const copy = JSON.parse(string);
+      dispatch(setBoards(copy));
     } catch (e) {
       // eslint-disable-next-line
       console.log(e);
