@@ -34,6 +34,20 @@ class DropDownMenu extends React.Component<IProps, StateType> {
     this.setState({ isClicked: true });
   };
 
+  clickOption = (e: React.MouseEvent<HTMLLIElement>, call: Function) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState(
+      {
+        isClicked: false,
+        isMouseAboveElement: false,
+        isOnFocusElement: false,
+        isOnFocusOptions: false
+      },
+      () => call(e))
+    ;
+  };
+
   mouseAboveElement = (e: React.MouseEvent) => {
     this.setState({ isMouseAboveElement: true });
   };
@@ -80,7 +94,7 @@ class DropDownMenu extends React.Component<IProps, StateType> {
       return (
         <li
           className='DropDownMenu-option'
-          onClick={(e) => item.action(e)}
+          onClick={(e) => this.clickOption(e, item.action)}
           onKeyDown={(e) => this.pressEnterOnMenuItem(e, item.action)}
           role='button'
           tabIndex={0}

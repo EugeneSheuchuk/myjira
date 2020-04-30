@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './Task.scss';
 import { TaskType } from '../../types/boardReducerTypes';
 import DropDownMenu from '../DropDownMenu/DropDownMenu';
@@ -10,17 +10,25 @@ interface IProps extends TaskType {
   boardId: number;
 }
 
-const Task: React.FC<IProps> = ({ taskId, taskText, boardId, updateBoards }) => {
-  const [visible, setVisible] = useState<'visible' | 'hidden'>('visible');
+type State = 'visible' | 'hidden';
+
+const Task: React.FC<IProps> = (
+  { taskId, taskText, boardId, updateBoards }) => {
+  const [visible, setVisible] = useState<State>('hidden');
 
   const mouseAboveElement = (e: React.MouseEvent) => setVisible('visible');
   const mouseOutElement = (e: React.MouseEvent) => setVisible('hidden');
 
-  const deleteTask = async() => {
+  const deleteTask = async () => {
     const res = await API.deleteTask(boardId, taskId);
-    if (res) {
-      updateBoards();
-    }
+    if (res) updateBoards();
+    setVisible('hidden');
+  };
+
+  const moveItem = async (direction: 'top' | 'bottom') => {
+    const result = await API.moveTask(boardId, taskId, direction);
+    if (result) updateBoards();
+    setVisible('hidden');
   };
 
   const taskDropMenu: DropDownProps = [
@@ -34,18 +42,20 @@ const Task: React.FC<IProps> = ({ taskId, taskText, boardId, updateBoards }) => 
     },
     {
       actionName: 'Top of column',
-      action: () => {},
+      action: () => moveItem('top'),
     },
     {
       actionName: 'Bottom of column',
-      action: () => {},
+      action: () => moveItem('bottom'),
     },
   ];
 
   return (
-    <div className="Task"
-         onMouseOver={mouseAboveElement}
-         onMouseOut={mouseOutElement}>
+    <div
+      className="Task"
+      onMouseOver={mouseAboveElement}
+      onMouseOut={mouseOutElement}
+    >
       <p>{taskText}</p>
       <DropDownMenu
         actions={taskDropMenu}

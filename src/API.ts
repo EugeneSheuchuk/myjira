@@ -25,10 +25,10 @@ interface IAPI {
   getBoards: () => Promise<Array<BoardType>>;
   addNewBoard: (boardName: string) => Promise<boolean>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
-  // getBoardTasks: (boardId: number) => Promise<Array<TaskType>>;
   saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
   deleteBoard: (boardId: number) => Promise<boolean>;
   deleteTask: (boardId: number, taskId: number) => Promise<boolean>;
+  moveTask: (boardId: number, taskId: number, direction: 'top' | 'bottom') => Promise<boolean>;
 }
 
 const API: IAPI = {
@@ -55,15 +55,6 @@ const API: IAPI = {
     });
     return Promise.resolve(isAddTask);
   },
-  // getBoardTasks(boardId) {
-  //   let tasks: Array<TaskType> = [];
-  //   boards.forEach((item) => {
-  //     if (item.id === boardId) {
-  //       tasks = item.tasks;
-  //     }
-  //   });
-  //   return Promise.resolve(tasks);
-  // },
   saveNewBoardText(boardId, newBoardName) {
     boards.forEach((item) => {
       if (item.id === boardId) {
@@ -86,6 +77,24 @@ const API: IAPI = {
     });
     return Promise.resolve(true);
   },
+  moveTask(boardId, taskId, direction) {
+    let current: TaskType;
+    boards.forEach((item) => {
+      if (item.id === boardId) {
+        const result = item.tasks.filter( el => {
+          if (el.taskId !== taskId) return true;
+          current = el;
+          return false;
+        });
+        if (direction === 'top') {
+          item.tasks = [current, ...result];
+        } else {
+          item.tasks = [...result, current];
+        }
+      }
+    });
+    return Promise.resolve(true);
+  }
 };
 
 export default API;

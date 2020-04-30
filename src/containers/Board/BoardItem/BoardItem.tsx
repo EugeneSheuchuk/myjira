@@ -36,7 +36,7 @@ class BoardItem extends React.Component<IProps, State> {
       isEditBoardName: false,
       newBoardText: '',
       visibleDropDownMenu: 'hidden',
-      isOnFocusElement: false,
+      isOnFocusElement: false
     };
   }
 
@@ -44,10 +44,12 @@ class BoardItem extends React.Component<IProps, State> {
     this.isScrolling();
   }
 
-    isScrolling = () => {
+  isScrolling = () => {
     const { borderRef, containerRef } = this.state;
     if (borderRef.current === null || containerRef.current === null) return;
-    //80 - approximate sum 'add task' button height and  height 'new task text' field
+
+    //  80 - approximate sum 'add task' button height and  height 'new task text' field
+
     if (
       window.innerHeight < borderRef.current.scrollHeight &&
       window.innerHeight - 80 < containerRef.current.scrollHeight
@@ -79,11 +81,11 @@ class BoardItem extends React.Component<IProps, State> {
   addNewTask = async () => {
     const res = await API.addNewTask(this.props.id, this.state.newTaskText);
     if (res) {
-        this.setState(
-          {
-            isAddingTask: false,
-            newTaskText: '',
-          });
+      this.setState(
+        {
+          isAddingTask: false,
+          newTaskText: ''
+        });
       this.props.updateBoards();
     }
   };
@@ -112,7 +114,7 @@ class BoardItem extends React.Component<IProps, State> {
     const { boardName } = this.props;
     this.setState({
       isEditBoardName: true,
-      newBoardText: boardName,
+      newBoardText: boardName
     });
   };
 
@@ -171,7 +173,7 @@ class BoardItem extends React.Component<IProps, State> {
       isEditBoardName,
       newBoardText,
       isOnFocusElement,
-      visibleDropDownMenu,
+      visibleDropDownMenu
     } = this.state;
 
     const newTask = isAddingTask ? (
@@ -188,11 +190,13 @@ class BoardItem extends React.Component<IProps, State> {
 
 
     const viewedTasks = tasks.map((item) => (
-      <Task taskId={item.taskId}
-            taskText={item.taskText}
-            updateBoards={updateBoards}
-            boardId={id}
-            key={item.taskId} />
+      <Task
+        taskId={item.taskId}
+        taskText={item.taskText}
+        updateBoards={updateBoards}
+        boardId={id}
+        key={item.taskId}
+      />
     ));
 
     const viewBoardName = !isEditBoardName ? (
@@ -209,12 +213,12 @@ class BoardItem extends React.Component<IProps, State> {
     const boardDropMenu: DropDownProps = [
       {
         actionName: 'Edit',
-        action: this.editBoardName,
+        action: this.editBoardName
       },
       {
         actionName: 'Delete',
-        action: this.deleteBoard,
-      },
+        action: this.deleteBoard
+      }
     ];
 
     return (
