@@ -17,11 +17,11 @@ class AddBoard extends React.Component<PropsType, StateType> {
     super(props);
     this.state = {
       boardName: '',
-      isForceGetValue: false,
+      isForceGetValue: false
     };
   }
 
-    addNewBoard = (isCancel: boolean, value: string) => {
+  addNewBoard = (isCancel: boolean, value: string) => {
     const { add, cancel } = this.props;
     if (isCancel) {
       cancel();
@@ -35,7 +35,7 @@ class AddBoard extends React.Component<PropsType, StateType> {
   };
 
   pressAdd = (e: React.KeyboardEvent<HTMLSpanElement>) => {
-    if (e.keyCode === 13) this.setState({ isForceGetValue: true});
+    if (e.keyCode === 13) this.setState({ isForceGetValue: true });
   };
 
   render() {

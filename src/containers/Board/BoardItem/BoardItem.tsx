@@ -6,6 +6,7 @@ import API from '../../../API';
 import Task from '../../../components/Task/Task';
 import DropDownMenu from '../../../components/DropDownMenu/DropDownMenu';
 import { DropDownProps } from '../../../types/types';
+import AddTextValue from '../../../components/AddTextValue/AddTextValue';
 
 interface IProps extends BoardType {
   scrollDown: (size: number) => void;
@@ -20,7 +21,6 @@ type State = {
   borderRef: RefObject<HTMLDivElement>;
   containerRef: RefObject<HTMLDivElement>;
   isEditBoardName: boolean;
-  newBoardText: string;
   visibleDropDownMenu: 'visible' | 'hidden';
   isOnFocusElement: boolean;
 };
@@ -34,7 +34,6 @@ class BoardItem extends React.Component<IProps, State> {
       borderRef: createRef<HTMLDivElement>(),
       containerRef: createRef<HTMLDivElement>(),
       isEditBoardName: false,
-      newBoardText: '',
       visibleDropDownMenu: 'hidden',
       isOnFocusElement: false
     };
@@ -110,30 +109,18 @@ class BoardItem extends React.Component<IProps, State> {
     this.addNewTask();
   };
 
-  editBoardName = () => {
-    const { boardName } = this.props;
-    this.setState({
-      isEditBoardName: true,
-      newBoardText: boardName
-    });
-  };
+  editBoardName = () => this.setState({ isEditBoardName: true });
 
   pressEditBoardName = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) this.editBoardName();
   };
 
-  newBoardName = (e: React.FormEvent<HTMLInputElement>) => {
-    const newText = e.currentTarget.value;
-    this.setState({ newBoardText: newText });
-  };
-
-  saveNewBoardName = async () => {
+  saveNewBoardName = async (isCancel: boolean, value: string) => {
     const { id, boardName } = this.props;
-    const { newBoardText } = this.state;
-    if (newBoardText.trim() === '' || newBoardText === boardName) {
-      this.setState({ isEditBoardName: false, newBoardText: '' });
+    if (isCancel) {
+      this.setState({ isEditBoardName: false });
     } else {
-      const result = await API.saveNewBoardText(id, newBoardText);
+      const result = await API.saveNewBoardText(id, value);
       if (result) {
         this.setState({ isEditBoardName: false });
         this.props.updateBoards();
@@ -171,7 +158,6 @@ class BoardItem extends React.Component<IProps, State> {
       borderRef,
       containerRef,
       isEditBoardName,
-      newBoardText,
       isOnFocusElement,
       visibleDropDownMenu
     } = this.state;
@@ -199,18 +185,14 @@ class BoardItem extends React.Component<IProps, State> {
       />
     ));
 
-    const viewBoardName = !isEditBoardName ? (
-      <span className="BoardItem-name-text">{boardName}</span>
-    ) : (
-      <input
-        type="text"
-        value={newBoardText}
-        autoFocus={true}
-        onChange={this.newBoardName}
-        onBlur={this.saveNewBoardName}
-      />
-    );
-    const boardDropMenu: DropDownProps = [
+    const viewBoardName = !isEditBoardName
+      ? <span className="BoardItem-name-text">{boardName}</span>
+      : <AddTextValue
+          startValue={boardName}
+          returnValueAction={this.saveNewBoardName}
+        />;
+
+      const boardDropMenu: DropDownProps = [
       {
         actionName: 'Edit',
         action: this.editBoardName

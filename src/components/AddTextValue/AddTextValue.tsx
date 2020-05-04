@@ -34,12 +34,12 @@ class AddTextValue extends React.Component<IProps, State> {
     }
   };
 
-  typeBoardName = (e: React.FormEvent<HTMLTextAreaElement>) => {
+  typeBoardName = (e: React.FormEvent<HTMLInputElement>) => {
     const tempValue = e.currentTarget.value;
     this.setState({ tempValue });
   };
 
-  pressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  pressKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { returnValueAction } = this.props;
     if (e.keyCode === 27) {
       returnValueAction(true, '' );
@@ -50,7 +50,7 @@ class AddTextValue extends React.Component<IProps, State> {
     }
   };
 
-  onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
+  onBlur = (e: React.FormEvent<HTMLInputElement>) => {
     this.check();
   };
 
@@ -58,7 +58,8 @@ class AddTextValue extends React.Component<IProps, State> {
     const { placeholder = '' } = this.props;
     const { tempValue } = this.state;
     return (
-      <textarea
+      <input
+        type='text'
         value={tempValue}
         placeholder={placeholder}
         autoFocus={true}
