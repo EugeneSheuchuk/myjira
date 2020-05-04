@@ -21,39 +21,10 @@ class AddTextValue extends React.Component<IProps, State> {
   };
 
   componentDidUpdate() {
-    const { returnValueAction, startValue } = this.props;
-    const tempValue = this.state.tempValue.trim();
-    if (this.props.isForceGetValue) {
-      if (tempValue === '' || tempValue === startValue) {
-        returnValueAction(true, '');
-      } else {
-        returnValueAction(false, tempValue);
-      }
-    }
+    if (this.props.isForceGetValue) this.check();
   }
 
-  typeBoardName = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    const tempValue = e.currentTarget.value;
-    this.setState({ tempValue });
-  };
-
-  pressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { returnValueAction, startValue } = this.props;
-    const tempValue = this.state.tempValue.trim();
-    if (e.keyCode === 27) {
-      returnValueAction(true, '' );
-    } else if (e.keyCode === 13) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (tempValue === '' || tempValue === startValue) {
-        returnValueAction(true, '');
-      } else {
-        returnValueAction(false, tempValue);
-      }
-    }
-  };
-
-  onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
+  check = () => {
     const { returnValueAction, startValue } = this.props;
     const tempValue = this.state.tempValue.trim();
     if (tempValue === '' || tempValue === startValue) {
@@ -61,6 +32,26 @@ class AddTextValue extends React.Component<IProps, State> {
     } else {
       returnValueAction(false, tempValue);
     }
+  };
+
+  typeBoardName = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const tempValue = e.currentTarget.value;
+    this.setState({ tempValue });
+  };
+
+  pressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const { returnValueAction } = this.props;
+    if (e.keyCode === 27) {
+      returnValueAction(true, '' );
+    } else if (e.keyCode === 13) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.check();
+    }
+  };
+
+  onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    this.check();
   };
 
   render() {

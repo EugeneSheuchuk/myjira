@@ -21,34 +21,7 @@ class AddBoard extends React.Component<PropsType, StateType> {
     };
   }
 
-  // typeBoardName = (e: React.FormEvent<HTMLTextAreaElement>) => {
-  //   const boardName = e.currentTarget.value;
-  //   this.setState({ boardName });
-  // };
-  //
-  // pressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-  //   if (e.keyCode === 27) {
-  //     this.props.cancel();
-  //   } else if (e.keyCode === 13) {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     if (this.state.boardName.trim() === '') {
-  //       this.props.cancel();
-  //     } else {
-  //       this.props.add(this.state.boardName);
-  //     }
-  //   }
-  // };
-  //
-  // onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
-  //   if (this.state.boardName.trim() === '') {
-  //     this.props.cancel();
-  //   } else {
-  //     this.props.add(this.state.boardName);
-  //   }
-  // };
-
-  addNewBoard = (isCancel: boolean, value: string) => {
+    addNewBoard = (isCancel: boolean, value: string) => {
     const { add, cancel } = this.props;
     if (isCancel) {
       cancel();
@@ -62,7 +35,6 @@ class AddBoard extends React.Component<PropsType, StateType> {
   };
 
   pressAdd = (e: React.KeyboardEvent<HTMLSpanElement>) => {
-    // if (e.keyCode === 13) this.props.add(this.state.boardName);
     if (e.keyCode === 13) this.setState({ isForceGetValue: true});
   };
 
@@ -71,14 +43,6 @@ class AddBoard extends React.Component<PropsType, StateType> {
     const { boardName, isForceGetValue } = this.state;
     return (
       <div className="AddBoard">
-        {/*<textarea*/}
-        {/*  value={boardName}*/}
-        {/*  placeholder="Board name"*/}
-        {/*  autoFocus={true}*/}
-        {/*  onChange={this.typeBoardName}*/}
-        {/*  onKeyDown={this.pressKey}*/}
-        {/*  onBlur={this.onBlur}*/}
-        {/*/>*/}
         <AddTextValue
           startValue={boardName}
           returnValueAction={this.addNewBoard}
