@@ -17,7 +17,7 @@ class AddBoard extends React.Component<PropsType, StateType> {
     super(props);
     this.state = {
       boardName: '',
-      isForceGetValue: false
+      isForceGetValue: false,
     };
   }
 
@@ -46,7 +46,7 @@ class AddBoard extends React.Component<PropsType, StateType> {
         <AddTextValue
           startValue={boardName}
           returnValueAction={this.addNewBoard}
-          placeholder='Board name'
+          placeholder="Board name"
           isForceGetValue={isForceGetValue}
         />
         <div className="AddBoard-choose">

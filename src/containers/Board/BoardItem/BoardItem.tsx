@@ -33,7 +33,7 @@ class BoardItem extends React.Component<IProps, State> {
       containerRef: createRef<HTMLDivElement>(),
       isEditBoardName: false,
       visibleDropDownMenu: 'hidden',
-      isOnFocusElement: false
+      isOnFocusElement: false,
     };
   }
 
@@ -89,7 +89,7 @@ class BoardItem extends React.Component<IProps, State> {
   };
 
   saveNewBoardName = async (isCancel: boolean, value: string) => {
-    const { id, boardName } = this.props;
+    const { id } = this.props;
     if (isCancel) {
       this.setState({ isEditBoardName: false });
     } else {
@@ -131,16 +131,16 @@ class BoardItem extends React.Component<IProps, State> {
       containerRef,
       isEditBoardName,
       isOnFocusElement,
-      visibleDropDownMenu
+      visibleDropDownMenu,
     } = this.state;
 
-    const newTask = isAddingTask
-      ? <AddTextValue
-          startValue=''
-          returnValueAction={this.addNewTask}
-          placeholder='What needs to be done?'
-        />
-      : null;
+    const newTask = isAddingTask ? (
+      <AddTextValue
+        startValue=""
+        returnValueAction={this.addNewTask}
+        placeholder="What needs to be done?"
+      />
+    ) : null;
 
     const viewedTasks = tasks.map((item) => (
       <Task
@@ -152,30 +152,29 @@ class BoardItem extends React.Component<IProps, State> {
       />
     ));
 
-    const viewBoardName = !isEditBoardName
-      ? <span className="BoardItem-name-text">{boardName}</span>
-      : <AddTextValue
-          startValue={boardName}
-          returnValueAction={this.saveNewBoardName}
-        />;
+    const viewBoardName = !isEditBoardName ? (
+      <span className="BoardItem-name-text">{boardName}</span>
+    ) : (
+      <AddTextValue
+        startValue={boardName}
+        returnValueAction={this.saveNewBoardName}
+      />
+    );
 
-      const boardDropMenu: DropDownProps = [
+    const boardDropMenu: DropDownProps = [
       {
         actionName: 'Edit',
-        action: this.editBoardName
+        action: this.editBoardName,
       },
       {
         actionName: 'Delete',
-        action: this.deleteBoard
-      }
+        action: this.deleteBoard,
+      },
     ];
 
     return (
       <div className="BoardItem-container" ref={borderRef}>
-        <div
-          className="BoardItem"
-          style={{ minHeight: `${boardHeight}px` }}
-        >
+        <div className="BoardItem" style={{ minHeight: `${boardHeight}px` }}>
           <div
             className="BoardItem-name"
             onClick={this.editBoardName}
@@ -184,7 +183,7 @@ class BoardItem extends React.Component<IProps, State> {
             onMouseOut={this.mouseOutElement}
             onFocus={this.onFocusElement}
             onBlur={this.onBlurElement}
-            role='button'
+            role="button"
             tabIndex={0}
           >
             {viewBoardName}
@@ -194,7 +193,7 @@ class BoardItem extends React.Component<IProps, State> {
             <DropDownMenu
               actions={boardDropMenu}
               visibility={isOnFocusElement ? 'visible' : visibleDropDownMenu}
-              styleClassName='BoardItem-name-dropDown'
+              styleClassName="BoardItem-name-dropDown"
             />
           )}
           <div className="BoardItem-tasks" ref={containerRef}>

@@ -12,8 +12,12 @@ interface IProps extends TaskType {
 
 type State = 'visible' | 'hidden';
 
-const Task: React.FC<IProps> = (
-  { taskId, taskText, boardId, updateBoards }) => {
+const Task: React.FC<IProps> = ({
+  taskId,
+  taskText,
+  boardId,
+  updateBoards,
+}) => {
   const [visible, setVisible] = useState<State>('hidden');
 
   const mouseAboveElement = (e: React.MouseEvent) => setVisible('visible');
@@ -60,7 +64,7 @@ const Task: React.FC<IProps> = (
       <DropDownMenu
         actions={taskDropMenu}
         visibility={visible}
-        styleClassName='Task-dropDown'
+        styleClassName="Task-dropDown"
       />
     </div>
   );

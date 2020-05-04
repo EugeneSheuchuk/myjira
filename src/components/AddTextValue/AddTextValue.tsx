@@ -9,7 +9,7 @@ interface IProps {
 }
 
 type State = {
-  tempValue: string
+  tempValue: string;
 };
 
 class AddTextValue extends React.Component<IProps, State> {
@@ -17,8 +17,8 @@ class AddTextValue extends React.Component<IProps, State> {
     super(props);
     this.state = {
       tempValue: props.startValue,
-    }
-  };
+    };
+  }
 
   componentDidUpdate() {
     if (this.props.isForceGetValue) this.check();
@@ -42,7 +42,7 @@ class AddTextValue extends React.Component<IProps, State> {
   pressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const { returnValueAction } = this.props;
     if (e.keyCode === 27) {
-      returnValueAction(true, '' );
+      returnValueAction(true, '');
     } else if (e.keyCode === 13) {
       e.preventDefault();
       e.stopPropagation();
@@ -70,4 +70,4 @@ class AddTextValue extends React.Component<IProps, State> {
   }
 }
 
-export default AddTextValue
+export default AddTextValue;
