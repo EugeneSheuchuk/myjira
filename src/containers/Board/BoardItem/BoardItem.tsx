@@ -17,7 +17,6 @@ interface IProps extends BoardType {
 
 type State = {
   isAddingTask: boolean;
-  newTaskText: string;
   borderRef: RefObject<HTMLDivElement>;
   containerRef: RefObject<HTMLDivElement>;
   isEditBoardName: boolean;
@@ -30,7 +29,6 @@ class BoardItem extends React.Component<IProps, State> {
     super(props);
     this.state = {
       isAddingTask: false,
-      newTaskText: '',
       borderRef: createRef<HTMLDivElement>(),
       containerRef: createRef<HTMLDivElement>(),
       isEditBoardName: false,
@@ -72,41 +70,16 @@ class BoardItem extends React.Component<IProps, State> {
     if (e.keyCode === 13) this.changeIsAddingTask();
   };
 
-  typeText = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    const text = e.currentTarget.value;
-    this.setState({ newTaskText: text });
-  };
-
-  addNewTask = async () => {
-    const res = await API.addNewTask(this.props.id, this.state.newTaskText);
-    if (res) {
-      this.setState(
-        {
-          isAddingTask: false,
-          newTaskText: ''
-        });
-      this.props.updateBoards();
-    }
-  };
-
-  onPressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.keyCode === 13) {
-      if (this.state.newTaskText.trim() === '') {
-        this.setState({ isAddingTask: false });
-        return;
-      }
-      this.addNewTask();
-    } else if (e.keyCode === 27) {
-      this.setState({ isAddingTask: false, newTaskText: '' });
-    }
-  };
-
-  onBlure = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    if (this.state.newTaskText.trim() === '') {
+  addNewTask = async (isCancel: boolean, value: string) => {
+    if (isCancel) {
       this.setState({ isAddingTask: false });
-      return;
+    } else {
+      const res = await API.addNewTask(this.props.id, value);
+      if (res) {
+        this.setState({ isAddingTask: false });
+        this.props.updateBoards();
+      }
     }
-    this.addNewTask();
   };
 
   editBoardName = () => this.setState({ isEditBoardName: true });
@@ -154,7 +127,6 @@ class BoardItem extends React.Component<IProps, State> {
     const { boardName, boardHeight, updateBoards, id, tasks } = this.props;
     const {
       isAddingTask,
-      newTaskText,
       borderRef,
       containerRef,
       isEditBoardName,
@@ -162,18 +134,13 @@ class BoardItem extends React.Component<IProps, State> {
       visibleDropDownMenu
     } = this.state;
 
-    const newTask = isAddingTask ? (
-      <textarea
-        className="BoardItem-newTask"
-        placeholder="What needs to be done?"
-        autoFocus={true}
-        value={newTaskText}
-        onKeyDown={this.onPressKey}
-        onChange={this.typeText}
-        onBlur={this.onBlure}
-      />
-    ) : null;
-
+    const newTask = isAddingTask
+      ? <AddTextValue
+          startValue=''
+          returnValueAction={this.addNewTask}
+          placeholder='What needs to be done?'
+        />
+      : null;
 
     const viewedTasks = tasks.map((item) => (
       <Task
