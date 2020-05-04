@@ -1,10 +1,12 @@
+import axios, { AxiosRequestConfig } from 'axios';
 import { BoardType, TaskType } from './types/boardReducerTypes';
-import axios from 'axios';
 
-const instance = axios.create({
+const config: AxiosRequestConfig = {
   baseURL: 'http://localhost:8000/',
-  withCredentials: true,
-});
+  // withCredentials: true,
+};
+
+const axiosInstance = axios.create(config);
 
 let id: number = 3;
 let taskId: number = 0;
@@ -28,6 +30,7 @@ let boards: Array<BoardType> = [
 ];
 // Is it necessary to describe what the function returns? And if promis returns an error?
 interface IAPI {
+  // getBoards: () => Promise<Array<BoardType>>;
   getBoards: () => Promise<Array<BoardType>>;
   addNewBoard: (boardName: string) => Promise<boolean>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
@@ -42,8 +45,11 @@ interface IAPI {
 }
 
 const API: IAPI = {
+  // getBoards() {
+  //   return Promise.resolve(boards);
+  // },
   getBoards() {
-    return Promise.resolve(boards);
+    return axiosInstance.get('boards');
   },
   addNewBoard(boardName) {
     boards.push({

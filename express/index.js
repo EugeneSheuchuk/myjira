@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const mongodb = require('./db/db');
 
@@ -8,9 +9,21 @@ if (port == null || port == '') {
     port = 8000;
 }
 
+
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use('/', express.static(path.resolve(__dirname, './../build')));
+
+app.get('/boards/', async (req, res) => {
+  try {
+   const result = await mongodb.getBoards();
+   res.send(result);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, './../build/index.html'));
 });

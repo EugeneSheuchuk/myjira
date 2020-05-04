@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const MainBoard = require('./mainBoard');
+const Board = require('./board');
 
 module.exports = {
   connectDBOffline() {
@@ -15,5 +17,25 @@ module.exports = {
         useUnifiedTopology: true
       });
   },
+  async getBoards() {
+    try {
+      let boardId = await MainBoard.findOne({name: 'mygira'});
+      if (!boardId) {
+        const mainBoard = new MainBoard({name: 'mygira'});
+        await mainBoard.save();
+        boardId = await MainBoard.findOne({name: 'mygira'});
+        const startBoards = ['TO DO', 'IN PROGRESS', 'DONE'];
+        const promises = startBoards.map(item => {
+          const board = new Board({boardName: item, mainBoardId: boardId._id});
+          return board.save();
+        });
+        return Promise.all(promises);
+      } else {
+        return Board.find({mainBoardId: boardId._id});
+      }
 
+    } catch (e) {
+      
+    }
+  }
 };
