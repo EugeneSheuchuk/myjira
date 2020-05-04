@@ -71,7 +71,7 @@ class App extends React.Component<{}, StateType> {
           style={{ left: `calc(64px + ${width}px)` }}
           onMouseDown={() => this.toggleResizeBorder(true)}
           onMouseUp={() => this.toggleResizeBorder(false)}
-          role='button'
+          role="button"
           tabIndex={-1}
           onKeyPress={() => {}}
         >
@@ -79,7 +79,7 @@ class App extends React.Component<{}, StateType> {
             className="App-menuBorder-button"
             style={{ left: `calc(64px + ${width}px - 11px)` }}
             onClick={this.clickShowHideMenuButton}
-            role='button'
+            role="button"
             tabIndex={0}
             onKeyDown={this.pressEnter}
           >

@@ -4,18 +4,24 @@ import { BoardType, TaskType } from '../../../types/boardReducerTypes';
 import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
 import Task from '../../../components/Task/Task';
+import DropDownMenu from '../../../components/DropDownMenu/DropDownMenu';
+import { DropDownProps } from '../../../types/types';
+import AddTextValue from '../../../components/AddTextValue/AddTextValue';
 
 interface IProps extends BoardType {
   scrollDown: (size: number) => void;
   boardHeight: number;
+  updateBoards: () => void;
+  tasks: Array<TaskType>;
 }
 
 type State = {
   isAddingTask: boolean;
-  newTaskText: string;
-  tasks: Array<TaskType>;
   borderRef: RefObject<HTMLDivElement>;
   containerRef: RefObject<HTMLDivElement>;
+  isEditBoardName: boolean;
+  visibleDropDownMenu: 'visible' | 'hidden';
+  isOnFocusElement: boolean;
 };
 
 class BoardItem extends React.Component<IProps, State> {
@@ -23,19 +29,27 @@ class BoardItem extends React.Component<IProps, State> {
     super(props);
     this.state = {
       isAddingTask: false,
-      newTaskText: '',
-      tasks: props.tasks,
       borderRef: createRef<HTMLDivElement>(),
       containerRef: createRef<HTMLDivElement>(),
+      isEditBoardName: false,
+      visibleDropDownMenu: 'hidden',
+      isOnFocusElement: false,
     };
+  }
+
+  componentDidMount(): void {
+    this.isScrolling();
   }
 
   isScrolling = () => {
     const { borderRef, containerRef } = this.state;
     if (borderRef.current === null || containerRef.current === null) return;
+
+    //  80 - approximate sum 'add task' button height and  height 'new task text' field
+
     if (
-      window.innerHeight - 70 < borderRef.current.scrollHeight &&
-      window.innerHeight - 70 < containerRef.current.scrollHeight
+      window.innerHeight < borderRef.current.scrollHeight &&
+      window.innerHeight - 80 < containerRef.current.scrollHeight
     ) {
       this.props.scrollDown(containerRef.current.scrollHeight);
     }
@@ -56,94 +70,143 @@ class BoardItem extends React.Component<IProps, State> {
     if (e.keyCode === 13) this.changeIsAddingTask();
   };
 
-  typeText = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    const text = e.currentTarget.value;
-    this.setState({ newTaskText: text });
-  };
-
-  addNewTask = async () => {
-    const res = await API.addNewTask(this.props.id, this.state.newTaskText);
-    if (res) {
-      const tasks = await API.getBoardTasks(this.props.id);
-      this.setState(
-        {
-          tasks,
-          isAddingTask: false,
-          newTaskText: '',
-        },
-        () => this.isScrolling()
-      );
-    }
-  };
-
-  onPressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.keyCode === 13) {
-      if (this.state.newTaskText.trim() === '') {
-        this.setState({ isAddingTask: false });
-        return;
-      }
-      this.addNewTask();
-    } else if (e.keyCode === 27) {
-      this.setState({ isAddingTask: false, newTaskText: '' });
-    }
-  };
-
-  onBlure = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    if (this.state.newTaskText.trim() === '') {
+  addNewTask = async (isCancel: boolean, value: string) => {
+    if (isCancel) {
       this.setState({ isAddingTask: false });
-      return;
+    } else {
+      const res = await API.addNewTask(this.props.id, value);
+      if (res) {
+        this.setState({ isAddingTask: false });
+        this.props.updateBoards();
+      }
     }
-    this.addNewTask();
+  };
+
+  editBoardName = () => this.setState({ isEditBoardName: true });
+
+  pressEditBoardName = (e: React.KeyboardEvent) => {
+    if (e.keyCode === 13) this.editBoardName();
+  };
+
+  saveNewBoardName = async (isCancel: boolean, value: string) => {
+    const { id } = this.props;
+    if (isCancel) {
+      this.setState({ isEditBoardName: false });
+    } else {
+      const result = await API.saveNewBoardText(id, value);
+      if (result) {
+        this.setState({ isEditBoardName: false });
+        this.props.updateBoards();
+      }
+    }
+  };
+
+  deleteBoard = async () => {
+    const { id, updateBoards } = this.props;
+    const result = API.deleteBoard(id);
+    if (result) updateBoards();
+  };
+
+  mouseAboveElement = (e: React.MouseEvent) => {
+    this.setState({ visibleDropDownMenu: 'visible' });
+  };
+
+  mouseOutElement = (e: React.MouseEvent) => {
+    this.setState({ visibleDropDownMenu: 'hidden' });
+  };
+
+  onFocusElement = () => {
+    this.setState({ isOnFocusElement: true });
+  };
+
+  onBlurElement = () => {
+    this.setState({ isOnFocusElement: false });
   };
 
   render() {
-    const { boardName, boardHeight } = this.props;
+    const { boardName, boardHeight, updateBoards, id, tasks } = this.props;
     const {
       isAddingTask,
-      newTaskText,
-      tasks,
       borderRef,
       containerRef,
+      isEditBoardName,
+      isOnFocusElement,
+      visibleDropDownMenu,
     } = this.state;
 
     const newTask = isAddingTask ? (
-      <textarea
-        className="BoardItem-newTask"
+      <AddTextValue
+        startValue=""
+        returnValueAction={this.addNewTask}
         placeholder="What needs to be done?"
-        autoFocus={true}
-        value={newTaskText}
-        onKeyDown={this.onPressKey}
-        onChange={this.typeText}
-        onBlur={this.onBlure}
       />
     ) : null;
 
     const viewedTasks = tasks.map((item) => (
-      <Task taskId={item.taskId} taskText={item.taskText} key={item.taskId} />
+      <Task
+        taskId={item.taskId}
+        taskText={item.taskText}
+        updateBoards={updateBoards}
+        boardId={id}
+        key={item.taskId}
+      />
     ));
+
+    const viewBoardName = !isEditBoardName ? (
+      <span className="BoardItem-name-text">{boardName}</span>
+    ) : (
+      <AddTextValue
+        startValue={boardName}
+        returnValueAction={this.saveNewBoardName}
+      />
+    );
+
+    const boardDropMenu: DropDownProps = [
+      {
+        actionName: 'Edit',
+        action: this.editBoardName,
+      },
+      {
+        actionName: 'Delete',
+        action: this.deleteBoard,
+      },
+    ];
 
     return (
       <div className="BoardItem-container" ref={borderRef}>
-        <div
-          className="BoardItem"
-          ref={containerRef}
-          style={{ minHeight: `${boardHeight}px` }}
-        >
-          <div className="BoardItem-name">
-            <span>{boardName}</span>
-            <div />
+        <div className="BoardItem" style={{ minHeight: `${boardHeight}px` }}>
+          <div
+            className="BoardItem-name"
+            onClick={this.editBoardName}
+            onKeyDown={this.pressEditBoardName}
+            onMouseOver={this.mouseAboveElement}
+            onMouseOut={this.mouseOutElement}
+            onFocus={this.onFocusElement}
+            onBlur={this.onBlurElement}
+            role="button"
+            tabIndex={0}
+          >
+            {viewBoardName}
+            <div className="BoardItem-name-border" />
           </div>
-          <div className="BoardItem-tasks">
+          {isEditBoardName ? null : (
+            <DropDownMenu
+              actions={boardDropMenu}
+              visibility={isOnFocusElement ? 'visible' : visibleDropDownMenu}
+              styleClassName="BoardItem-name-dropDown"
+            />
+          )}
+          <div className="BoardItem-tasks" ref={containerRef}>
             {viewedTasks}
             {newTask}
+            <AddButton
+              width={16}
+              height={16}
+              description="Create issue"
+              action={this.addNewTaskTextByMouse}
+              keyAction={this.addNewTaskTextByKeyBoard}
+            />
           </div>
-          <AddButton
-            width={16}
-            height={16}
-            description="Create issue"
-            action={this.addNewTaskTextByMouse}
-            keyAction={this.addNewTaskTextByKeyBoard}
-          />
         </div>
       </div>
     );

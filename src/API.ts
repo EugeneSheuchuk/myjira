@@ -3,7 +3,7 @@ import { BoardType, TaskType } from './types/boardReducerTypes';
 let id: number = 3;
 let taskId: number = 0;
 
-const boards: Array<BoardType> = [
+let boards: Array<BoardType> = [
   {
     id: 0,
     boardName: 'TO DO',
@@ -25,7 +25,14 @@ interface IAPI {
   getBoards: () => Promise<Array<BoardType>>;
   addNewBoard: (boardName: string) => Promise<boolean>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
-  getBoardTasks: (boardId: number) => Promise<Array<TaskType>>;
+  saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
+  deleteBoard: (boardId: number) => Promise<boolean>;
+  deleteTask: (boardId: number, taskId: number) => Promise<boolean>;
+  moveTask: (
+    boardId: number,
+    taskId: number,
+    direction: 'top' | 'bottom'
+  ) => Promise<boolean>;
 }
 
 const API: IAPI = {
@@ -52,14 +59,45 @@ const API: IAPI = {
     });
     return Promise.resolve(isAddTask);
   },
-  getBoardTasks(boardId) {
-    let tasks: Array<TaskType> = [];
+  saveNewBoardText(boardId, newBoardName) {
     boards.forEach((item) => {
       if (item.id === boardId) {
-        tasks = item.tasks;
+        // eslint-disable-next-line
+        item.boardName = newBoardName;
       }
     });
-    return Promise.resolve(tasks);
+    return Promise.resolve(true);
+  },
+  deleteBoard(boardId) {
+    boards = boards.filter((item) => item.id !== boardId);
+    return Promise.resolve(true);
+  },
+  deleteTask(boardId, taskId) {
+    boards.forEach((item) => {
+      if (item.id === boardId) {
+        // eslint-disable-next-line
+        item.tasks = item.tasks.filter((el) => el.taskId !== taskId);
+      }
+    });
+    return Promise.resolve(true);
+  },
+  moveTask(boardId, taskId, direction) {
+    let current: TaskType;
+    boards.forEach((item) => {
+      if (item.id === boardId) {
+        const result = item.tasks.filter((el) => {
+          if (el.taskId !== taskId) return true;
+          current = el;
+          return false;
+        });
+        if (direction === 'top') {
+          item.tasks = [current, ...result];
+        } else {
+          item.tasks = [...result, current];
+        }
+      }
+    });
+    return Promise.resolve(true);
   },
 };
 

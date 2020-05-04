@@ -3,4 +3,33 @@
   padding: 10px;
   background-color: white;
   margin-bottom: 10px;
+  position: relative;
+
+  p {
+    padding: 0;
+    margin: 0;
+    width: 80%;
+  }
+}
+
+.Task-dropDown {
+  position: absolute;
+  top: 7px;
+  left: 232px;
+  width: 35px;
+  height: 27px;
+  z-index: 20;
+  border-radius: 5px;
+
+  img {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 3px;
+    left: 7px;
+  }
+
+  ul {
+    right: 104px;
+  }
 }

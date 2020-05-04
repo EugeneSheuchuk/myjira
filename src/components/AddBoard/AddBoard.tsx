@@ -1,5 +1,6 @@
 import React from 'react';
 import './AddBoard.scss';
+import AddTextValue from '../AddTextValue/AddTextValue';
 
 type PropsType = {
   cancel: () => void;
@@ -8,6 +9,7 @@ type PropsType = {
 
 type StateType = {
   boardName: string;
+  isForceGetValue: boolean;
 };
 
 class AddBoard extends React.Component<PropsType, StateType> {
@@ -15,33 +17,16 @@ class AddBoard extends React.Component<PropsType, StateType> {
     super(props);
     this.state = {
       boardName: '',
+      isForceGetValue: false,
     };
   }
 
-  typeBoardName = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    const boardName = e.currentTarget.value;
-    this.setState({ boardName });
-  };
-
-  pressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.keyCode === 27) {
-      this.props.cancel();
-    } else if (e.keyCode === 13) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (this.state.boardName.trim() === '') {
-        this.props.cancel();
-      } else {
-        this.props.add(this.state.boardName);
-      }
-    }
-  };
-
-  onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    if (this.state.boardName.trim() === '') {
-      this.props.cancel();
+  addNewBoard = (isCancel: boolean, value: string) => {
+    const { add, cancel } = this.props;
+    if (isCancel) {
+      cancel();
     } else {
-      this.props.add(this.state.boardName);
+      add(value);
     }
   };
 
@@ -50,21 +35,19 @@ class AddBoard extends React.Component<PropsType, StateType> {
   };
 
   pressAdd = (e: React.KeyboardEvent<HTMLSpanElement>) => {
-    if (e.keyCode === 13) this.props.add(this.state.boardName);
+    if (e.keyCode === 13) this.setState({ isForceGetValue: true });
   };
 
   render() {
     const { cancel, add } = this.props;
-    const { boardName } = this.state;
+    const { boardName, isForceGetValue } = this.state;
     return (
       <div className="AddBoard">
-        <textarea
-          value={boardName}
+        <AddTextValue
+          startValue={boardName}
+          returnValueAction={this.addNewBoard}
           placeholder="Board name"
-          autoFocus={true}
-          onChange={this.typeBoardName}
-          onKeyDown={this.pressKey}
-          onBlur={this.onBlur}
+          isForceGetValue={isForceGetValue}
         />
         <div className="AddBoard-choose">
           <span

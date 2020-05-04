@@ -92,6 +92,7 @@ class Board extends React.Component<IProps, StateType> {
           key={item.boardName}
           scrollDown={this.scrollDown}
           boardHeight={boardHeight}
+          updateBoards={this.props.getBoards}
         />
       );
     });
@@ -117,9 +118,11 @@ class Board extends React.Component<IProps, StateType> {
   }
 }
 
-const mapStateToProps = (state: IState) => ({
-  boards: getBoardsFromState(state),
-});
+const mapStateToProps = (state: IState) => {
+  return {
+    boards: getBoardsFromState(state),
+  };
+};
 
 // what params take ThunkDispatch
 // S - type of State

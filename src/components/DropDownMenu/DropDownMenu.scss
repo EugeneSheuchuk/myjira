@@ -1,0 +1,32 @@
+.DropDownMenu:focus {
+  outline: none;
+}
+
+.DropDownMenu-container {
+  list-style: none;
+  margin: 0;
+  padding: 5px 0;
+  position: relative;
+  z-index: 50;
+  top: 5px;
+  width: min-content;
+  background-color: white;
+  min-height: 20px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+}
+
+.DropDownMenu-container:focus {
+  outline: none;
+}
+
+.DropDownMenu-option {
+  white-space: nowrap;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+}
+
+.DropDownMenu-option:hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
