@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const mongodb = require('./db/db');
+const boards = require('./routes/board');
 
 const app = express();
 let port = process.env.PORT;
@@ -14,42 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', express.static(path.resolve(__dirname, './../build')));
-
-app.get('/boards/', async (req, res) => {
-  try {
-    const result = await mongodb.getBoards();
-    res.send(result);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
-app.post('/boards/', async (req, res) => {
-  try {
-    const boardName = req.body.boardName;
-    const response = mongodb.addBoard(boardName);
-    res.send(response);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
-app.delete('/boards/', async (req, res) => {
-  try {
-    const boardId = req.body.boardId;
-    const response = mongodb.deleteBoard(boardId);
-    res.send(response);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
-app.put('/boards/', async (req, res) => {
-  try {
-    const { boardId, newBoardName } = req.body;
-    const response = await mongodb.changeBoardName(boardId, newBoardName);
-    res.send(response);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
+app.use('/boards', boards);
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './../build/index.html'));
