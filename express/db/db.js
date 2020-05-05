@@ -87,5 +87,13 @@ module.exports = {
     } catch (e) {
       return false;
     }
+  },
+  async changeBoardName(boarId, newBoardName) {
+    try {
+      await Board.updateOne({ _id: boarId }, { boardName: newBoardName });
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 };

@@ -33,7 +33,8 @@ interface IAPI {
   getBoards: () => Promise<AxiosResponse>;
   addNewBoard: (boardName: string) => Promise<AxiosResponse>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
-  saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
+  // saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
+  saveNewBoardText: (boardId: number, boardName: string) => Promise<AxiosResponse>;
   deleteBoard: (boardId: number) => Promise<AxiosResponse>;
   deleteTask: (boardId: number, taskId: number) => Promise<boolean>;
   moveTask: (
@@ -61,14 +62,17 @@ const API: IAPI = {
     });
     return Promise.resolve(isAddTask);
   },
+  // saveNewBoardText(boardId, newBoardName) {
+  //   boards.forEach((item) => {
+  //     if (item.id === boardId) {
+  //       // eslint-disable-next-line
+  //       item.boardName = newBoardName;
+  //     }
+  //   });
+  //   return Promise.resolve(true);
+  // },
   saveNewBoardText(boardId, newBoardName) {
-    boards.forEach((item) => {
-      if (item.id === boardId) {
-        // eslint-disable-next-line
-        item.boardName = newBoardName;
-      }
-    });
-    return Promise.resolve(true);
+    return axiosInstance.put('boards', { boardId, newBoardName });
   },
   deleteBoard(boardId) {
     return axiosInstance.delete('boards', { data:{ boardId } });
