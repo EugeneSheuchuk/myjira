@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BoardType, TaskType } from './types/boardReducerTypes';
 
 const config: AxiosRequestConfig = {
@@ -31,7 +31,7 @@ let boards: Array<BoardType> = [
 // Is it necessary to describe what the function returns? And if promis returns an error?
 interface IAPI {
   // getBoards: () => Promise<Array<BoardType>>;
-  getBoards: () => Promise<Array<BoardType>>;
+  getBoards: () => Promise<AxiosResponse>;
   addNewBoard: (boardName: string) => Promise<boolean>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
   saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;

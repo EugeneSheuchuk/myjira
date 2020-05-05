@@ -141,7 +141,6 @@ class BoardItem extends React.Component<IProps, State> {
         placeholder="What needs to be done?"
       />
     ) : null;
-
     const viewedTasks = tasks.map((item) => (
       <Task
         taskId={item.taskId}

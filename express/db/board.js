@@ -6,7 +6,7 @@ const boardSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'MainBoard'
   }
-});
+}, {autoIndex: false, versionKey: false});
 
 const Board = mongoose.model('boards', boardSchema);
 

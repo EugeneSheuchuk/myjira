@@ -1,5 +1,5 @@
-import{ AxiosResponse } from 'axios';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { AxiosResponse } from 'axios';
 import * as ACTIONS from './actionTypes';
 import API from '../API';
 import { BoardType } from '../types/boardReducerTypes';
@@ -19,7 +19,7 @@ export const getBoardsFromServer =
     dispatch: ThunkDispatch<{}, {}, ActionSetBoards>
   ): Promise<void> => {
     try {
-      const response: Array<BoardType> = await API.getBoards();
+      const response: AxiosResponse = await API.getBoards();
       const { data }  = response;
       dispatch(setBoards([...data]));
     } catch (e) {
