@@ -95,5 +95,14 @@ module.exports = {
     } catch (e) {
       return false;
     }
+  },
+  async addNewTask(boardId, taskText) {
+    try {
+      const task = new Task({ taskText, boardId });
+      await task.save();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 };

@@ -32,8 +32,8 @@ let boards: Array<BoardType> = [
 interface IAPI {
   getBoards: () => Promise<AxiosResponse>;
   addNewBoard: (boardName: string) => Promise<AxiosResponse>;
-  addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
-  // saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
+  // addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
+  addNewTask: (boardId: number, taskText: string) => Promise<AxiosResponse>;
   saveNewBoardText: (boardId: number, boardName: string) => Promise<AxiosResponse>;
   deleteBoard: (boardId: number) => Promise<AxiosResponse>;
   deleteTask: (boardId: number, taskId: number) => Promise<boolean>;
@@ -51,26 +51,20 @@ const API: IAPI = {
   addNewBoard(boardName) {
     return axiosInstance.post('boards', { boardName });
   },
-  addNewTask(boardId, task) {
-    let isAddTask = false;
-    boards.forEach((item) => {
-      if (item.id === boardId) {
-        item.tasks.push({ taskId, taskText: task });
-        taskId += 1;
-        isAddTask = true;
-      }
-    });
-    return Promise.resolve(isAddTask);
-  },
-  // saveNewBoardText(boardId, newBoardName) {
+  // addNewTask(boardId, task) {
+  //   let isAddTask = false;
   //   boards.forEach((item) => {
   //     if (item.id === boardId) {
-  //       // eslint-disable-next-line
-  //       item.boardName = newBoardName;
+  //       item.tasks.push({ taskId, taskText: task });
+  //       taskId += 1;
+  //       isAddTask = true;
   //     }
   //   });
-  //   return Promise.resolve(true);
+  //   return Promise.resolve(isAddTask);
   // },
+  addNewTask(boardId, taskText) {
+    return axiosInstance.post('tasks', { boardId, taskText });
+  },
   saveNewBoardText(boardId, newBoardName) {
     return axiosInstance.put('boards', { boardId, newBoardName });
   },

@@ -17,6 +17,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', express.static(path.resolve(__dirname, './../build')));
 app.use('/boards', boards);
 
+app.post('/tasks/', async (req, res) => {
+  try {
+    const { taskText, boardId } = req.body;
+    if ( taskText.trim() === '' ) {
+      res.send(false);
+      return;
+    }
+    const result = await mongodb.addNewTask(boardId, taskText.trim());
+    res.send(result);
+  } catch (e) {
+
+  }
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './../build/index.html'));
 });
