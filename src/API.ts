@@ -30,13 +30,11 @@ let boards: Array<BoardType> = [
 ];
 // Is it necessary to describe what the function returns? And if promis returns an error?
 interface IAPI {
-  // getBoards: () => Promise<Array<BoardType>>;
   getBoards: () => Promise<AxiosResponse>;
-  // addNewBoard: (boardName: string) => Promise<boolean>;
   addNewBoard: (boardName: string) => Promise<AxiosResponse>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
   saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
-  deleteBoard: (boardId: number) => Promise<boolean>;
+  deleteBoard: (boardId: number) => Promise<AxiosResponse>;
   deleteTask: (boardId: number, taskId: number) => Promise<boolean>;
   moveTask: (
     boardId: number,
@@ -46,21 +44,9 @@ interface IAPI {
 }
 
 const API: IAPI = {
-  // getBoards() {
-  //   return Promise.resolve(boards);
-  // },
   getBoards() {
     return axiosInstance.get('boards');
   },
-  // addNewBoard(boardName) {
-  //   boards.push({
-  //     id,
-  //     boardName,
-  //     tasks: [],
-  //   });
-  //   id += 1;
-  //   return Promise.resolve(true);
-  // },
   addNewBoard(boardName) {
     return axiosInstance.post('boards', { boardName });
   },
@@ -85,8 +71,7 @@ const API: IAPI = {
     return Promise.resolve(true);
   },
   deleteBoard(boardId) {
-    boards = boards.filter((item) => item.id !== boardId);
-    return Promise.resolve(true);
+    return axiosInstance.delete('boards', { data:{ boardId } });
   },
   deleteTask(boardId, taskId) {
     boards.forEach((item) => {

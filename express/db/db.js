@@ -78,5 +78,14 @@ module.exports = {
     } catch (e) {
 
     }
+  },
+  async deleteBoard(boardId) {
+    try {
+      await Task.deleteMany({ boardId });
+      await Board.findOneAndDelete({ _id: boardId });
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 };

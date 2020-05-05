@@ -32,6 +32,15 @@ app.post('/boards/', async (req, res) => {
     res.status(500).send(e);
   }
 });
+app.delete('/boards/', async (req, res) => {
+  try {
+    const boardId = req.body.boardId;
+    const response = mongodb.deleteBoard(boardId);
+    res.send(response);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, './../build/index.html'));
