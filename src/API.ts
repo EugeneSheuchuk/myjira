@@ -32,7 +32,8 @@ let boards: Array<BoardType> = [
 interface IAPI {
   // getBoards: () => Promise<Array<BoardType>>;
   getBoards: () => Promise<AxiosResponse>;
-  addNewBoard: (boardName: string) => Promise<boolean>;
+  // addNewBoard: (boardName: string) => Promise<boolean>;
+  addNewBoard: (boardName: string) => Promise<AxiosResponse>;
   addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
   saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
   deleteBoard: (boardId: number) => Promise<boolean>;
@@ -51,14 +52,17 @@ const API: IAPI = {
   getBoards() {
     return axiosInstance.get('boards');
   },
+  // addNewBoard(boardName) {
+  //   boards.push({
+  //     id,
+  //     boardName,
+  //     tasks: [],
+  //   });
+  //   id += 1;
+  //   return Promise.resolve(true);
+  // },
   addNewBoard(boardName) {
-    boards.push({
-      id,
-      boardName,
-      tasks: [],
-    });
-    id += 1;
-    return Promise.resolve(true);
+    return axiosInstance.post('boards', { boardName });
   },
   addNewTask(boardId, task) {
     let isAddTask = false;

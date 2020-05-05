@@ -23,6 +23,15 @@ app.get('/boards/', async (req, res) => {
     res.status(500).send(e);
   }
 });
+app.post('/boards/', async (req, res) => {
+  try {
+    const boardName = req.body.boardName;
+    const response = mongodb.addBoard(boardName);
+    res.send(response);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, './../build/index.html'));

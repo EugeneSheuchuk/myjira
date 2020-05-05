@@ -65,5 +65,18 @@ module.exports = {
     } catch (e) {
 
     }
+  },
+  async addBoard(boardName) {
+    try {
+      let boardId = await MainBoard.findOne({ name: 'mygira' });
+      if ( boardId ) {
+        const board = new Board({ boardName, mainBoardId: boardId._id });
+        await board.save();
+        return true;
+      }
+      return false;
+    } catch (e) {
+
+    }
   }
 };
