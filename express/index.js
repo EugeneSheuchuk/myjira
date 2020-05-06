@@ -30,6 +30,28 @@ app.post('/tasks/', async (req, res) => {
 
   }
 });
+app.delete('/tasks/', async (req, res) => {
+  try {
+    const taskId = req.body.taskId;
+    const result = await mongodb.deleteTask(taskId);
+    res.send(result);
+  } catch (e) {
+
+  }
+});
+app.put('/tasks/sort', async (req, res) => {
+  try {
+    const { boardId, taskId, direction, position } = req.body;
+    const result = await mongodb.sortBoardTasks(boardId, taskId, direction, position);
+    if (result) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  } catch (e) {
+
+  }
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './../build/index.html'));

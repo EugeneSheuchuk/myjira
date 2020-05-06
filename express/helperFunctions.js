@@ -11,6 +11,7 @@ module.exports = {
       return {
         taskId: task._id,
         taskText: task.taskText,
+        position: task.position,
       }
     });
   }

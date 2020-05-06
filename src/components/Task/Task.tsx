@@ -17,6 +17,7 @@ const Task: React.FC<IProps> = ({
   taskText,
   boardId,
   updateBoards,
+  position
 }) => {
   const [visible, setVisible] = useState<State>('hidden');
 
@@ -24,13 +25,13 @@ const Task: React.FC<IProps> = ({
   const mouseOutElement = (e: React.MouseEvent) => setVisible('hidden');
 
   const deleteTask = async () => {
-    const res = await API.deleteTask(boardId, taskId);
+    const res = await API.deleteTask(taskId);
     if (res) updateBoards();
     setVisible('hidden');
   };
 
   const moveItem = async (direction: 'top' | 'bottom') => {
-    const result = await API.moveTask(boardId, taskId, direction);
+    const result = await API.moveTask(boardId, taskId, direction, position);
     if (result) updateBoards();
     setVisible('hidden');
   };

@@ -5,7 +5,8 @@ const taskSchema = new mongoose.Schema({
   boardId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Board'
-  }
+  },
+  position: Number,
 }, {autoIndex: false, versionKey: false});
 
 const Task = mongoose.model('tasks', taskSchema);

@@ -1,6 +1,7 @@
 export type TaskType = {
   taskId: number;
   taskText: string;
+  position: number;
 };
 export type BoardType = {
   id: number;

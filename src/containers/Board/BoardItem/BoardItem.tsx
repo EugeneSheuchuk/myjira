@@ -7,6 +7,7 @@ import Task from '../../../components/Task/Task';
 import DropDownMenu from '../../../components/DropDownMenu/DropDownMenu';
 import { DropDownProps } from '../../../types/types';
 import AddTextValue from '../../../components/AddTextValue/AddTextValue';
+import { sortBoardTasks } from '../../../assets/helperFunctions';
 
 interface IProps extends BoardType {
   scrollDown: (size: number) => void;
@@ -141,12 +142,14 @@ class BoardItem extends React.Component<IProps, State> {
         placeholder="What needs to be done?"
       />
     ) : null;
-    const viewedTasks = tasks.map((item) => (
+
+    const viewedTasks = tasks.sort(sortBoardTasks).map((item) => (
       <Task
         taskId={item.taskId}
         taskText={item.taskText}
         updateBoards={updateBoards}
         boardId={id}
+        position={item.position}
         key={item.taskId}
       />
     ));

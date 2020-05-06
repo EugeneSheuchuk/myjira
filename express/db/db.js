@@ -98,8 +98,45 @@ module.exports = {
   },
   async addNewTask(boardId, taskText) {
     try {
-      const task = new Task({ taskText, boardId });
+      const tasks = await Task.find({ boardId });
+      const task = new Task({ taskText, boardId, position: tasks.length });
       await task.save();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+  async deleteTask(taskId) {
+    try {
+      await Task.findOneAndDelete({ _id: taskId });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+  async sortBoardTasks(boardId, taskId, direction, position) {
+    try {
+      const tasks = await Task.find({ boardId });
+      const promises = tasks.map(item => {
+        if ( direction === 'top' ) {
+          if ( item.position < position && item._id !== taskId ) {
+            item.position = item.position + 1;
+            return item.save();
+          } else if ( item.position === position ) {
+            item.position = 0;
+            return item.save();
+          }
+        } else if ( direction === 'bottom' ) {
+          if ( item.position > position && item._id !== taskId ) {
+            item.position = item.position - 1;
+            return item.save();
+          } else if ( item.position === position ) {
+            item.position = tasks.length - 1;
+            return item.save();
+          }
+        }
+      });
+      await Promise.all(promises);
       return true;
     } catch (e) {
       return false;
