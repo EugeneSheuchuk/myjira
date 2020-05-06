@@ -1,9 +1,10 @@
 export type TaskType = {
-  taskId: number;
+  taskId: string;
   taskText: string;
+  position: number;
 };
 export type BoardType = {
-  id: number;
+  id: string;
   boardName: string;
   tasks: Array<TaskType>;
 };

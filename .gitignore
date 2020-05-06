@@ -8,6 +8,7 @@
 .idea
 # testing
 /coverage
+/express/node_modules
 
 # production
 /build

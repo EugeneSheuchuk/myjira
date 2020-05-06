@@ -1,103 +1,59 @@
-import { BoardType, TaskType } from './types/boardReducerTypes';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { BoardType } from './types/boardReducerTypes';
 
-let id: number = 3;
-let taskId: number = 0;
+const config: AxiosRequestConfig = {
+  baseURL: 'http://localhost:8000/',
+  // withCredentials: true,
+};
 
-let boards: Array<BoardType> = [
-  {
-    id: 0,
-    boardName: 'TO DO',
-    tasks: [],
-  },
-  {
-    id: 1,
-    boardName: 'IN PROGRESS',
-    tasks: [],
-  },
-  {
-    id: 2,
-    boardName: 'DONE',
-    tasks: [],
-  },
-];
-// Is it necessary to describe what the function returns? And if promis returns an error?
+const axiosInstance = axios.create(config);
+
+export enum SortTasks {
+  'TOP' ='TOP',
+  'BOTTOM' = 'BOTTOM',
+}
+
 interface IAPI {
-  getBoards: () => Promise<Array<BoardType>>;
-  addNewBoard: (boardName: string) => Promise<boolean>;
-  addNewTask: (boardId: number, taskText: string) => Promise<boolean>;
-  saveNewBoardText: (boardId: number, boardName: string) => Promise<boolean>;
-  deleteBoard: (boardId: number) => Promise<boolean>;
-  deleteTask: (boardId: number, taskId: number) => Promise<boolean>;
+  getBoards: () => Promise<AxiosResponse>;
+  addNewBoard: (boardName: string) => Promise<AxiosResponse>;
+  addNewTask: (boardId: string, taskText: string) => Promise<AxiosResponse>;
+  saveNewBoardText: (boardId: string, boardName: string) => Promise<AxiosResponse>;
+  deleteBoard: (boardId: string) => Promise<AxiosResponse>;
+  deleteTask: (taskId: string) => Promise<AxiosResponse>;
   moveTask: (
-    boardId: number,
-    taskId: number,
-    direction: 'top' | 'bottom'
-  ) => Promise<boolean>;
+    boardId: string,
+    taskId: string,
+    direction: SortTasks,
+    position: number,
+  ) => Promise<AxiosResponse>;
 }
 
 const API: IAPI = {
-  getBoards() {
-    return Promise.resolve(boards);
+  getBoards(): Promise<AxiosResponse<Array<BoardType>>> {
+    return axiosInstance.get('boards');
   },
-  addNewBoard(boardName) {
-    boards.push({
-      id,
-      boardName,
-      tasks: [],
-    });
-    id += 1;
-    return Promise.resolve(true);
+  addNewBoard(boardName: string): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.post('boards', { boardName });
   },
-  addNewTask(boardId, task) {
-    let isAddTask = false;
-    boards.forEach((item) => {
-      if (item.id === boardId) {
-        item.tasks.push({ taskId, taskText: task });
-        taskId += 1;
-        isAddTask = true;
-      }
-    });
-    return Promise.resolve(isAddTask);
+  addNewTask(boardId: string, taskText: string): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.post('tasks', { boardId, taskText });
   },
-  saveNewBoardText(boardId, newBoardName) {
-    boards.forEach((item) => {
-      if (item.id === boardId) {
-        // eslint-disable-next-line
-        item.boardName = newBoardName;
-      }
-    });
-    return Promise.resolve(true);
+  saveNewBoardText(boardId: string, newBoardName: string): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.put('boards', { boardId, newBoardName });
   },
-  deleteBoard(boardId) {
-    boards = boards.filter((item) => item.id !== boardId);
-    return Promise.resolve(true);
+  deleteBoard(boardId: string): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.delete('boards', { data: { boardId } });
   },
-  deleteTask(boardId, taskId) {
-    boards.forEach((item) => {
-      if (item.id === boardId) {
-        // eslint-disable-next-line
-        item.tasks = item.tasks.filter((el) => el.taskId !== taskId);
-      }
-    });
-    return Promise.resolve(true);
+  deleteTask(taskId: string): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.delete('tasks', { data: { taskId } });
   },
-  moveTask(boardId, taskId, direction) {
-    let current: TaskType;
-    boards.forEach((item) => {
-      if (item.id === boardId) {
-        const result = item.tasks.filter((el) => {
-          if (el.taskId !== taskId) return true;
-          current = el;
-          return false;
-        });
-        if (direction === 'top') {
-          item.tasks = [current, ...result];
-        } else {
-          item.tasks = [...result, current];
-        }
-      }
-    });
-    return Promise.resolve(true);
+  moveTask(
+    boardId: string,
+    taskId: string,
+    direction: SortTasks,
+    position: number): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.put('tasks/sort',
+      { boardId, taskId, direction, position });
   },
 };
 
