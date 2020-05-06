@@ -1,50 +1,60 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { BoardType } from './types/boardReducerTypes';
 
 const config: AxiosRequestConfig = {
-  baseURL: 'http://localhost:8000/'
+  baseURL: 'http://localhost:8000/',
   // withCredentials: true,
 };
 
 const axiosInstance = axios.create(config);
 
+export enum SortTasks {
+  'TOP' ='TOP',
+  'BOTTOM' = 'BOTTOM',
+}
+
 interface IAPI {
   getBoards: () => Promise<AxiosResponse>;
   addNewBoard: (boardName: string) => Promise<AxiosResponse>;
-  addNewTask: (boardId: number, taskText: string) => Promise<AxiosResponse>;
-  saveNewBoardText: (boardId: number, boardName: string) => Promise<AxiosResponse>;
-  deleteBoard: (boardId: number) => Promise<AxiosResponse>;
-  deleteTask: (taskId: number) => Promise<AxiosResponse>;
+  addNewTask: (boardId: string, taskText: string) => Promise<AxiosResponse>;
+  saveNewBoardText: (boardId: string, boardName: string) => Promise<AxiosResponse>;
+  deleteBoard: (boardId: string) => Promise<AxiosResponse>;
+  deleteTask: (taskId: string) => Promise<AxiosResponse>;
   moveTask: (
-    boardId: number,
-    taskId: number,
-    direction: 'top' | 'bottom',
-    position: number
+    boardId: string,
+    taskId: string,
+    direction: SortTasks,
+    position: number,
   ) => Promise<AxiosResponse>;
 }
 
 const API: IAPI = {
-  getBoards() {
+  getBoards(): Promise<AxiosResponse<Array<BoardType>>> {
     return axiosInstance.get('boards');
   },
-  addNewBoard(boardName) {
+  addNewBoard(boardName: string): Promise<AxiosResponse<boolean>> {
     return axiosInstance.post('boards', { boardName });
   },
-  addNewTask(boardId, taskText) {
+  addNewTask(boardId: string, taskText: string): Promise<AxiosResponse<boolean>> {
     return axiosInstance.post('tasks', { boardId, taskText });
   },
-  saveNewBoardText(boardId, newBoardName) {
+  saveNewBoardText(boardId: string, newBoardName: string): Promise<AxiosResponse<boolean>> {
     return axiosInstance.put('boards', { boardId, newBoardName });
   },
-  deleteBoard(boardId) {
+  deleteBoard(boardId: string): Promise<AxiosResponse<boolean>> {
     return axiosInstance.delete('boards', { data: { boardId } });
   },
-  deleteTask(taskId) {
+  deleteTask(taskId: string): Promise<AxiosResponse<boolean>> {
     return axiosInstance.delete('tasks', { data: { taskId } });
   },
-  moveTask(boardId, taskId, direction, position) {
+  moveTask(
+    boardId: string,
+    taskId: string,
+    direction: SortTasks,
+    position: number): Promise<AxiosResponse<boolean>> {
     return axiosInstance.put('tasks/sort',
       { boardId, taskId, direction, position });
-  }
+  },
 };
 
 export default API;

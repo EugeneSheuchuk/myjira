@@ -1,5 +1,6 @@
 import React, { createRef, RefObject } from 'react';
 import './BoardItem.scss';
+import { AxiosResponse } from 'axios';
 import { BoardType, TaskType } from '../../../types/boardReducerTypes';
 import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
@@ -34,7 +35,7 @@ class BoardItem extends React.Component<IProps, State> {
       containerRef: createRef<HTMLDivElement>(),
       isEditBoardName: false,
       visibleDropDownMenu: 'hidden',
-      isOnFocusElement: false,
+      isOnFocusElement: false
     };
   }
 
@@ -75,7 +76,8 @@ class BoardItem extends React.Component<IProps, State> {
     if (isCancel) {
       this.setState({ isAddingTask: false });
     } else {
-      const res = await API.addNewTask(this.props.id, value);
+      const res: AxiosResponse<boolean> =
+        await API.addNewTask(this.props.id, value);
       if (res) {
         this.setState({ isAddingTask: false });
         this.props.updateBoards();
@@ -94,7 +96,7 @@ class BoardItem extends React.Component<IProps, State> {
     if (isCancel) {
       this.setState({ isEditBoardName: false });
     } else {
-      const result = await API.saveNewBoardText(id, value);
+      const result: AxiosResponse<boolean> = await API.saveNewBoardText(id, value);
       if (result) {
         this.setState({ isEditBoardName: false });
         this.props.updateBoards();
@@ -104,7 +106,7 @@ class BoardItem extends React.Component<IProps, State> {
 
   deleteBoard = async () => {
     const { id, updateBoards } = this.props;
-    const result = API.deleteBoard(id);
+    const result: AxiosResponse<boolean> = await API.deleteBoard(id);
     if (result) updateBoards();
   };
 
@@ -132,7 +134,7 @@ class BoardItem extends React.Component<IProps, State> {
       containerRef,
       isEditBoardName,
       isOnFocusElement,
-      visibleDropDownMenu,
+      visibleDropDownMenu
     } = this.state;
 
     const newTask = isAddingTask ? (
@@ -166,12 +168,12 @@ class BoardItem extends React.Component<IProps, State> {
     const boardDropMenu: DropDownProps = [
       {
         actionName: 'Edit',
-        action: this.editBoardName,
+        action: this.editBoardName
       },
       {
         actionName: 'Delete',
-        action: this.deleteBoard,
-      },
+        action: this.deleteBoard
+      }
     ];
 
     return (
@@ -189,7 +191,7 @@ class BoardItem extends React.Component<IProps, State> {
             tabIndex={0}
           >
             {viewBoardName}
-            <div className="BoardItem-name-border" />
+            <div className="BoardItem-name-border"/>
           </div>
           {isEditBoardName ? null : (
             <DropDownMenu

@@ -19,7 +19,7 @@ export const getBoardsFromServer =
     dispatch: ThunkDispatch<{}, {}, ActionSetBoards>
   ): Promise<void> => {
     try {
-      const response: AxiosResponse = await API.getBoards();
+      const response: AxiosResponse<Array<BoardType>> = await API.getBoards();
       const { data }  = response;
       dispatch(setBoards([...data]));
     } catch (e) {

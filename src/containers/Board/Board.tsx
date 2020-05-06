@@ -2,6 +2,7 @@ import React, { createRef, RefObject } from 'react';
 import './Board.scss';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
+import { AxiosResponse } from 'axios';
 import { getBoardsFromState } from '../../store/selectors';
 import { getBoardsFromServer, ActionSetBoards } from '../../store/actions';
 import BoardItem from './BoardItem/BoardItem';
@@ -57,7 +58,7 @@ class Board extends React.Component<IProps, StateType> {
   };
 
   addNewBoard = async (boardName: string) => {
-    const res = await API.addNewBoard(boardName);
+    const res: AxiosResponse<boolean> = await API.addNewBoard(boardName);
     if (res) {
       this.cancelIsAddingBoard();
       this.props.getBoards();

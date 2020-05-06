@@ -3,11 +3,12 @@ import './Task.scss';
 import { TaskType } from '../../types/boardReducerTypes';
 import DropDownMenu from '../DropDownMenu/DropDownMenu';
 import { DropDownProps } from '../../types/types';
-import API from '../../API';
+import API, { SortTasks } from '../../API';
+import { AxiosResponse } from 'axios';
 
 interface IProps extends TaskType {
   updateBoards: () => void;
-  boardId: number;
+  boardId: string;
 }
 
 type State = 'visible' | 'hidden';
@@ -25,13 +26,13 @@ const Task: React.FC<IProps> = ({
   const mouseOutElement = (e: React.MouseEvent) => setVisible('hidden');
 
   const deleteTask = async () => {
-    const res = await API.deleteTask(taskId);
+    const res: AxiosResponse<boolean> = await API.deleteTask(taskId);
     if (res) updateBoards();
     setVisible('hidden');
   };
 
-  const moveItem = async (direction: 'top' | 'bottom') => {
-    const result = await API.moveTask(boardId, taskId, direction, position);
+  const moveItem = async (direction: SortTasks) => {
+    const result: AxiosResponse<boolean> = await API.moveTask(boardId, taskId, direction, position);
     if (result) updateBoards();
     setVisible('hidden');
   };
@@ -47,11 +48,11 @@ const Task: React.FC<IProps> = ({
     },
     {
       actionName: 'Top of column',
-      action: () => moveItem('top'),
+      action: () => moveItem(SortTasks.TOP),
     },
     {
       actionName: 'Bottom of column',
-      action: () => moveItem('bottom'),
+      action: () => moveItem(SortTasks.BOTTOM),
     },
   ];
 
