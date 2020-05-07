@@ -166,6 +166,7 @@ class BoardItem extends React.Component<IProps, State> {
           boardId={id}
           position={item.position}
           key={item.taskId}
+          triggerPopUp={triggerPopUp}
         />
       ));
 
