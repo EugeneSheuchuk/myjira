@@ -18,5 +18,5 @@ export type DropDownProps = Array<DropDownItem>;
 
 export type DeleteWarningdProps = {
   confirmAction: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  cancelAction: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  cancelAction: (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent) => void;
 };

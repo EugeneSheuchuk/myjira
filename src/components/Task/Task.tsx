@@ -38,7 +38,7 @@ const Task: React.FC<IProps> = (
     setVisible('hidden');
   };
 
-  const cancelDeleteTask = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const cancelDeleteTask = (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent ): void => {
     e.preventDefault();
     e.stopPropagation();
     triggerPopUp(false, null);

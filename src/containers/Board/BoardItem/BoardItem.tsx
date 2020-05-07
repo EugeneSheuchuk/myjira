@@ -115,7 +115,8 @@ class BoardItem extends React.Component<IProps, State> {
     }
   };
 
-  cancelDeleteBoard = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  cancelDeleteBoard = (e: React.MouseEvent<HTMLButtonElement>
+  | KeyboardEvent): void => {
     e.preventDefault();
     e.stopPropagation();
     this.props.triggerPopUp(false, null);
