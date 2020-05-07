@@ -1,15 +1,13 @@
 import React from 'react';
-import './DeleteBoard.scss';
+import './DeleteTask.scss';
 import { DeleteWarningdProps } from '../../../types/types';
 
-
-
-const DeleteBoard: React.FC<DeleteWarningdProps> = ({ confirmAction, cancelAction }) => {
+const DeleteTask: React.FC<DeleteWarningdProps> = ({ confirmAction, cancelAction }) => {
   return (
-    <div className="DeleteBoard">
-      <h2>Delete board</h2>
-      <p>Are you sure to delete this board with all data?</p>
-      <div className="DeleteBoard-buttons">
+    <div className="DeleteTask">
+      <h2>Delete task</h2>
+      <p>Are you sure to delete this task?</p>
+      <div className="DeleteTask-buttons">
         <button onClick={confirmAction} type="button" tabIndex={0}>
           Delete
         </button>
@@ -21,4 +19,4 @@ const DeleteBoard: React.FC<DeleteWarningdProps> = ({ confirmAction, cancelActio
   );
 };
 
-export default DeleteBoard;
+export default DeleteTask;

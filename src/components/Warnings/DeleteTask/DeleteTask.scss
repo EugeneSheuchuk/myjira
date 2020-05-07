@@ -1,0 +1,6 @@
+@import './../../../styles/сolors';
+@import './../DeleteBoard/DeleteBoard';
+
+.DeleteTask {
+  @extend .DeleteBoard
+}
