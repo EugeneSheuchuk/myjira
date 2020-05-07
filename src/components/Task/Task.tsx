@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './Task.scss';
+import { AxiosResponse } from 'axios';
 import { TaskType } from '../../types/boardReducerTypes';
 import DropDownMenu from '../DropDownMenu/DropDownMenu';
 import { DropDownProps } from '../../types/types';
 import API, { SortTasks } from '../../API';
-import { AxiosResponse } from 'axios';
 
 interface IProps extends TaskType {
   updateBoards: () => void;
@@ -13,13 +13,7 @@ interface IProps extends TaskType {
 
 type State = 'visible' | 'hidden';
 
-const Task: React.FC<IProps> = ({
-  taskId,
-  taskText,
-  boardId,
-  updateBoards,
-  position
-}) => {
+const Task: React.FC<IProps> = ({ taskId, taskText, boardId, updateBoards, position }) => {
   const [visible, setVisible] = useState<State>('hidden');
 
   const mouseAboveElement = (e: React.MouseEvent) => setVisible('visible');
@@ -57,17 +51,9 @@ const Task: React.FC<IProps> = ({
   ];
 
   return (
-    <div
-      className="Task"
-      onMouseOver={mouseAboveElement}
-      onMouseOut={mouseOutElement}
-    >
+    <div className="Task" onMouseOver={mouseAboveElement} onMouseOut={mouseOutElement}>
       <p>{taskText}</p>
-      <DropDownMenu
-        actions={taskDropMenu}
-        visibility={visible}
-        styleClassName="Task-dropDown"
-      />
+      <DropDownMenu actions={taskDropMenu} visibility={visible} styleClassName="Task-dropDown" />
     </div>
   );
 };

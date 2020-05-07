@@ -9,7 +9,7 @@ const config: AxiosRequestConfig = {
 const axiosInstance = axios.create(config);
 
 export enum SortTasks {
-  'TOP' ='TOP',
+  'TOP' = 'TOP',
   'BOTTOM' = 'BOTTOM',
 }
 
@@ -24,7 +24,7 @@ interface IAPI {
     boardId: string,
     taskId: string,
     direction: SortTasks,
-    position: number,
+    position: number
   ) => Promise<AxiosResponse>;
 }
 
@@ -51,9 +51,9 @@ const API: IAPI = {
     boardId: string,
     taskId: string,
     direction: SortTasks,
-    position: number): Promise<AxiosResponse<boolean>> {
-    return axiosInstance.put('tasks/sort',
-      { boardId, taskId, direction, position });
+    position: number
+  ): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.put('tasks/sort', { boardId, taskId, direction, position });
   },
 };
 

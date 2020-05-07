@@ -1,0 +1,42 @@
+@import './../../../styles/сolors';
+
+.DeleteBoard {
+  padding: 20px;
+
+  div {
+    text-align: right;
+
+    button {
+      margin-left: 10px;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      outline: none;
+      padding: 5px 10px;
+    }
+
+    button:focus {
+      border-color: $main_blue;
+    }
+
+    button:hover {
+      cursor: pointer;
+    }
+
+    button:first-child {
+      background-color: red;
+      color: white;
+    }
+
+    button:last-child {
+      background-color: lightgrey;
+    }
+
+    button:hover:first-child {
+      background-color: lighten(red, 20%);
+    }
+
+    button:hover:last-child {
+      background-color: lighten(lightgrey, 8%);
+    }
+  }
+}

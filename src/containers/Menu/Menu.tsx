@@ -37,21 +37,11 @@ class Menu extends React.PureComponent<PropsType> {
 
     return (
       <div className="Menu" style={{ width: `${this.props.width}px` }}>
-        <MenuItem
-          path="/roadmap"
-          imgURL={Roadmap}
-          name="Roadmap"
-          tabIndex={0}
-        />
+        <MenuItem path="/roadmap" imgURL={Roadmap} name="Roadmap" tabIndex={0} />
         <MenuItem path="/board" imgURL={Board} name="Board" tabIndex={0} />
         <MenuItem path="/pages" imgURL={Page} name="Pages" tabIndex={0} />
         {viewidLinks}
-        <MenuItem
-          path="/addItem"
-          imgURL={AddItem}
-          name="Add item"
-          tabIndex={0}
-        />
+        <MenuItem path="/addItem" imgURL={AddItem} name="Add item" tabIndex={0} />
         <MenuItem
           path="/propertySettings"
           imgURL={Settings}

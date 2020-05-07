@@ -2,12 +2,7 @@ import React from 'react';
 import './MenuItemLink.scss';
 import { MenuItemProps } from '../../types/types';
 
-const MenuItemLink: React.FC<MenuItemProps> = ({
-  url,
-  imgURL,
-  name,
-  tabIndex,
-}) => {
+const MenuItemLink: React.FC<MenuItemProps> = ({ url, imgURL, name, tabIndex }) => {
   return (
     <a
       href={url}
