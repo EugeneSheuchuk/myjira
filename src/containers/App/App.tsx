@@ -3,6 +3,7 @@ import './App.scss';
 import Sidebar from '../Sidebar/Sidebar';
 import Menu from '../Menu/Menu';
 import MainBoard from '../MainBoard/MainBoard';
+import PopUp from '../PopUp/PopUp';
 
 type StateType = {
   width: number;
