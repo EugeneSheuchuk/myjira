@@ -118,7 +118,7 @@ module.exports = {
     try {
       const tasks = await Task.find({ boardId });
       const promises = tasks.map(item => {
-        if ( direction === 'top' ) {
+        if ( direction === 'TOP' ) {
           if ( item.position < position && item._id !== taskId ) {
             item.position = item.position + 1;
             return item.save();
@@ -126,7 +126,7 @@ module.exports = {
             item.position = 0;
             return item.save();
           }
-        } else if ( direction === 'bottom' ) {
+        } else if ( direction === 'BOTTOM' ) {
           if ( item.position > position && item._id !== taskId ) {
             item.position = item.position - 1;
             return item.save();
