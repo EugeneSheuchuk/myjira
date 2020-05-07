@@ -11,6 +11,7 @@ import { BoardType } from '../../types/boardReducerTypes';
 import AddButton from '../../components/AddButton/AddButton';
 import AddBoard from '../../components/AddBoard/AddBoard';
 import API from '../../API';
+import PopUp from '../PopUp/PopUp';
 
 interface IProps {
   boards: Array<BoardType>;
@@ -21,6 +22,7 @@ type StateType = {
   isAddingBoard: boolean;
   containerRef: RefObject<HTMLDivElement>;
   boardHeight: number;
+  isShowPopUp: boolean;
 };
 
 class Board extends React.Component<IProps, StateType> {
@@ -30,6 +32,7 @@ class Board extends React.Component<IProps, StateType> {
       isAddingBoard: false,
       containerRef: createRef<HTMLDivElement>(),
       boardHeight: 200,
+      isShowPopUp: false,
     };
   }
 
@@ -83,7 +86,7 @@ class Board extends React.Component<IProps, StateType> {
 
   render() {
     const { boards } = this.props;
-    const { isAddingBoard, containerRef, boardHeight } = this.state;
+    const { isAddingBoard, containerRef, boardHeight, isShowPopUp } = this.state;
     const viewBoards = boards.map((item) => {
       return (
         <BoardItem
@@ -102,6 +105,10 @@ class Board extends React.Component<IProps, StateType> {
       <AddBoard cancel={this.cancelIsAddingBoard} add={this.addNewBoard} />
     ) : null;
 
+    const popUp = isShowPopUp
+      ? <PopUp />
+      : null;
+
     return (
       <div className="Board-container" ref={containerRef}>
         <div className="Board">
@@ -114,6 +121,7 @@ class Board extends React.Component<IProps, StateType> {
             keyAction={this.addBoardByKeyboard}
           />
         </div>
+        {popUp}
       </div>
     );
   }

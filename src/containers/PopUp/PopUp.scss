@@ -7,3 +7,15 @@
   z-index: 1000;
   background-color: rgba(120, 120, 120, 0.5);
 }
+
+.PopUp-container {
+  min-width: 100px;
+  min-height: 100px;
+  background-color: white;
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  display: inline-block;
+}
