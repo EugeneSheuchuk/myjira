@@ -6,6 +6,7 @@ import DropDownMenu from '../DropDownMenu/DropDownMenu';
 import { DropDownProps } from '../../types/types';
 import API, { SortTasks } from '../../API';
 import DeleteTask from '../Warnings/DeleteTask/DeleteTask';
+import EditTask from '../EditTask/EditTask';
 
 interface IProps extends TaskType {
   updateBoards: () => void;
@@ -54,10 +55,14 @@ const Task: React.FC<IProps> = (
     <DeleteTask confirmAction={deleteTask} cancelAction={cancelDeleteTask} />
   );
 
+  const editTask: JSX.Element = (
+    <EditTask taskText={taskText} />
+  );
+
   const taskDropMenu: DropDownProps = [
     {
       actionName: 'Edit',
-      action: () => {},
+      action: () => triggerPopUp(true, editTask),
     },
     {
       actionName: 'Delete',
