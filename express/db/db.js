@@ -141,5 +141,13 @@ module.exports = {
     } catch (e) {
       return false;
     }
+  },
+  async changeTaskData(taskId, taskData) {
+    try {
+      await Task.updateOne({_id: taskId}, {...taskData});
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 };

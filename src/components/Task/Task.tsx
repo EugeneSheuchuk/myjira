@@ -3,7 +3,7 @@ import './Task.scss';
 import { AxiosResponse } from 'axios';
 import { TaskType } from '../../types/boardReducerTypes';
 import DropDownMenu from '../DropDownMenu/DropDownMenu';
-import { DropDownProps } from '../../types/types';
+import { DropDownProps, EditTaskDataType } from '../../types/types';
 import API, { SortTasks } from '../../API';
 import DeleteTask from '../Warnings/DeleteTask/DeleteTask';
 import EditTask from '../EditTask/EditTask';
@@ -61,8 +61,20 @@ const Task: React.FC<IProps> = (
     triggerPopUp(false, null);
   };
 
+  const acceptEditedTask = async (taskData: EditTaskDataType) => {
+    if (taskData.taskText === taskText) {
+      triggerPopUp(false, null);
+      return;
+    }
+    const result = await API.changeTaskData(taskId, taskData);
+    if (result) {
+      triggerPopUp(false, null);
+      updateBoards();
+    }
+  };
+
   const editTask: JSX.Element = (
-    <EditTask taskText={taskText} cancelAction={cancelEditTask} />
+    <EditTask taskText={taskText} cancelAction={cancelEditTask} acceptAction={acceptEditedTask} />
   );
 
   const taskDropMenu: DropDownProps = [

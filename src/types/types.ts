@@ -20,3 +20,7 @@ export type DeleteWarningdProps = {
   confirmAction: (e: React.MouseEvent<HTMLButtonElement>) => void;
   cancelAction: (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent) => void;
 };
+
+export type EditTaskDataType = {
+  taskText: string;
+};

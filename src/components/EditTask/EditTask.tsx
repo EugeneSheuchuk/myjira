@@ -2,10 +2,12 @@ import React from 'react';
 import './EditTask.scss';
 import Cancel from '../../assets/images/cancel.png';
 import AddTextValue from '../AddTextValue/AddTextValue';
+import { EditTaskDataType } from '../../types/types';
 
 type Props = {
   taskText: string;
   cancelAction: (e: React.MouseEvent<HTMLDivElement> | KeyboardEvent) => void;
+  acceptAction: (taskData: EditTaskDataType) => void;
 };
 
 type State = {
@@ -24,10 +26,12 @@ class EditTask extends React.Component<Props, State> {
 
   componentDidMount(): void {
     document.addEventListener('keydown', this.pressEscToExitEditTask);
+    document.addEventListener('click', this.handleClickOutside);
   }
 
   componentWillUnmount(): void {
     document.removeEventListener('keydown', this.pressEscToExitEditTask);
+    document.removeEventListener('click', this.handleClickOutside);
   }
 
   pressEscToExitEditTask = (e: KeyboardEvent) => {
@@ -51,6 +55,16 @@ class EditTask extends React.Component<Props, State> {
     this.setState({ isEditTaskText: true });
   };
 
+  handleClickOutside = (e: MouseEvent) => {
+    // @ts-ignore
+    if (e.target.className === 'PopUp') {
+      const taskData: EditTaskDataType = {
+        taskText: this.state.taskText,
+      };
+      this.props.acceptAction(taskData);
+    }
+  };
+
   render() {
     const { cancelAction } = this.props;
     const { taskText, isEditTaskText } = this.state;
@@ -63,7 +77,7 @@ class EditTask extends React.Component<Props, State> {
       : <p className='EditTask-taskText' onClick={this.startEditTaskText}>{taskText}</p>;
 
     return(
-      <div className='EditTask'>
+      <div className='EditTask' >
         <div className='EditTask-header'>
           <div onClick={cancelAction} role='button' tabIndex={0}>
             <img src={Cancel} alt='Close window' />
