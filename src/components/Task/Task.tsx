@@ -55,8 +55,14 @@ const Task: React.FC<IProps> = (
     <DeleteTask confirmAction={deleteTask} cancelAction={cancelDeleteTask} />
   );
 
+  const cancelEditTask = (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent ): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    triggerPopUp(false, null);
+  };
+
   const editTask: JSX.Element = (
-    <EditTask taskText={taskText} />
+    <EditTask taskText={taskText} cancelAction={cancelEditTask} />
   );
 
   const taskDropMenu: DropDownProps = [
