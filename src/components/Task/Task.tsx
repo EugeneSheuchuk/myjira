@@ -55,7 +55,7 @@ const Task: React.FC<IProps> = (
     <DeleteTask confirmAction={deleteTask} cancelAction={cancelDeleteTask} />
   );
 
-  const cancelEditTask = (e: React.MouseEvent<HTMLImageElement> | KeyboardEvent ): void => {
+  const cancelEditTask = (e: React.MouseEvent<HTMLDivElement> | KeyboardEvent ): void => {
     e.preventDefault();
     e.stopPropagation();
     triggerPopUp(false, null);

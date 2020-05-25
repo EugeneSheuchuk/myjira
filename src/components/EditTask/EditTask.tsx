@@ -4,7 +4,7 @@ import Cancel from '../../assets/images/cancel.png';
 
 type Props = {
   taskText: string;
-  cancelAction: (e: React.MouseEvent<HTMLImageElement> | KeyboardEvent) => void;
+  cancelAction: (e: React.MouseEvent<HTMLDivElement> | KeyboardEvent) => void;
 };
 
 class EditTask extends React.Component<Props> {
@@ -28,11 +28,21 @@ class EditTask extends React.Component<Props> {
   render() {
     const { cancelAction } = this.props;
     return(
-      <div>
-        <div>
-          <img src={Cancel} alt='Close window' onClick={cancelAction} />
+      <div className='EditTask'>
+        <div className='EditTask-header'>
+          <div onClick={cancelAction} role='button' tabIndex={0}>
+            <img src={Cancel} alt='Close window' />
+          </div>
         </div>
-        {this.props.taskText}
+        <div className='EditTask-items'>
+          <div>
+            {this.props.taskText}
+          </div>
+          <div>
+            boards
+          </div>
+        </div>
+
       </div>
     );
   }
