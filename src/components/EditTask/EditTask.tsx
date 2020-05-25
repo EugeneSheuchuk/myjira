@@ -1,15 +1,25 @@
 import React from 'react';
 import './EditTask.scss';
 import Cancel from '../../assets/images/cancel.png';
+import AddTextValue from '../AddTextValue/AddTextValue';
 
 type Props = {
   taskText: string;
   cancelAction: (e: React.MouseEvent<HTMLDivElement> | KeyboardEvent) => void;
 };
 
-class EditTask extends React.Component<Props> {
+type State = {
+  taskText: string;
+  isEditTaskText: boolean;
+};
+
+class EditTask extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {
+      taskText: props.taskText,
+      isEditTaskText: false,
+    };
   }
 
   componentDidMount(): void {
@@ -21,12 +31,37 @@ class EditTask extends React.Component<Props> {
   }
 
   pressEscToExitEditTask = (e: KeyboardEvent) => {
+
     const { cancelAction } = this.props;
-    if (e.key === 'Escape') cancelAction(e);
+    if (e.key === 'Escape') {
+      // @ts-ignore
+      if (e.target.tagName.toLowerCase() === 'body') cancelAction(e);
+    }
+  };
+
+  getNewTaskText = (isCancel: boolean, value: string) => {
+    if (isCancel) {
+      this.setState({ isEditTaskText: false });
+    } else {
+      this.setState({ isEditTaskText: false, taskText: value });
+    }
+  };
+
+  startEditTaskText = (e:React.MouseEvent<HTMLParagraphElement>) => {
+    this.setState({ isEditTaskText: true });
   };
 
   render() {
     const { cancelAction } = this.props;
+    const { taskText, isEditTaskText } = this.state;
+
+    const viewTaskText = isEditTaskText
+      ? <AddTextValue
+        startValue={taskText}
+        returnValueAction={this.getNewTaskText}
+      />
+      : <p className='EditTask-taskText' onClick={this.startEditTaskText}>{taskText}</p>;
+
     return(
       <div className='EditTask'>
         <div className='EditTask-header'>
@@ -36,7 +71,7 @@ class EditTask extends React.Component<Props> {
         </div>
         <div className='EditTask-items'>
           <div>
-            {this.props.taskText}
+            {viewTaskText}
           </div>
           <div>
             boards

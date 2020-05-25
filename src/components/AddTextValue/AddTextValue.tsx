@@ -42,6 +42,8 @@ class AddTextValue extends React.Component<IProps, State> {
   pressKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const { returnValueAction } = this.props;
     if (e.keyCode === 27) {
+      e.preventDefault();
+      e.stopPropagation();
       returnValueAction(true, '');
     } else if (e.keyCode === 13) {
       e.preventDefault();
