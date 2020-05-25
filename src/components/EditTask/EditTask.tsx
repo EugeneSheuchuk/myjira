@@ -1,9 +1,10 @@
 import React from 'react';
 import './EditTask.scss';
+import Cancel from '../../assets/images/cancel.png';
 
 type Props = {
   taskText: string;
-  cancelAction: (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent) => void;
+  cancelAction: (e: React.MouseEvent<HTMLImageElement> | KeyboardEvent) => void;
 };
 
 class EditTask extends React.Component<Props> {
@@ -25,8 +26,12 @@ class EditTask extends React.Component<Props> {
   };
 
   render() {
+    const { cancelAction } = this.props;
     return(
       <div>
+        <div>
+          <img src={Cancel} alt='Close window' onClick={cancelAction} />
+        </div>
         {this.props.taskText}
       </div>
     );
