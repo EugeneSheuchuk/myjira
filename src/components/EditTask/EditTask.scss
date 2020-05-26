@@ -4,7 +4,7 @@
   display: flex;
   width: 50vw;
   flex-direction: column;
-  padding: 5px 10px;
+  padding: 5px 5px 20px 20px;
 }
 .EditTask-header {
   width: 100%;
@@ -65,4 +65,10 @@
 
 .EditTask textarea:first-child:focus {
   border-color: $main_blue;
+}
+.EditTask-taskDescription {
+  p:first-child {
+    padding: 0 0 0 10px;
+    font-weight: bold;
+  }
 }

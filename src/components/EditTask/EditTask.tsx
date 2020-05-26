@@ -13,6 +13,8 @@ type Props = {
 type State = {
   taskText: string;
   isEditTaskText: boolean;
+  isEditTaskDescription: boolean;
+  taskComment: string;
 };
 
 class EditTask extends React.Component<Props, State> {
@@ -21,6 +23,8 @@ class EditTask extends React.Component<Props, State> {
     this.state = {
       taskText: props.taskText,
       isEditTaskText: false,
+      isEditTaskDescription: false,
+      taskComment: props.taskComment,
     };
   }
 
@@ -52,13 +56,26 @@ class EditTask extends React.Component<Props, State> {
     }
   };
 
+  getNewTaskDescription = (isCancel: boolean, value: string) => {
+    if (isCancel) {
+      this.setState({ isEditTaskDescription: false });
+    } else {
+      this.setState({ isEditTaskDescription: false, taskComment: value });
+    }
+  };
+
   startEditTaskText = (e:React.MouseEvent<HTMLParagraphElement>) => {
     this.setState({ isEditTaskText: true });
+  };
+
+  startEditTaskDescription = (e:React.MouseEvent<HTMLParagraphElement>) => {
+    this.setState({ isEditTaskDescription: true });
   };
 
   collectTaskData = (): EditTaskDataType => {
     return {
       taskText: this.state.taskText,
+      taskComment: this.state.taskComment,
     };
   };
 
@@ -76,7 +93,10 @@ class EditTask extends React.Component<Props, State> {
   };
 
   render() {
-    const { taskText, isEditTaskText,  } = this.state;
+    const { taskText,
+      isEditTaskText,
+      taskComment,
+      isEditTaskDescription } = this.state;
 
     const viewTaskText = isEditTaskText
       ? <AddTextValue
@@ -84,6 +104,15 @@ class EditTask extends React.Component<Props, State> {
         returnValueAction={this.getNewTaskText}
       />
       : <p className='EditTask-taskText' onClick={this.startEditTaskText}>{taskText}</p>;
+
+    const viewTaskDescription = isEditTaskDescription
+      ? <AddTextValue
+        startValue={taskComment}
+        returnValueAction={this.getNewTaskDescription}
+      />
+      : <p className='EditTask-textDescription' onClick={this.startEditTaskDescription}>
+        {taskComment === '' ? 'You can add a description here...' : taskComment}
+      </p>;
 
     return(
       <div className='EditTask'>
@@ -95,6 +124,10 @@ class EditTask extends React.Component<Props, State> {
         <div className='EditTask-items'>
           <div>
             {viewTaskText}
+            <div className='EditTask-taskDescription'>
+              <p>Description</p>
+              {viewTaskDescription}
+            </div>
           </div>
           <div>
             boards

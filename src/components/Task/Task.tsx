@@ -57,7 +57,7 @@ const Task: React.FC<IProps> = (
   );
 
   const acceptEditedTask = async (taskData: EditTaskDataType) => {
-    if (taskData.taskText === taskText) {
+    if (taskData.taskText === taskText && taskData.taskComment === taskComment) {
       triggerPopUp(false, null);
       return;
     }

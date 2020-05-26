@@ -12,6 +12,7 @@ module.exports = {
         taskId: task._id,
         taskText: task.taskText,
         position: task.position,
+        taskComment: task.taskComment,
       }
     });
   }
