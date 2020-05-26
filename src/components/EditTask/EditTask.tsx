@@ -77,7 +77,7 @@ class EditTask extends React.Component<Props, State> {
       : <p className='EditTask-taskText' onClick={this.startEditTaskText}>{taskText}</p>;
 
     return(
-      <div className='EditTask' >
+      <div className='EditTask'>
         <div className='EditTask-header'>
           <div onClick={cancelAction} role='button' tabIndex={0}>
             <img src={Cancel} alt='Close window' />
