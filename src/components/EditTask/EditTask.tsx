@@ -55,18 +55,26 @@ class EditTask extends React.Component<Props, State> {
     this.setState({ isEditTaskText: true });
   };
 
+  collectTaskData = (): EditTaskDataType => {
+    return {
+      taskText: this.state.taskText,
+    };
+  };
+
   handleClickOutside = (e: MouseEvent) => {
     // @ts-ignore
     if (e.target.className === 'PopUp') {
-      const taskData: EditTaskDataType = {
-        taskText: this.state.taskText,
-      };
+      const taskData: EditTaskDataType = this.collectTaskData();
       this.props.acceptAction(taskData);
     }
   };
 
+  hendleClickCloseButton = (e: React.MouseEvent<HTMLDivElement>) => {
+    const taskData: EditTaskDataType = this.collectTaskData();
+    this.props.acceptAction(taskData);
+  };
+
   render() {
-    const { cancelAction } = this.props;
     const { taskText, isEditTaskText } = this.state;
 
     const viewTaskText = isEditTaskText
@@ -79,7 +87,7 @@ class EditTask extends React.Component<Props, State> {
     return(
       <div className='EditTask'>
         <div className='EditTask-header'>
-          <div onClick={cancelAction} role='button' tabIndex={0}>
+          <div onClick={this.hendleClickCloseButton} role='button' tabIndex={0}>
             <img src={Cancel} alt='Close window' />
           </div>
         </div>
