@@ -6,8 +6,8 @@ import { EditTaskDataType } from '../../types/types';
 
 type Props = {
   taskText: string;
-  cancelAction: (e: React.MouseEvent<HTMLDivElement> | KeyboardEvent) => void;
   acceptAction: (taskData: EditTaskDataType) => void;
+  taskComment: string;
 };
 
 type State = {
@@ -35,11 +35,12 @@ class EditTask extends React.Component<Props, State> {
   }
 
   pressEscToExitEditTask = (e: KeyboardEvent) => {
-
-    const { cancelAction } = this.props;
     if (e.key === 'Escape') {
       // @ts-ignore
-      if (e.target.tagName.toLowerCase() === 'body') cancelAction(e);
+      if (e.target.tagName.toLowerCase() === 'body') {
+        const taskData: EditTaskDataType = this.collectTaskData();
+        this.props.acceptAction(taskData);
+      }
     }
   };
 
@@ -75,7 +76,7 @@ class EditTask extends React.Component<Props, State> {
   };
 
   render() {
-    const { taskText, isEditTaskText } = this.state;
+    const { taskText, isEditTaskText,  } = this.state;
 
     const viewTaskText = isEditTaskText
       ? <AddTextValue

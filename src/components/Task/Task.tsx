@@ -22,7 +22,8 @@ const Task: React.FC<IProps> = (
     boardId,
     updateBoards,
     position,
-    triggerPopUp }) => {
+    triggerPopUp,
+    taskComment}) => {
   const [visible, setVisible] = useState<State>('hidden');
 
   const mouseAboveElement = (e: React.MouseEvent) => setVisible('visible');
@@ -55,12 +56,6 @@ const Task: React.FC<IProps> = (
     <DeleteTask confirmAction={deleteTask} cancelAction={cancelDeleteTask} />
   );
 
-  const cancelEditTask = (e: React.MouseEvent<HTMLDivElement> | KeyboardEvent ): void => {
-    e.preventDefault();
-    e.stopPropagation();
-    triggerPopUp(false, null);
-  };
-
   const acceptEditedTask = async (taskData: EditTaskDataType) => {
     if (taskData.taskText === taskText) {
       triggerPopUp(false, null);
@@ -74,7 +69,11 @@ const Task: React.FC<IProps> = (
   };
 
   const editTask: JSX.Element = (
-    <EditTask taskText={taskText} cancelAction={cancelEditTask} acceptAction={acceptEditedTask} />
+    <EditTask
+      taskText={taskText}
+      acceptAction={acceptEditedTask}
+      taskComment={taskComment}
+    />
   );
 
   const taskDropMenu: DropDownProps = [

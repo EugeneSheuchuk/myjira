@@ -168,6 +168,7 @@ class BoardItem extends React.Component<IProps, State> {
           position={item.position}
           key={item.taskId}
           triggerPopUp={triggerPopUp}
+          taskComment={item.taskComment}
         />
       ));
 

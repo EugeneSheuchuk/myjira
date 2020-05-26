@@ -2,6 +2,7 @@ export type TaskType = {
   taskId: string;
   taskText: string;
   position: number;
+  taskComment: string;
 };
 export type BoardType = {
   id: string;

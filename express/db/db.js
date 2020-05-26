@@ -99,7 +99,7 @@ module.exports = {
   async addNewTask(boardId, taskText) {
     try {
       const tasks = await Task.find({ boardId });
-      const task = new Task({ taskText, boardId, position: tasks.length });
+      const task = new Task({ taskText, boardId, position: tasks.length, taskComment: '' });
       await task.save();
       return true;
     } catch (e) {
