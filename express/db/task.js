@@ -8,6 +8,7 @@ const taskSchema = new mongoose.Schema({
   },
   position: Number,
   taskComment: String,
+  createTime: String,
 }, {autoIndex: false, versionKey: false});
 
 const Task = mongoose.model('tasks', taskSchema);

@@ -98,8 +98,15 @@ module.exports = {
   },
   async addNewTask(boardId, taskText) {
     try {
+      const taskСreationTime = helperFunctions.getCurrentDateAsString();
       const tasks = await Task.find({ boardId });
-      const task = new Task({ taskText, boardId, position: tasks.length, taskComment: '' });
+      const task = new Task({
+        taskText,
+        boardId,
+        position: tasks.length,
+        taskComment: '',
+        createTime: taskСreationTime,
+      });
       await task.save();
       return true;
     } catch (e) {
