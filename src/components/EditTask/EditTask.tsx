@@ -88,6 +88,8 @@ class EditTask extends React.Component<Props, State> {
   };
 
   hendleClickCloseButton = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     const taskData: EditTaskDataType = this.collectTaskData();
     this.props.acceptAction(taskData);
   };

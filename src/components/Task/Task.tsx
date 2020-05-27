@@ -76,10 +76,18 @@ const Task: React.FC<IProps> = (
     />
   );
 
+  const openEditPopup = (e?: React.MouseEvent<HTMLDivElement>) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    triggerPopUp(true, editTask);
+  };
+
   const taskDropMenu: DropDownProps = [
     {
       actionName: 'Edit',
-      action: () => triggerPopUp(true, editTask),
+      action: () => openEditPopup(),
     },
     {
       actionName: 'Delete',
@@ -96,7 +104,12 @@ const Task: React.FC<IProps> = (
   ];
 
   return (
-    <div className="Task" onMouseOver={mouseAboveElement} onMouseOut={mouseOutElement}>
+    <div
+      className="Task"
+      onMouseOver={mouseAboveElement}
+      onMouseOut={mouseOutElement}
+      onClick={openEditPopup}
+    >
       <p>{taskText}</p>
       <DropDownMenu actions={taskDropMenu} visibility={visible} styleClassName="Task-dropDown" />
     </div>
