@@ -98,14 +98,13 @@ module.exports = {
   },
   async addNewTask(boardId, taskText) {
     try {
-      const taskСreationTime = helperFunctions.getCurrentDateAsString();
       const tasks = await Task.find({ boardId });
       const task = new Task({
         taskText,
         boardId,
         position: tasks.length,
         taskComment: '',
-        createTime: taskСreationTime,
+        createTime: new Date().getTime(),
       });
       await task.save();
       return true;

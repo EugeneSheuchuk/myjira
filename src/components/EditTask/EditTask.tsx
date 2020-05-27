@@ -3,11 +3,13 @@ import './EditTask.scss';
 import Cancel from '../../assets/images/cancel.png';
 import AddTextValue from '../AddTextValue/AddTextValue';
 import { EditTaskDataType } from '../../types/types';
+import { getCurrentDateAsString } from '../../assets/helperFunctions';
 
 type Props = {
   taskText: string;
   acceptAction: (taskData: EditTaskDataType) => void;
   taskComment: string;
+  createTime: number;
 };
 
 type State = {
@@ -15,6 +17,7 @@ type State = {
   isEditTaskText: boolean;
   isEditTaskDescription: boolean;
   taskComment: string;
+  createTime: number;
 };
 
 class EditTask extends React.Component<Props, State> {
@@ -25,6 +28,7 @@ class EditTask extends React.Component<Props, State> {
       isEditTaskText: false,
       isEditTaskDescription: false,
       taskComment: props.taskComment,
+      createTime: props.createTime,
     };
   }
 
@@ -73,9 +77,10 @@ class EditTask extends React.Component<Props, State> {
   };
 
   collectTaskData = (): EditTaskDataType => {
+    const { taskText, taskComment } = this.state;
     return {
-      taskText: this.state.taskText,
-      taskComment: this.state.taskComment,
+      taskText,
+      taskComment,
     };
   };
 
@@ -98,7 +103,8 @@ class EditTask extends React.Component<Props, State> {
     const { taskText,
       isEditTaskText,
       taskComment,
-      isEditTaskDescription } = this.state;
+      isEditTaskDescription,
+      createTime } = this.state;
 
     const viewTaskText = isEditTaskText
       ? <AddTextValue
@@ -133,6 +139,9 @@ class EditTask extends React.Component<Props, State> {
           </div>
           <div>
             boards
+            <div className='EditTask-taskDate'>
+              <p>Created: {getCurrentDateAsString(createTime)}</p>
+            </div>
           </div>
         </div>
 

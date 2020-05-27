@@ -3,6 +3,7 @@ export type TaskType = {
   taskText: string;
   position: number;
   taskComment: string;
+  createTime: number;
 };
 export type BoardType = {
   id: string;

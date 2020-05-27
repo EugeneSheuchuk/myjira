@@ -169,6 +169,7 @@ class BoardItem extends React.Component<IProps, State> {
           key={item.taskId}
           triggerPopUp={triggerPopUp}
           taskComment={item.taskComment}
+          createTime={item.createTime}
         />
       ));
 
