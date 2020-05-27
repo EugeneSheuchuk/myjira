@@ -117,9 +117,10 @@ class EditTask extends React.Component<Props, State> {
       ? <AddTextValue
         startValue={taskComment}
         returnValueAction={this.getNewTaskDescription}
+        placeholder='You can add a task description here...'
       />
-      : <p className='EditTask-textDescription' onClick={this.startEditTaskDescription}>
-        {taskComment === '' ? 'You can add a description here...' : taskComment}
+      : <p className='EditTask-description' onClick={this.startEditTaskDescription}>
+        {taskComment === '' ? 'Click to add a description...' : taskComment}
       </p>;
 
     return(
@@ -130,14 +131,14 @@ class EditTask extends React.Component<Props, State> {
           </div>
         </div>
         <div className='EditTask-items'>
-          <div>
+          <div className='left'>
             {viewTaskText}
             <div className='EditTask-taskDescription'>
               <p>Description</p>
               {viewTaskDescription}
             </div>
           </div>
-          <div>
+          <div className='right'>
             boards
             <div className='EditTask-taskDate'>
               <p>Created: {getCurrentDateAsString(createTime)}</p>

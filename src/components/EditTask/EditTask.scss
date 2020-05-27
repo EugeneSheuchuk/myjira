@@ -28,11 +28,11 @@
   flex-direction: row;
   justify-content: space-between;
 
-  div:first-child {
+  .left {
     width: 69%;
   }
 
-  div:last-child {
+  .right {
     width: 29%;
   }
 }
@@ -67,8 +67,35 @@
   border-color: $main_blue;
 }
 .EditTask-taskDescription {
+  width: 100%;
+
   p:first-child {
     padding: 0 0 0 10px;
     font-weight: bold;
+  }
+
+  .EditTask-description {
+    width: 98%;
+    max-height: 300px;
+    padding: 5px 10px;
+    white-space: pre-wrap;
+    overflow: auto;
+  }
+
+  .EditTask-description:hover {
+    cursor: pointer;
+    background-color: lighten(gray, 30%);
+  }
+
+  textarea {
+    width: 98%;
+    height: 200px;
+    padding: 5px 10px;
+    border: 2px solid transparent;
+    resize: none;
+  }
+
+  textarea:first-child:focus {
+    border-color: $main_blue;
   }
 }
