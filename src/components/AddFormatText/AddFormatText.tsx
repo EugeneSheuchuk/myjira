@@ -5,7 +5,6 @@ interface IProps {
   startValue: string;
   placeholder?: string;
   returnValueAction: (isCancel: boolean, value: string) => void;
-  // isForceGetValue?: boolean;
 }
 
 type State = {
@@ -20,9 +19,6 @@ class AddFormatText extends React.Component<IProps, State> {
     };
   }
 
-  // componentDidUpdate() {
-  //   if (this.props.isForceGetValue) this.check();
-  // }
 
   cancel = () => this.props.returnValueAction(true, '');
 

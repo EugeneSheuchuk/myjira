@@ -11,6 +11,7 @@ type Props = {
   acceptAction: (taskData: EditTaskDataType) => void;
   taskComment: string;
   createTime: number;
+  updateTime: number;
 };
 
 type State = {
@@ -19,6 +20,7 @@ type State = {
   isEditTaskDescription: boolean;
   taskComment: string;
   createTime: number;
+  updateTime: number;
 };
 
 class EditTask extends React.Component<Props, State> {
@@ -30,6 +32,7 @@ class EditTask extends React.Component<Props, State> {
       isEditTaskDescription: false,
       taskComment: props.taskComment,
       createTime: props.createTime,
+      updateTime: props.updateTime,
     };
   }
 
@@ -101,11 +104,13 @@ class EditTask extends React.Component<Props, State> {
   };
 
   render() {
-    const { taskText,
+    const {
+      taskText,
       isEditTaskText,
       taskComment,
       isEditTaskDescription,
-      createTime } = this.state;
+      createTime,
+      updateTime } = this.state;
 
     const viewTaskText = isEditTaskText
       ? <AddTextValue
@@ -143,6 +148,7 @@ class EditTask extends React.Component<Props, State> {
             boards
             <div className='EditTask-taskDate'>
               <p>Created: {getCurrentDateAsString(createTime)}</p>
+              {updateTime ? <p>Updated: {getCurrentDateAsString(updateTime)}</p> : null}
             </div>
           </div>
         </div>

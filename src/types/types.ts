@@ -25,4 +25,5 @@ export type EditTaskDataType = {
   taskText: string;
   taskComment: string;
   createTime?: number;
+  updateTime?: number;
 };

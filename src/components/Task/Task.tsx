@@ -24,7 +24,8 @@ const Task: React.FC<IProps> = (
     position,
     triggerPopUp,
     taskComment,
-    createTime }) => {
+    createTime,
+    updateTime, }) => {
   const [visible, setVisible] = useState<State>('hidden');
 
   const mouseAboveElement = (e: React.MouseEvent) => setVisible('visible');
@@ -75,6 +76,7 @@ const Task: React.FC<IProps> = (
       acceptAction={acceptEditedTask}
       taskComment={taskComment}
       createTime={createTime}
+      updateTime={updateTime}
     />
   );
 

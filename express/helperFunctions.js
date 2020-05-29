@@ -14,6 +14,7 @@ module.exports = {
         position: task.position,
         taskComment: task.taskComment,
         createTime: task.createTime,
+        updateTime: task.updateTime,
       }
     });
   },

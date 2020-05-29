@@ -105,6 +105,7 @@ module.exports = {
         position: tasks.length,
         taskComment: '',
         createTime: new Date().getTime(),
+        updateTime: 0,
       });
       await task.save();
       return true;
@@ -150,7 +151,7 @@ module.exports = {
   },
   async changeTaskData(taskId, taskData) {
     try {
-      await Task.updateOne({_id: taskId}, {...taskData});
+      await Task.updateOne({_id: taskId}, {...taskData, updateTime: new Date().getTime()});
       return true;
     } catch (e) {
       return false;
