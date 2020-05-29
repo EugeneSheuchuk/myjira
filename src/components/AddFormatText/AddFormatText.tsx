@@ -47,7 +47,14 @@ class AddFormatText extends React.Component<IProps, State> {
   };
 
   onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    this.check();
+    e.preventDefault();
+    e.stopPropagation();
+    // The onBlure action on AddFormatText component invoked by click
+    // also invoked 'handleClickOutside' function in EditTask component.
+    // Sometime onBlure may change Popup's container size, in this way
+    // 'handleClickOutside' gets invalid component size. To solve this problem
+    // used setTimeOut
+    setTimeout(this.check, 200);
   };
 
 
