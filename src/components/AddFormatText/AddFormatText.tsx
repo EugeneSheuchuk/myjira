@@ -46,11 +46,11 @@ class AddFormatText extends React.Component<IProps, State> {
     }
   };
 
-  onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    this.check();
-  };
+  // onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   this.check();
+  // };
 
 
   render() {

@@ -1,3 +1,7 @@
+function convertDataToCorrectString(data) {
+  return data < 10 ? `0${data}` : `${data}`;
+}
+
 export function sortBoardTasks(a, b) {
   if ( a.position > b.position ) return 1;
   if ( a.position < b.position ) return -1;
@@ -23,7 +27,8 @@ export function getCurrentDateAsString(ms) {
   const month = months[date.getMonth()];
   const day = date.getDate();
   const year = date.getFullYear();
-  const hours = date.getHours();
-  const min = date.getMinutes();
+  const hours = convertDataToCorrectString(date.getHours());
+  const min = convertDataToCorrectString(date.getMinutes());
   return `${month} ${day}, ${year}, ${hours}:${min}`;
 }
+
