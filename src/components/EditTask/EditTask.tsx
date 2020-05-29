@@ -4,6 +4,7 @@ import Cancel from '../../assets/images/cancel.png';
 import AddTextValue from '../AddTextValue/AddTextValue';
 import { EditTaskDataType } from '../../types/types';
 import { getCurrentDateAsString } from '../../assets/helperFunctions';
+import AddFormatText from '../AddFormatText/AddFormatText';
 
 type Props = {
   taskText: string;
@@ -114,7 +115,7 @@ class EditTask extends React.Component<Props, State> {
       : <p className='EditTask-taskText' onClick={this.startEditTaskText}>{taskText}</p>;
 
     const viewTaskDescription = isEditTaskDescription
-      ? <AddTextValue
+      ? <AddFormatText
         startValue={taskComment}
         returnValueAction={this.getNewTaskDescription}
         placeholder='You can add a task description here...'

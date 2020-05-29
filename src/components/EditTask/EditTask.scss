@@ -87,15 +87,17 @@
     background-color: lighten(gray, 30%);
   }
 
-  textarea {
-    width: 98%;
-    height: 200px;
-    padding: 5px 10px;
-    border: 2px solid transparent;
-    resize: none;
-  }
+  .AddFormatText {
+    textarea {
+      width: 98%;
+      height: 200px;
+      padding: 5px 10px;
+      border: 2px solid transparent;
+      resize: none;
+    }
 
-  textarea:first-child:focus {
-    border-color: $main_blue;
+    textarea:focus {
+      border-color: $main_blue;
+    }
   }
 }
