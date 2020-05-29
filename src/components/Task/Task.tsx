@@ -23,9 +23,11 @@ const Task: React.FC<IProps> = (
     updateBoards,
     position,
     triggerPopUp,
-    taskComment,
+    taskDescription,
     createTime,
-    updateTime, }) => {
+    updateTime,
+    taskComments,
+  }) => {
   const [visible, setVisible] = useState<State>('hidden');
 
   const mouseAboveElement = (e: React.MouseEvent) => setVisible('visible');
@@ -59,7 +61,7 @@ const Task: React.FC<IProps> = (
   );
 
   const acceptEditedTask = async (taskData: EditTaskDataType) => {
-    if (taskData.taskText === taskText && taskData.taskComment === taskComment) {
+    if (taskData.taskText === taskText && taskData.taskDescription === taskDescription) {
       triggerPopUp(false, null);
       return;
     }
@@ -74,9 +76,10 @@ const Task: React.FC<IProps> = (
     <EditTask
       taskText={taskText}
       acceptAction={acceptEditedTask}
-      taskComment={taskComment}
+      taskDescription={taskDescription}
       createTime={createTime}
       updateTime={updateTime}
+      taskComments={taskComments}
     />
   );
 

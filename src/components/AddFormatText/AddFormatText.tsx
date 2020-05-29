@@ -25,7 +25,7 @@ class AddFormatText extends React.Component<IProps, State> {
   check = () => {
     const { returnValueAction, startValue } = this.props;
     const { tempValue } = this.state;
-    if (tempValue.trim() === '' || tempValue === startValue) {
+    if (tempValue.trim() === startValue) {
       this.cancel();
     } else {
       returnValueAction(false, tempValue.trimEnd());
@@ -49,12 +49,7 @@ class AddFormatText extends React.Component<IProps, State> {
   onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    // The onBlure action on AddFormatText component invoked by click
-    // also invoked 'handleClickOutside' function in EditTask component.
-    // Sometime onBlure may change Popup's container size, in this way
-    // 'handleClickOutside' gets invalid component size. To solve this problem
-    // used setTimeOut
-    setTimeout(this.check, 200);
+    this.check();
   };
 
 
@@ -69,7 +64,6 @@ class AddFormatText extends React.Component<IProps, State> {
           autoFocus={true}
           onChange={this.typeBoardName}
           onKeyDown={this.pressKey}
-          onBlur={this.onBlur}
         />
         <button onClick={this.check}>Save</button>
         <button onClick={this.cancel}>Cancel</button>

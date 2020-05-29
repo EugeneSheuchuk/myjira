@@ -103,9 +103,10 @@ module.exports = {
         taskText,
         boardId,
         position: tasks.length,
-        taskComment: '',
+        taskDescription: '',
         createTime: new Date().getTime(),
         updateTime: 0,
+        taskComments: [],
       });
       await task.save();
       return true;

@@ -161,16 +161,11 @@ class BoardItem extends React.Component<IProps, State> {
       .sort(sortBoardTasks)
       .map((item) => (
         <Task
-          taskId={item.taskId}
-          taskText={item.taskText}
           updateBoards={updateBoards}
           boardId={id}
-          position={item.position}
           key={item.taskId}
           triggerPopUp={triggerPopUp}
-          taskComment={item.taskComment}
-          createTime={item.createTime}
-          updateTime={item.updateTime}
+          {...item}
         />
       ));
 

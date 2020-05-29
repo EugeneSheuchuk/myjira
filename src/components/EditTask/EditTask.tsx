@@ -2,25 +2,27 @@ import React from 'react';
 import './EditTask.scss';
 import Cancel from '../../assets/images/cancel.png';
 import AddTextValue from '../AddTextValue/AddTextValue';
-import { EditTaskDataType } from '../../types/types';
+import { EditTaskDataType, TaskCommentType } from '../../types/types';
 import { getCurrentDateAsString } from '../../assets/helperFunctions';
 import AddFormatText from '../AddFormatText/AddFormatText';
 
 type Props = {
   taskText: string;
   acceptAction: (taskData: EditTaskDataType) => void;
-  taskComment: string;
+  taskDescription: string;
   createTime: number;
   updateTime: number;
+  taskComments: Array<TaskCommentType>;
 };
 
 type State = {
   taskText: string;
   isEditTaskText: boolean;
   isEditTaskDescription: boolean;
-  taskComment: string;
+  taskDescription: string;
   createTime: number;
   updateTime: number;
+  taskComments: Array<TaskCommentType>;
 };
 
 class EditTask extends React.Component<Props, State> {
@@ -30,9 +32,10 @@ class EditTask extends React.Component<Props, State> {
       taskText: props.taskText,
       isEditTaskText: false,
       isEditTaskDescription: false,
-      taskComment: props.taskComment,
+      taskDescription: props.taskDescription,
       createTime: props.createTime,
       updateTime: props.updateTime,
+      taskComments: props.taskComments,
     };
   }
 
@@ -68,7 +71,7 @@ class EditTask extends React.Component<Props, State> {
     if (isCancel) {
       this.setState({ isEditTaskDescription: false });
     } else {
-      this.setState({ isEditTaskDescription: false, taskComment: value });
+      this.setState({ isEditTaskDescription: false, taskDescription: value });
     }
   };
 
@@ -81,10 +84,11 @@ class EditTask extends React.Component<Props, State> {
   };
 
   collectTaskData = (): EditTaskDataType => {
-    const { taskText, taskComment } = this.state;
+    const { taskText, taskDescription, taskComments } = this.state;
     return {
       taskText,
-      taskComment,
+      taskDescription,
+      taskComments,
     };
   };
 
@@ -107,7 +111,7 @@ class EditTask extends React.Component<Props, State> {
     const {
       taskText,
       isEditTaskText,
-      taskComment,
+      taskDescription,
       isEditTaskDescription,
       createTime,
       updateTime } = this.state;
@@ -121,12 +125,12 @@ class EditTask extends React.Component<Props, State> {
 
     const viewTaskDescription = isEditTaskDescription
       ? <AddFormatText
-        startValue={taskComment}
+        startValue={taskDescription}
         returnValueAction={this.getNewTaskDescription}
         placeholder='You can add a task description here...'
       />
       : <p className='EditTask-description' onClick={this.startEditTaskDescription}>
-        {taskComment === '' ? 'Click to add a description...' : taskComment}
+        {taskDescription === '' ? 'Click to add a description...' : taskDescription}
       </p>;
 
     return(
@@ -141,6 +145,11 @@ class EditTask extends React.Component<Props, State> {
             {viewTaskText}
             <div className='EditTask-taskDescription'>
               <p>Description</p>
+              {viewTaskDescription}
+            </div>
+            <div className='EditTask-comments'>
+              <p>Activity</p>
+              <p>Show: <span>Comments</span></p>
               {viewTaskDescription}
             </div>
           </div>

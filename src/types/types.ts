@@ -21,9 +21,16 @@ export type DeleteWarningdProps = {
   cancelAction: (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent) => void;
 };
 
+export type TaskCommentType = {
+  commentDate: number;
+  commentText: string;
+  isCommentEdit: boolean;
+};
+
 export type EditTaskDataType = {
   taskText: string;
-  taskComment: string;
+  taskDescription: string;
   createTime?: number;
   updateTime?: number;
+  taskComments: Array<TaskCommentType>
 };
