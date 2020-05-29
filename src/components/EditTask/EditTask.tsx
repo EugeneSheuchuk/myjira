@@ -5,6 +5,7 @@ import AddTextValue from '../AddTextValue/AddTextValue';
 import { EditTaskDataType, TaskCommentType } from '../../types/types';
 import { getCurrentDateAsString } from '../../assets/helperFunctions';
 import AddFormatText from '../AddFormatText/AddFormatText';
+import TaskComment from '../TaskComment/TaskComment';
 
 type Props = {
   taskText: string;
@@ -114,7 +115,8 @@ class EditTask extends React.Component<Props, State> {
       taskDescription,
       isEditTaskDescription,
       createTime,
-      updateTime } = this.state;
+      updateTime,
+      taskComments } = this.state;
 
     const viewTaskText = isEditTaskText
       ? <AddTextValue
@@ -133,6 +135,10 @@ class EditTask extends React.Component<Props, State> {
         {taskDescription === '' ? 'Click to add a description...' : taskDescription}
       </p>;
 
+    const viewTaskComments = taskComments.map(task => {
+      return <TaskComment {...task} key={task.commentDate} />;
+    });
+
     return(
       <div className='EditTask'>
         <div className='EditTask-header'>
@@ -150,14 +156,14 @@ class EditTask extends React.Component<Props, State> {
             <div className='EditTask-comments'>
               <p>Activity</p>
               <p>Show: <span>Comments</span></p>
-              {viewTaskDescription}
+              {viewTaskComments}
             </div>
           </div>
           <div className='right'>
             boards
             <div className='EditTask-taskDate'>
               <p>Created: {getCurrentDateAsString(createTime)}</p>
-              {updateTime ? <p>Updated: {getCurrentDateAsString(updateTime)}</p> : null}
+              <p>{updateTime ? `Updated: ${getCurrentDateAsString(updateTime)}` : ''}</p>
             </div>
           </div>
         </div>
