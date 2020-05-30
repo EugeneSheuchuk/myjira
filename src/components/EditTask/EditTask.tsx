@@ -98,11 +98,11 @@ class EditTask extends React.Component<Props, State> {
   };
 
   startEditTaskDescription = (e:React.MouseEvent<HTMLParagraphElement>) => {
-    this.setState({ isEditTaskDescription: true });
+    this.setState({ isEditTaskDescription: true, isTypeComment: false });
   };
 
   startTypeComment = (e:React.MouseEvent<HTMLParagraphElement>) => {
-    this.setState({ isTypeComment: true });
+    this.setState({ isTypeComment: true, isEditTaskDescription: false });
   };
 
   collectTaskData = (): EditTaskDataType => {
