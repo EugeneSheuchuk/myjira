@@ -3,7 +3,7 @@ import './Task.scss';
 import { AxiosResponse } from 'axios';
 import { TaskType } from '../../types/boardReducerTypes';
 import DropDownMenu from '../DropDownMenu/DropDownMenu';
-import { DropDownProps, EditTaskDataType } from '../../types/types';
+import { BoardData, DropDownProps, EditTaskDataType } from '../../types/types';
 import API, { SortTasks } from '../../API';
 import DeleteTask from '../Warnings/DeleteTask/DeleteTask';
 import EditTask from '../EditTask/EditTask';
@@ -12,6 +12,7 @@ interface IProps extends TaskType {
   updateBoards: () => void;
   boardId: string;
   triggerPopUp: (status: boolean, viewComponent: JSX.Element | null) => void;
+  boardsInfo: Array<BoardData>;
 }
 
 type State = 'visible' | 'hidden';
@@ -27,6 +28,7 @@ const Task: React.FC<IProps> = (
     createTime,
     updateTime,
     taskComments,
+    boardsInfo,
   }) => {
   const [visible, setVisible] = useState<State>('hidden');
 
@@ -80,6 +82,8 @@ const Task: React.FC<IProps> = (
       createTime={createTime}
       updateTime={updateTime}
       taskComments={taskComments}
+      boardId={boardId}
+      boardsInfo={boardsInfo}
     />
   );
 

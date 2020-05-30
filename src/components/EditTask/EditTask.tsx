@@ -2,7 +2,7 @@ import React from 'react';
 import './EditTask.scss';
 import Cancel from '../../assets/images/cancel.png';
 import AddTextValue from '../AddTextValue/AddTextValue';
-import { EditTaskDataType, TaskCommentType } from '../../types/types';
+import { BoardData, EditTaskDataType, TaskCommentType } from '../../types/types';
 import { getCurrentDateAsString } from '../../assets/helperFunctions';
 import AddFormatText from '../AddFormatText/AddFormatText';
 import TaskComment from '../TaskComment/TaskComment';
@@ -14,6 +14,8 @@ type Props = {
   createTime: number;
   updateTime: number;
   taskComments: Array<TaskCommentType>;
+  boardId: string;
+  boardsInfo: Array<BoardData>;
 };
 
 type State = {
@@ -26,6 +28,7 @@ type State = {
   updateTime: number;
   taskComments: Array<TaskCommentType>;
   isEditAnyFields: boolean;
+  boardId: string;
 };
 
 class EditTask extends React.Component<Props, State> {
@@ -41,6 +44,7 @@ class EditTask extends React.Component<Props, State> {
       taskComments: props.taskComments,
       isTypeComment: false,
       isEditAnyFields: false,
+      boardId: props.boardId,
     };
   }
 
@@ -141,6 +145,12 @@ class EditTask extends React.Component<Props, State> {
     this.props.acceptAction(this.state.isEditAnyFields, taskData);
   };
 
+  changeCurrentBoardId = (e: React.MouseEvent<HTMLDivElement>, newId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ boardId: newId });
+  };
+
   render() {
     const {
       taskText,
@@ -150,7 +160,10 @@ class EditTask extends React.Component<Props, State> {
       createTime,
       updateTime,
       taskComments,
-      isTypeComment, } = this.state;
+      isTypeComment,
+      boardId } = this.state;
+
+    const { boardsInfo } = this.props;
 
     const viewTaskText = isEditTaskText
       ? <AddTextValue
@@ -181,6 +194,28 @@ class EditTask extends React.Component<Props, State> {
       />
       : <p className='EditTask-newComment' onClick={this.startTypeComment}>Add a comment...</p>;
 
+    let currentBoardName = '';
+    const otherBoards = boardsInfo.filter(item => {
+      if (item.boardId === boardId) {
+        currentBoardName = item.boardName;
+        return false;
+      }
+      return true;
+    });
+
+    const viewBoard = <div className='EditTask-board'>
+      {currentBoardName}  <span className='rotate'>{'>'}</span>
+      <div className='options'>{otherBoards.map(item => {
+        return <div 
+          key={item.boardName}
+          onClick={(e) => this.changeCurrentBoardId(e, item.boardId)}
+        >
+          {item.boardName}
+        </div>
+      })}
+      </div>
+    </div>
+
     return(
       <div className='EditTask'>
         <div className='EditTask-header'>
@@ -203,7 +238,7 @@ class EditTask extends React.Component<Props, State> {
             </div>
           </div>
           <div className='right'>
-            boards
+            {viewBoard}
             <div className='EditTask-taskDate'>
               <p>Created: {getCurrentDateAsString(createTime)}</p>
               <p>{updateTime ? `Updated: ${getCurrentDateAsString(updateTime)}` : ''}</p>

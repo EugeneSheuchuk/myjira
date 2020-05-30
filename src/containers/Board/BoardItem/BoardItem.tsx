@@ -6,7 +6,7 @@ import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
 import Task from '../../../components/Task/Task';
 import DropDownMenu from '../../../components/DropDownMenu/DropDownMenu';
-import { DropDownProps } from '../../../types/types';
+import { BoardData, DropDownProps } from '../../../types/types';
 import AddTextValue from '../../../components/AddTextValue/AddTextValue';
 import { sortBoardTasks } from '../../../assets/helperFunctions';
 import DeleteBoard from '../../../components/Warnings/DeleteBoard/DeleteBoard';
@@ -17,6 +17,7 @@ interface IProps extends BoardType {
   updateBoards: () => void;
   tasks: Array<TaskType>;
   triggerPopUp: (status: boolean, viewComponent: JSX.Element | null) => void;
+  boardsInfo: Array<BoardData>;
 }
 
 type State = {
@@ -139,7 +140,7 @@ class BoardItem extends React.Component<IProps, State> {
   };
 
   render() {
-    const { boardName, boardHeight, updateBoards, id, tasks, triggerPopUp } = this.props;
+    const { boardName, boardHeight, updateBoards, id, tasks, triggerPopUp, boardsInfo } = this.props;
     const {
       isAddingTask,
       borderRef,
@@ -163,6 +164,7 @@ class BoardItem extends React.Component<IProps, State> {
         <Task
           updateBoards={updateBoards}
           boardId={id}
+          boardsInfo={boardsInfo}
           key={item.taskId}
           triggerPopUp={triggerPopUp}
           {...item}

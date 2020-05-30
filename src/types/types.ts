@@ -34,3 +34,8 @@ export type EditTaskDataType = {
   updateTime?: number;
   taskComments: Array<TaskCommentType>
 };
+
+export type BoardData = {
+  boardName: string,
+  boardId: string,
+};
