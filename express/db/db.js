@@ -152,7 +152,51 @@ module.exports = {
   },
   async changeTaskData(taskId, taskData) {
     try {
-      await Task.updateOne({_id: taskId}, {...taskData, updateTime: new Date().getTime()});
+      const dbTaskData = await Task.findOne({ _id: taskId });
+      if (dbTaskData.boardId === taskData.boardId) {
+        await Task.updateOne({_id: taskId}, {...taskData, updateTime: new Date().getTime()});
+        return true;
+      }
+      const oldTaskBoardId = dbTaskData.boardId;
+      const oldTaskPosition = dbTaskData.position;
+      const isIncreaseNewBoardTasksPosition = await this.increaseBoardTasksPosition(taskData.boardId);
+      if (!isIncreaseNewBoardTasksPosition) return false;
+      await Task.updateOne({_id: taskId},
+        {
+          ...taskData,
+          updateTime: new Date().getTime(),
+          position: 0 });
+      const isDecreaseOldBoardTasksPosition = await this.decreaseOldBoardTaskPosition(oldTaskBoardId, oldTaskPosition);
+      if (!isDecreaseOldBoardTasksPosition) return false;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+  async increaseBoardTasksPosition(boardId) {
+    try {
+      const tasks = await Task.find({ boardId });
+      const promises = tasks.map(item => {
+        item.position += 1;
+        return item.save();
+      });
+      await Promise.all(promises);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+  async decreaseOldBoardTaskPosition(boardId, taskPosition) {
+    try {
+      const tasks = await Task.find({ boardId });
+      const promises = [];
+      tasks.foreEach(item => {
+        if (item.position > taskPosition) {
+          item.position -= 1;
+          promises.push(item.save());
+        }
+      });
+      await Promise.all(promises);
       return true;
     } catch (e) {
       return false;

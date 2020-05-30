@@ -122,11 +122,12 @@ class EditTask extends React.Component<Props, State> {
   };
 
   collectTaskData = (): EditTaskDataType => {
-    const { taskText, taskDescription, taskComments } = this.state;
+    const { taskText, taskDescription, taskComments, boardId } = this.state;
     return {
       taskText,
       taskDescription,
       taskComments,
+      boardId,
     };
   };
 
@@ -148,7 +149,7 @@ class EditTask extends React.Component<Props, State> {
   changeCurrentBoardId = (e: React.MouseEvent<HTMLDivElement>, newId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ boardId: newId });
+    this.setState({ boardId: newId, isEditAnyFields: true });
   };
 
   render() {
@@ -245,7 +246,6 @@ class EditTask extends React.Component<Props, State> {
             </div>
           </div>
         </div>
-
       </div>
     );
   }
