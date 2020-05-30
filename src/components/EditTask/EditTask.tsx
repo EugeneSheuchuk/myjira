@@ -9,7 +9,7 @@ import TaskComment from '../TaskComment/TaskComment';
 
 type Props = {
   taskText: string;
-  acceptAction: (taskData: EditTaskDataType) => void;
+  acceptAction: (isEdit: boolean, taskData: EditTaskDataType) => void;
   taskDescription: string;
   createTime: number;
   updateTime: number;
@@ -25,6 +25,7 @@ type State = {
   createTime: number;
   updateTime: number;
   taskComments: Array<TaskCommentType>;
+  isEditAnyFields: boolean;
 };
 
 class EditTask extends React.Component<Props, State> {
@@ -39,6 +40,7 @@ class EditTask extends React.Component<Props, State> {
       updateTime: props.updateTime,
       taskComments: props.taskComments,
       isTypeComment: false,
+      isEditAnyFields: false,
     };
   }
 
@@ -57,7 +59,7 @@ class EditTask extends React.Component<Props, State> {
       // @ts-ignore
       if (e.target.tagName.toLowerCase() === 'body') {
         const taskData: EditTaskDataType = this.collectTaskData();
-        this.props.acceptAction(taskData);
+        this.props.acceptAction(this.state.isEditAnyFields, taskData);
       }
     }
   };
@@ -66,7 +68,7 @@ class EditTask extends React.Component<Props, State> {
     if (isCancel) {
       this.setState({ isEditTaskText: false });
     } else {
-      this.setState({ isEditTaskText: false, taskText: value });
+      this.setState({ isEditTaskText: false, taskText: value, isEditAnyFields: true });
     }
   };
 
@@ -74,7 +76,12 @@ class EditTask extends React.Component<Props, State> {
     if (isCancel) {
       this.setState({ isEditTaskDescription: false });
     } else {
-      this.setState({ isEditTaskDescription: false, taskDescription: value });
+      this.setState(
+        {
+          isEditTaskDescription: false,
+          taskDescription: value,
+          isEditAnyFields: true
+        });
     }
   };
 
@@ -89,7 +96,12 @@ class EditTask extends React.Component<Props, State> {
       };
       const prevTaskComments = this.state.taskComments;
       const newTaskComments = [...prevTaskComments, newComment];
-      this.setState({ isTypeComment: false, taskComments: newTaskComments });
+      this.setState(
+        {
+          isTypeComment: false,
+          taskComments: newTaskComments,
+          isEditAnyFields: true
+        });
     }
   };
 
@@ -118,7 +130,7 @@ class EditTask extends React.Component<Props, State> {
     // @ts-ignore
     if (e.target.className === 'PopUp') {
       const taskData: EditTaskDataType = this.collectTaskData();
-      this.props.acceptAction(taskData);
+      this.props.acceptAction(this.state.isEditAnyFields, taskData);
     }
   };
 
@@ -126,7 +138,7 @@ class EditTask extends React.Component<Props, State> {
     e.preventDefault();
     e.stopPropagation();
     const taskData: EditTaskDataType = this.collectTaskData();
-    this.props.acceptAction(taskData);
+    this.props.acceptAction(this.state.isEditAnyFields, taskData);
   };
 
   render() {

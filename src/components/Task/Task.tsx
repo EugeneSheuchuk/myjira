@@ -60,15 +60,15 @@ const Task: React.FC<IProps> = (
     <DeleteTask confirmAction={deleteTask} cancelAction={cancelDeleteTask} />
   );
 
-  const acceptEditedTask = async (taskData: EditTaskDataType) => {
-    if (taskData.taskText === taskText && taskData.taskDescription === taskDescription) {
+  const acceptEditedTask = async (isEdit: boolean, taskData: EditTaskDataType) => {
+    if (isEdit) {
+      const result = await API.changeTaskData(taskId, taskData);
+      if (result) {
+        triggerPopUp(false, null);
+        updateBoards();
+      }
+    } else {
       triggerPopUp(false, null);
-      return;
-    }
-    const result = await API.changeTaskData(taskId, taskData);
-    if (result) {
-      triggerPopUp(false, null);
-      updateBoards();
     }
   };
 
