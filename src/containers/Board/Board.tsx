@@ -92,7 +92,7 @@ class Board extends React.Component<IProps, StateType> {
   render() {
     const { boards } = this.props;
     const { isAddingBoard, containerRef, boardHeight, isShowPopUp, popupContent } = this.state;
-    const boardsInfo = boards.map(item => ({ boardName: item.boardName, boardId: item.id }));
+    const boardsInfo = boards.map((item) => ({ boardName: item.boardName, boardId: item.id }));
     const viewBoards = boards.map((item) => {
       return (
         <BoardItem

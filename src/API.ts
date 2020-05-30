@@ -59,7 +59,7 @@ const API: IAPI = {
   },
   changeTaskData(taskId: string, taskData: EditTaskDataType): Promise<AxiosResponse<boolean>> {
     return axiosInstance.put('tasks', { taskId, taskData });
-  }
+  },
 };
 
 export default API;

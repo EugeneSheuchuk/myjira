@@ -3,8 +3,7 @@ import './DeleteTask.scss';
 import { DeleteWarningdProps } from '../../../types/types';
 
 const DeleteTask: React.FC<DeleteWarningdProps> = ({ confirmAction, cancelAction }) => {
-
-  useEffect(()=> {
+  useEffect(() => {
     function pressKey(e: KeyboardEvent) {
       if (e.key === 'Escape') cancelAction(e);
     }

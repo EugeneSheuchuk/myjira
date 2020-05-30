@@ -37,6 +37,6 @@ export type EditTaskDataType = {
 };
 
 export type BoardData = {
-  boardName: string,
-  boardId: string,
+  boardName: string;
+  boardId: string;
 };

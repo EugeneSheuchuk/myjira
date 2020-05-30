@@ -1,4 +1,4 @@
-@import "../../styles/сolors";
+@import '../../styles/сolors';
 
 .EditTask {
   display: flex;
@@ -50,7 +50,6 @@
 .EditTask-taskText:hover {
   cursor: pointer;
   background-color: lightgrey;
-
 }
 .EditTask textarea:first-child {
   display: block;
@@ -141,5 +140,50 @@
   .EditTask-newComment:hover {
     cursor: text;
     border-color: gray;
+  }
+}
+
+.EditTask-board {
+  position: relative;
+  padding: 7px 5px;
+  cursor: pointer;
+  border: 2px solid $main_blue;
+  color: $main_blue;
+  background-color: white;
+  width: 80%;
+  text-align: center;
+
+  .rotate {
+    display: inline-block;
+    margin-left: 5px;
+    transform: rotate(90deg);
+    font-weight: bold;
+  }
+
+  .EditTask-optionsContainer {
+    position: absolute;
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding-top: 10px;
+    top: 30px;
+    left: 0;
+    cursor: default;
+
+    .options {
+      width: 100%;
+      border: 1px solid lightgrey;
+      padding: 5px 0;
+      background-color: white;
+
+      div {
+        padding: 5px 0;
+        color: $main_blue;
+      }
+
+      div:hover {
+        background-color: lighten($main_blue, 31%);
+      }
+    }
   }
 }

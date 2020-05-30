@@ -17,19 +17,19 @@ interface IProps extends TaskType {
 
 type State = 'visible' | 'hidden';
 
-const Task: React.FC<IProps> = (
-  { taskId,
-    taskText,
-    boardId,
-    updateBoards,
-    position,
-    triggerPopUp,
-    taskDescription,
-    createTime,
-    updateTime,
-    taskComments,
-    boardsInfo,
-  }) => {
+const Task: React.FC<IProps> = ({
+  taskId,
+  taskText,
+  boardId,
+  updateBoards,
+  position,
+  triggerPopUp,
+  taskDescription,
+  createTime,
+  updateTime,
+  taskComments,
+  boardsInfo,
+}) => {
   const [visible, setVisible] = useState<State>('hidden');
 
   const mouseAboveElement = (e: React.MouseEvent) => setVisible('visible');
@@ -46,7 +46,7 @@ const Task: React.FC<IProps> = (
     setVisible('hidden');
   };
 
-  const cancelDeleteTask = (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent ): void => {
+  const cancelDeleteTask = (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent): void => {
     e.preventDefault();
     e.stopPropagation();
     triggerPopUp(false, null);

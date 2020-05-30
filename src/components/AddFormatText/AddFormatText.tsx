@@ -19,7 +19,6 @@ class AddFormatText extends React.Component<IProps, State> {
     };
   }
 
-
   cancel = () => this.props.returnValueAction(true, '');
 
   check = () => {
@@ -46,18 +45,11 @@ class AddFormatText extends React.Component<IProps, State> {
     }
   };
 
-  // onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   this.check();
-  // };
-
-
   render() {
     const { placeholder = '' } = this.props;
     const { tempValue } = this.state;
     return (
-      <div className='AddFormatText'>
+      <div className="AddFormatText">
         <textarea
           value={tempValue}
           placeholder={placeholder}
@@ -65,8 +57,8 @@ class AddFormatText extends React.Component<IProps, State> {
           onChange={this.typeBoardName}
           onKeyDown={this.pressKey}
         />
-        <button onClick={this.check}>Save</button>
-        <button onClick={this.cancel}>Cancel</button>
+        <button onClick={this.check} type='button'>Save</button>
+        <button onClick={this.cancel} type='button'>Cancel</button>
       </div>
     );
   }
