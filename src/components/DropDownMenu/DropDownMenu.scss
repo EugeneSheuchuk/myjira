@@ -3,10 +3,11 @@
 }
 
 .DropDownMenu-container {
+  display: block;
   list-style: none;
   margin: 0;
   padding: 5px 0;
-  position: relative;
+  position: absolute;
   z-index: 50;
   top: 5px;
   width: min-content;

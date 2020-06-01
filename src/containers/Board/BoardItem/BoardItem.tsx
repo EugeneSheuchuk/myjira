@@ -167,13 +167,14 @@ class BoardItem extends React.Component<IProps, State> {
 
     const viewedTasks = tasks
       .sort(sortBoardTasks)
-      .map((item) => (
+      .map((item, index, arr) => (
         <Task
           updateBoards={updateBoards}
           boardId={id}
           boardsInfo={boardsInfo}
           key={item.taskId}
           triggerPopUp={triggerPopUp}
+          isSingle={arr.length === 1}
           {...item}
         />
       ));

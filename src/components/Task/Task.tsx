@@ -13,6 +13,7 @@ interface IProps extends TaskType {
   boardId: string;
   triggerPopUp: (status: boolean, viewComponent: JSX.Element | null) => void;
   boardsInfo: Array<BoardData>;
+  isSingle: boolean;
 }
 
 type State = 'visible' | 'hidden';
@@ -29,6 +30,7 @@ const Task: React.FC<IProps> = ({
   updateTime,
   taskComments,
   boardsInfo,
+  isSingle,
 }) => {
   const [visible, setVisible] = useState<State>('hidden');
 
@@ -95,15 +97,7 @@ const Task: React.FC<IProps> = ({
     triggerPopUp(true, editTask);
   };
 
-  const taskDropMenu: DropDownProps = [
-    {
-      actionName: 'Edit',
-      action: () => openEditPopup(),
-    },
-    {
-      actionName: 'Delete',
-      action: () => triggerPopUp(true, deleteWarning),
-    },
+  const additionalOptions: DropDownProps = [
     {
       actionName: 'Top of column',
       action: () => moveItem(SortTasks.TOP),
@@ -113,6 +107,20 @@ const Task: React.FC<IProps> = ({
       action: () => moveItem(SortTasks.BOTTOM),
     },
   ];
+
+  const DropMenu: DropDownProps = [
+    {
+      actionName: 'Edit',
+      action: () => openEditPopup(),
+    },
+    {
+      actionName: 'Delete',
+      action: () => triggerPopUp(true, deleteWarning),
+    },
+
+  ];
+
+  const taskDropMenu: DropDownProps = isSingle ? DropMenu : [...DropMenu, ...additionalOptions];
 
   return (
     <div
