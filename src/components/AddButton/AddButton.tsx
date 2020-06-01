@@ -10,16 +10,8 @@ type Props = {
   keyAction: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 };
 
-const AddButton: React.FC<Props> = ({
-  description,
-  width,
-  height,
-  action,
-  keyAction,
-}) => {
-  const text = description ? (
-    <div className="AddButton-description">{description}</div>
-  ) : null;
+const AddButton: React.FC<Props> = ({ description, width, height, action, keyAction }) => {
+  const text = description ? <div className="AddButton-description">{description}</div> : null;
   const style = {
     backgroundImage: `url(${Add})`,
     width: `${width}px`,

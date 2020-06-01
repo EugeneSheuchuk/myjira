@@ -42,5 +42,18 @@ router.put('/sort', async (req, res) => {
 
   }
 });
+router.put('/', async (req, res) => {
+  try {
+    const { taskId, taskData } = req.body;
+    const result = await mongodb.changeTaskData(taskId, taskData);
+    if (result) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  } catch (e) {
+
+  }
+});
 
 module.exports = router;

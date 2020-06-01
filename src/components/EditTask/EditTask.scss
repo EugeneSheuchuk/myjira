@@ -1,0 +1,189 @@
+@import '../../styles/сolors';
+
+.EditTask {
+  display: flex;
+  width: 50vw;
+  flex-direction: column;
+  padding: 5px 5px 20px 20px;
+}
+.EditTask-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+
+  div {
+    cursor: pointer;
+    width: 15px;
+
+    img {
+      width: inherit;
+    }
+  }
+}
+.EditTask-items {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .left {
+    width: 69%;
+  }
+
+  .right {
+    width: 29%;
+  }
+}
+
+.EditTask-taskText {
+  width: 100%;
+  padding: 0 0 0 10px;
+  margin: 0;
+  height: 35px;
+  line-height: 31px;
+  vertical-align: middle;
+  border: 2px solid transparent;
+}
+
+.EditTask-taskText:hover {
+  cursor: pointer;
+  background-color: lightgrey;
+}
+.EditTask textarea:first-child {
+  display: block;
+  width: 100%;
+  outline: none;
+  resize: none;
+  line-height: 31px;
+  vertical-align: middle;
+  padding: 0 0 0 10px;
+  height: 35px;
+}
+
+.EditTask textarea:first-child:focus {
+  border-color: $main_blue;
+}
+.EditTask-taskDescription {
+  width: 100%;
+  padding-top: 20px;
+  margin-bottom: 15px;
+
+  p:first-child {
+    padding: 0 0 0 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .EditTask-description {
+    width: 98%;
+    max-height: 300px;
+    padding: 5px 10px;
+    white-space: pre-wrap;
+    overflow: auto;
+    margin: 0;
+  }
+
+  .EditTask-description:hover {
+    cursor: pointer;
+    background-color: lighten(gray, 30%);
+  }
+
+  .AddFormatText {
+    textarea {
+      width: 98%;
+      height: 200px;
+      padding: 5px 10px;
+      border: 2px solid $main_blue;
+      resize: none;
+      outline: none;
+    }
+  }
+}
+
+.EditTask-comments {
+  width: 100%;
+  padding-top: 20px;
+
+  p {
+    padding: 0 0 0 10px;
+    margin: 0 0 5px 0;
+  }
+
+  > p:first-child {
+    font-weight: bold;
+  }
+
+  > p:nth-child(2) {
+    margin-bottom: 15px;
+  }
+
+  p span {
+    background-color: #505f79;
+    color: white;
+    padding: 5px;
+    border-radius: 7px;
+    margin-left: 10px;
+  }
+
+  .TaskComment {
+    margin-bottom: 10px;
+  }
+
+  .EditTask-newComment {
+    border: 1px solid lightgrey;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .EditTask-newComment:hover {
+    cursor: text;
+    border-color: gray;
+  }
+}
+
+.EditTask-board {
+  position: relative;
+  padding: 7px 5px;
+  cursor: pointer;
+  border: 2px solid $main_blue;
+  color: $main_blue;
+  background-color: white;
+  width: 80%;
+  text-align: center;
+
+  .rotate {
+    display: inline-block;
+    margin-left: 5px;
+    transform: rotate(90deg);
+    font-weight: bold;
+  }
+
+  .EditTask-optionsContainer {
+    position: absolute;
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding-top: 10px;
+    top: 30px;
+    left: 0;
+    cursor: default;
+
+    .options {
+      width: 100%;
+      border: 1px solid lightgrey;
+      padding: 5px 0;
+      background-color: white;
+
+      div {
+        padding: 5px 0;
+        color: $main_blue;
+      }
+
+      div:hover {
+        background-color: lighten($main_blue, 31%);
+      }
+    }
+  }
+}

@@ -1,3 +1,5 @@
+@import '../../styles/сolors';
+
 .Task {
   border-radius: 5px;
   padding: 10px;
@@ -12,6 +14,11 @@
   }
 }
 
+.Task:hover {
+  cursor: pointer;
+  background-color: lighten($main_blue, 32%);
+}
+
 .Task-dropDown {
   position: absolute;
   top: 7px;
@@ -20,6 +27,7 @@
   height: 27px;
   z-index: 20;
   border-radius: 5px;
+  background-color: lighten(gray, 39%);
 
   img {
     width: 20px;
@@ -30,6 +38,7 @@
   }
 
   ul {
-    right: 104px;
+    top: 30px;
+    right: 0;
   }
 }

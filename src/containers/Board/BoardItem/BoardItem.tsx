@@ -6,15 +6,18 @@ import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
 import Task from '../../../components/Task/Task';
 import DropDownMenu from '../../../components/DropDownMenu/DropDownMenu';
-import { DropDownProps } from '../../../types/types';
+import { BoardData, DropDownProps } from '../../../types/types';
 import AddTextValue from '../../../components/AddTextValue/AddTextValue';
 import { sortBoardTasks } from '../../../assets/helperFunctions';
+import DeleteBoard from '../../../components/Warnings/DeleteBoard/DeleteBoard';
 
 interface IProps extends BoardType {
   scrollDown: (size: number) => void;
   boardHeight: number;
   updateBoards: () => void;
   tasks: Array<TaskType>;
+  triggerPopUp: (status: boolean, viewComponent: JSX.Element | null) => void;
+  boardsInfo: Array<BoardData>;
 }
 
 type State = {
@@ -35,7 +38,7 @@ class BoardItem extends React.Component<IProps, State> {
       containerRef: createRef<HTMLDivElement>(),
       isEditBoardName: false,
       visibleDropDownMenu: 'hidden',
-      isOnFocusElement: false
+      isOnFocusElement: false,
     };
   }
 
@@ -57,8 +60,7 @@ class BoardItem extends React.Component<IProps, State> {
     }
   };
 
-  changeIsAddingTask = () =>
-    this.setState({ isAddingTask: true }, () => this.isScrolling());
+  changeIsAddingTask = () => this.setState({ isAddingTask: true }, () => this.isScrolling());
 
   addNewTaskTextByMouse = (e: React.MouseEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -76,8 +78,7 @@ class BoardItem extends React.Component<IProps, State> {
     if (isCancel) {
       this.setState({ isAddingTask: false });
     } else {
-      const res: AxiosResponse<boolean> =
-        await API.addNewTask(this.props.id, value);
+      const res: AxiosResponse<boolean> = await API.addNewTask(this.props.id, value);
       if (res) {
         this.setState({ isAddingTask: false });
         this.props.updateBoards();
@@ -104,10 +105,21 @@ class BoardItem extends React.Component<IProps, State> {
     }
   };
 
-  deleteBoard = async () => {
-    const { id, updateBoards } = this.props;
+  deleteBoard = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { id, updateBoards, triggerPopUp } = this.props;
     const result: AxiosResponse<boolean> = await API.deleteBoard(id);
-    if (result) updateBoards();
+    if (result) {
+      updateBoards();
+      triggerPopUp(false, null);
+    }
+  };
+
+  cancelDeleteBoard = (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.triggerPopUp(false, null);
   };
 
   mouseAboveElement = (e: React.MouseEvent) => {
@@ -127,14 +139,22 @@ class BoardItem extends React.Component<IProps, State> {
   };
 
   render() {
-    const { boardName, boardHeight, updateBoards, id, tasks } = this.props;
+    const {
+      boardName,
+      boardHeight,
+      updateBoards,
+      id,
+      tasks,
+      triggerPopUp,
+      boardsInfo,
+    } = this.props;
     const {
       isAddingTask,
       borderRef,
       containerRef,
       isEditBoardName,
       isOnFocusElement,
-      visibleDropDownMenu
+      visibleDropDownMenu,
     } = this.state;
 
     const newTask = isAddingTask ? (
@@ -145,35 +165,39 @@ class BoardItem extends React.Component<IProps, State> {
       />
     ) : null;
 
-    const viewedTasks = tasks.sort(sortBoardTasks).map((item) => (
-      <Task
-        taskId={item.taskId}
-        taskText={item.taskText}
-        updateBoards={updateBoards}
-        boardId={id}
-        position={item.position}
-        key={item.taskId}
-      />
-    ));
+    const viewedTasks = tasks
+      .sort(sortBoardTasks)
+      .map((item, index, arr) => (
+        <Task
+          updateBoards={updateBoards}
+          boardId={id}
+          boardsInfo={boardsInfo}
+          key={item.taskId}
+          triggerPopUp={triggerPopUp}
+          isSingle={arr.length === 1}
+          {...item}
+        />
+      ));
 
     const viewBoardName = !isEditBoardName ? (
       <span className="BoardItem-name-text">{boardName}</span>
     ) : (
-      <AddTextValue
-        startValue={boardName}
-        returnValueAction={this.saveNewBoardName}
-      />
+      <AddTextValue startValue={boardName} returnValueAction={this.saveNewBoardName} />
+    );
+
+    const deleteWarning: JSX.Element = (
+      <DeleteBoard confirmAction={this.deleteBoard} cancelAction={this.cancelDeleteBoard} />
     );
 
     const boardDropMenu: DropDownProps = [
       {
         actionName: 'Edit',
-        action: this.editBoardName
+        action: this.editBoardName,
       },
       {
         actionName: 'Delete',
-        action: this.deleteBoard
-      }
+        action: () => triggerPopUp(true, deleteWarning),
+      },
     ];
 
     return (
@@ -191,7 +215,7 @@ class BoardItem extends React.Component<IProps, State> {
             tabIndex={0}
           >
             {viewBoardName}
-            <div className="BoardItem-name-border"/>
+            <div className="BoardItem-name-border" />
           </div>
           {isEditBoardName ? null : (
             <DropDownMenu

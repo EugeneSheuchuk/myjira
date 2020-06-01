@@ -6,10 +6,7 @@ const initialState: Boards = {
   boards: [],
 };
 
-const boardReducer = (
-  state = initialState,
-  action: BoardReducerActionsType
-): Boards => {
+const boardReducer = (state = initialState, action: BoardReducerActionsType): Boards => {
   switch (action.type) {
     case ACTIONS.BOARDREDUCER_SET_BOARDS:
       return {

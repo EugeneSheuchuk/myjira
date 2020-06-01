@@ -12,7 +12,11 @@ module.exports = {
         taskId: task._id,
         taskText: task.taskText,
         position: task.position,
+        taskDescription: task.taskDescription,
+        createTime: task.createTime,
+        updateTime: task.updateTime,
+        taskComments: task.taskComments,
       }
     });
-  }
+  },
 };

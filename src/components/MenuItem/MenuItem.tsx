@@ -3,13 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './MenuItem.scss';
 import { MenuItemProps } from '../../types/types';
 
-const MenuItem: React.FC<MenuItemProps> = ({
-  path = '/',
-  imgURL,
-  name,
-  action,
-  tabIndex,
-}) => {
+const MenuItem: React.FC<MenuItemProps> = ({ path = '/', imgURL, name, action, tabIndex }) => {
   const defaultFunc = () => {};
   const componentAction = action || defaultFunc;
 

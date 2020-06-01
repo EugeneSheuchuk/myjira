@@ -13,14 +13,11 @@ export const setBoards = (data: Array<BoardType>): ActionSetBoards => ({
   payload: data,
 });
 
-export const getBoardsFromServer =
-(): ThunkAction<void, {}, {}, ActionSetBoards> => {
-  return async (
-    dispatch: ThunkDispatch<{}, {}, ActionSetBoards>
-  ): Promise<void> => {
+export const getBoardsFromServer = (): ThunkAction<void, {}, {}, ActionSetBoards> => {
+  return async (dispatch: ThunkDispatch<{}, {}, ActionSetBoards>): Promise<void> => {
     try {
       const response: AxiosResponse<Array<BoardType>> = await API.getBoards();
-      const { data }  = response;
+      const { data } = response;
       dispatch(setBoards([...data]));
     } catch (e) {
       console.log(e);

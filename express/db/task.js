@@ -7,6 +7,10 @@ const taskSchema = new mongoose.Schema({
     ref: 'Board'
   },
   position: Number,
+  taskDescription: String,
+  createTime: Number,
+  updateTime: Number,
+  taskComments: Array,
 }, {autoIndex: false, versionKey: false});
 
 const Task = mongoose.model('tasks', taskSchema);

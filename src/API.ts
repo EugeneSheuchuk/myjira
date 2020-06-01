@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BoardType } from './types/boardReducerTypes';
+import { EditTaskDataType } from './types/types';
 
 const config: AxiosRequestConfig = {
   baseURL: 'http://localhost:8000/',
@@ -9,7 +10,7 @@ const config: AxiosRequestConfig = {
 const axiosInstance = axios.create(config);
 
 export enum SortTasks {
-  'TOP' ='TOP',
+  'TOP' = 'TOP',
   'BOTTOM' = 'BOTTOM',
 }
 
@@ -24,8 +25,9 @@ interface IAPI {
     boardId: string,
     taskId: string,
     direction: SortTasks,
-    position: number,
+    position: number
   ) => Promise<AxiosResponse>;
+  changeTaskData: (taskId: string, taskData: EditTaskDataType) => Promise<AxiosResponse>;
 }
 
 const API: IAPI = {
@@ -51,9 +53,12 @@ const API: IAPI = {
     boardId: string,
     taskId: string,
     direction: SortTasks,
-    position: number): Promise<AxiosResponse<boolean>> {
-    return axiosInstance.put('tasks/sort',
-      { boardId, taskId, direction, position });
+    position: number
+  ): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.put('tasks/sort', { boardId, taskId, direction, position });
+  },
+  changeTaskData(taskId: string, taskData: EditTaskDataType): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.put('tasks', { taskId, taskData });
   },
 };
 

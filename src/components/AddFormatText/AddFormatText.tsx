@@ -1,18 +1,17 @@
 import React from 'react';
-import './AddTextValue.scss';
+import './AddFormatText.scss';
 
 interface IProps {
   startValue: string;
   placeholder?: string;
   returnValueAction: (isCancel: boolean, value: string) => void;
-  isForceGetValue?: boolean;
 }
 
 type State = {
   tempValue: string;
 };
 
-class AddTextValue extends React.Component<IProps, State> {
+class AddFormatText extends React.Component<IProps, State> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -20,17 +19,15 @@ class AddTextValue extends React.Component<IProps, State> {
     };
   }
 
-  componentDidUpdate() {
-    if (this.props.isForceGetValue) this.check();
-  }
+  cancel = () => this.props.returnValueAction(true, '');
 
   check = () => {
     const { returnValueAction, startValue } = this.props;
-    const tempValue = this.state.tempValue.trim();
-    if (tempValue === '' || tempValue === startValue) {
-      returnValueAction(true, '');
+    const { tempValue } = this.state;
+    if (tempValue.trim() === startValue) {
+      this.cancel();
     } else {
-      returnValueAction(false, tempValue);
+      returnValueAction(false, tempValue.trimEnd());
     }
   };
 
@@ -45,31 +42,26 @@ class AddTextValue extends React.Component<IProps, State> {
       e.preventDefault();
       e.stopPropagation();
       returnValueAction(true, '');
-    } else if (e.keyCode === 13) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.check();
     }
-  };
-
-  onBlur = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    this.check();
   };
 
   render() {
     const { placeholder = '' } = this.props;
     const { tempValue } = this.state;
     return (
-      <textarea
-        value={tempValue}
-        placeholder={placeholder}
-        autoFocus={true}
-        onChange={this.typeBoardName}
-        onKeyDown={this.pressKey}
-        onBlur={this.onBlur}
-      />
+      <div className="AddFormatText">
+        <textarea
+          value={tempValue}
+          placeholder={placeholder}
+          autoFocus={true}
+          onChange={this.typeBoardName}
+          onKeyDown={this.pressKey}
+        />
+        <button onClick={this.check} type='button'>Save</button>
+        <button onClick={this.cancel} type='button'>Cancel</button>
+      </div>
     );
   }
 }
 
-export default AddTextValue;
+export default AddFormatText;

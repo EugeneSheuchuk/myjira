@@ -1,0 +1,21 @@
+.PopUp {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: rgba(120, 120, 120, 0.5);
+}
+
+.PopUp-container {
+  min-width: 100px;
+  min-height: 100px;
+  background-color: lighten(gray, 45%);
+  position: absolute;
+  top: 10vh;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 1001;
+  display: inline-block;
+}

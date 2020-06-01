@@ -1,7 +1,13 @@
+import * as Types from './types';
+
 export type TaskType = {
   taskId: string;
   taskText: string;
   position: number;
+  taskDescription: string;
+  createTime: number;
+  updateTime: number;
+  taskComments: Array<Types.TaskCommentType>;
 };
 export type BoardType = {
   id: string;

@@ -27,9 +27,7 @@ class DropDownMenu extends React.Component<IProps, StateType> {
     };
   }
 
-  clickMenu = (
-    e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
-  ) => {
+  clickMenu = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ isClicked: true });
