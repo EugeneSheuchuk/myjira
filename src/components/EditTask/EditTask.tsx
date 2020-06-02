@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, RefObject } from 'react';
 import './EditTask.scss';
 import Cancel from '../../assets/images/cancel.png';
 import AddTextValue from '../AddTextValue/AddTextValue';
@@ -30,6 +30,7 @@ type State = {
   isEditAnyFields: boolean;
   boardId: string;
   isClickOnBoardsPick: boolean;
+  containerRef: RefObject<HTMLDivElement>;
 };
 
 class EditTask extends React.Component<Props, State> {
@@ -47,12 +48,18 @@ class EditTask extends React.Component<Props, State> {
       isEditAnyFields: false,
       boardId: props.boardId,
       isClickOnBoardsPick: false,
+      containerRef: createRef<HTMLDivElement>(),
     };
   }
 
   componentDidMount(): void {
     document.addEventListener('keydown', this.pressEscToExitEditTask);
     document.addEventListener('click', this.handleClickOutside);
+  }
+
+  componentDidUpdate(): void {
+    const { isTypeComment } = this.state;
+    if (isTypeComment) this.scrollDown();
   }
 
   componentWillUnmount(): void {
@@ -188,6 +195,12 @@ class EditTask extends React.Component<Props, State> {
     };
   };
 
+  scrollDown = () => {
+    const elem = this.state.containerRef;
+    if (elem.current === null) return;
+    elem.current.scrollTop = elem.current.scrollHeight;
+  };
+
   render() {
     const {
       taskText,
@@ -200,6 +213,7 @@ class EditTask extends React.Component<Props, State> {
       isTypeComment,
       boardId,
       isClickOnBoardsPick,
+      containerRef,
     } = this.state;
 
     const { boardsInfo } = this.props;
@@ -285,7 +299,7 @@ class EditTask extends React.Component<Props, State> {
     );
 
     return (
-      <div className="EditTask">
+      <div className="EditTask" ref={containerRef}>
         <div className="EditTask-header">
           <div onClick={this.hendleClickCloseButton} role="button" tabIndex={0}>
             <img src={Cancel} alt="Close window" />
