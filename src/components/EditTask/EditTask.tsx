@@ -156,6 +156,14 @@ class EditTask extends React.Component<Props, State> {
     this.setState({ boardId: newId, isEditAnyFields: true, isClickOnBoardsPick: false });
   };
 
+  deleteTaskComment = (commentText: string, taskIndex: number) => {
+    const { taskComments } = this.state;
+    const filteredTaskComments = taskComments.filter((item, index) => {
+      return !(item.commentText === commentText && taskIndex === index);
+    });
+    this.setState( { taskComments: filteredTaskComments, isEditAnyFields: true });
+  };
+
   render() {
     const {
       taskText,
@@ -192,8 +200,13 @@ class EditTask extends React.Component<Props, State> {
       </p>
     );
 
-    const viewTaskComments = taskComments.map((task) => {
-      return <TaskComment {...task} key={task.commentDate} />;
+    const viewTaskComments = taskComments.map((task, index) => {
+      return <TaskComment
+        {...task} 
+        key={task.commentDate} 
+        index={index} 
+        deleteTaskComment={this.deleteTaskComment}
+      />;
     });
 
     const viewNewComment = isTypeComment ? (

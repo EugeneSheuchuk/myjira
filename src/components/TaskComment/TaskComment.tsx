@@ -2,7 +2,19 @@ import React from 'react';
 import { getCurrentDateAsString } from '../../assets/helperFunctions';
 import { TaskCommentType } from '../../types/types';
 
-const TaskComment: React.FC<TaskCommentType> = ({ commentDate, isCommentEdit, commentText }) => {
+interface IProps extends TaskCommentType {
+  index: number;
+  deleteTaskComment: (commentText: string, taskIndex: number) => void;
+}
+
+const TaskComment: React.FC<IProps> = (
+  {
+    commentDate,
+    isCommentEdit,
+    commentText,
+    index,
+    deleteTaskComment,
+  }) => {
   return (
     <div className="TaskComment">
       <p>
@@ -10,6 +22,9 @@ const TaskComment: React.FC<TaskCommentType> = ({ commentDate, isCommentEdit, co
         {isCommentEdit ? '  Edited' : ''}
       </p>
       <p>{commentText}</p>
+      <button>Edit</button>
+      <button onClick={() => deleteTaskComment(commentText, index)}>Delete</button>
+      <div className='TaskComment-border' />
     </div>
   );
 };
