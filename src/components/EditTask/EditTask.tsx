@@ -97,7 +97,8 @@ class EditTask extends React.Component<Props, State> {
       const newComment: TaskCommentType = {
         commentDate: new Date().getTime(),
         commentText: value,
-        isCommentEdit: false,
+        isCommentEdited: false,
+        isCommentEditing: false,
       };
       const prevTaskComments = this.state.taskComments;
       const newTaskComments = [...prevTaskComments, newComment];
@@ -123,6 +124,12 @@ class EditTask extends React.Component<Props, State> {
 
   startChangingBoard = (e: React.MouseEvent<HTMLDivElement>) => {
     this.setState({ isClickOnBoardsPick: true });
+  };
+
+  startEditTaskComment = (taskIndex: number) => {
+    const { taskComments } = this.state;
+    taskComments[taskIndex].isCommentEditing = true;
+    this.setState({ taskComments });
   };
 
   collectTaskData = (): EditTaskDataType => {
@@ -164,6 +171,23 @@ class EditTask extends React.Component<Props, State> {
     this.setState( { taskComments: filteredTaskComments, isEditAnyFields: true });
   };
 
+  saveEditedTaskCommentCarrying = (taskIndex: number) => {
+    return (isCancel: boolean, value: string) => {
+      const { taskComments } = this.state;
+      if (isCancel) {
+        taskComments[taskIndex].isCommentEditing = false;
+        this.setState({ taskComments });
+      } else {
+        taskComments[taskIndex] = {
+          ...taskComments[taskIndex],
+          isCommentEditing: false,
+          commentText: value,
+          isCommentEdited: true, };
+        this.setState({ taskComments, isEditAnyFields: true });
+      }
+    };
+  };
+
   render() {
     const {
       taskText,
@@ -201,12 +225,20 @@ class EditTask extends React.Component<Props, State> {
     );
 
     const viewTaskComments = taskComments.map((task, index) => {
+      if (task.isCommentEditing) {
+        return <AddFormatText
+          startValue={task.commentText}
+          returnValueAction={this.saveEditedTaskCommentCarrying(index)}
+        />;
+      } 
       return <TaskComment
-        {...task} 
-        key={task.commentDate} 
-        index={index} 
+        {...task}
+        key={task.commentDate}
+        index={index}
         deleteTaskComment={this.deleteTaskComment}
+        startEditTaskComment={this.startEditTaskComment}
       />;
+      
     });
 
     const viewNewComment = isTypeComment ? (

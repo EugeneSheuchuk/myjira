@@ -24,7 +24,8 @@ export type DeleteWarningdProps = {
 export type TaskCommentType = {
   commentDate: number;
   commentText: string;
-  isCommentEdit: boolean;
+  isCommentEdited: boolean;
+  isCommentEditing: boolean;
 };
 
 export type EditTaskDataType = {
