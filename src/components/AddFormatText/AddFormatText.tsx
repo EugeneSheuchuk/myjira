@@ -57,8 +57,8 @@ class AddFormatText extends React.Component<IProps, State> {
           onChange={this.typeBoardName}
           onKeyDown={this.pressKey}
         />
-        <button onClick={this.check} type='button'>Save</button>
-        <button onClick={this.cancel} type='button'>Cancel</button>
+        <button className='positive' onClick={this.check} type='button'>Save</button>
+        <button className='negative' onClick={this.cancel} type='button'>Cancel</button>
       </div>
     );
   }

@@ -1,0 +1,19 @@
+@import '../../styles/сolors';
+.TaskComment {
+  button {
+    border: none;
+    outline: none;
+    padding: 5px;
+    margin-left: 5px;
+    font-size: 12px;
+    background-color: transparent;
+  }
+  button:hover {
+    cursor: pointer;
+    color: $main_blue;
+  }
+}
+
+.TaskComment-commentText {
+  white-space: pre-wrap;
+}

@@ -229,6 +229,7 @@ class EditTask extends React.Component<Props, State> {
         return <AddFormatText
           startValue={task.commentText}
           returnValueAction={this.saveEditedTaskCommentCarrying(index)}
+          key={task.commentDate}
         />;
       } 
       return <TaskComment
@@ -303,7 +304,9 @@ class EditTask extends React.Component<Props, State> {
                 Show: <span>Comments</span>
               </p>
               {viewTaskComments}
-              {viewNewComment}
+              <div className="EditTask-typeNewComment">
+                {viewNewComment}
+              </div>
             </div>
           </div>
           <div className="right">

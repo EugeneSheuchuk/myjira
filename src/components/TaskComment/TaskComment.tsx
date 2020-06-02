@@ -1,4 +1,5 @@
 import React from 'react';
+import './TaskComment.scss';
 import { getCurrentDateAsString } from '../../assets/helperFunctions';
 import { TaskCommentType } from '../../types/types';
 
@@ -21,12 +22,11 @@ const TaskComment: React.FC<IProps> = (
     <div className="TaskComment">
       <p>
         {getCurrentDateAsString(commentDate)}
-        {isCommentEdited ? '  Edited' : ''}
+        {isCommentEdited ? <span>    Edited</span> : ''}
       </p>
-      <p>{commentText}</p>
+      <p className="TaskComment-commentText">{commentText}</p>
       <button onClick={() => startEditTaskComment(index)}>Edit</button>
       <button onClick={() => deleteTaskComment(commentText, index)}>Delete</button>
-      <div className='TaskComment-border' />
     </div>
   );
 };
