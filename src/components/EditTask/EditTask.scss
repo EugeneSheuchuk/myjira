@@ -4,7 +4,7 @@
   display: flex;
   width: 50vw;
   flex-direction: column;
-  padding: 5px 5px 20px 20px;
+  padding: 5px 5px 0 20px;
   max-height: 700px;
   overflow: auto;
 
@@ -175,6 +175,7 @@
     border: 1px solid lightgrey;
     padding-top: 5px;
     padding-bottom: 5px;
+    margin: 0;
   }
 
   .EditTask-newComment:hover {
@@ -187,6 +188,17 @@
       height: 100px;
     }
   }
+
+  .EditTask-typeNewComment {
+    position: sticky;
+    bottom: 0;
+    padding: 10px 0 10px 0;
+    background-color: #f3f3f3;
+  }
+}
+
+.right {
+  position: relative;
 }
 
 .EditTask-board {
@@ -231,5 +243,15 @@
         background-color: lighten($main_blue, 31%);
       }
     }
+  }
+}
+
+.EditTask-taskDate {
+  margin-top: 30px;
+
+  p {
+    padding: 0;
+    margin: 0 0 5px 0;
+    font-size: 12px;
   }
 }
