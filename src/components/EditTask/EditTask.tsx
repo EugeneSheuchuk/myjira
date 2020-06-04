@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, RefObject } from 'react';
 import './EditTask.scss';
 import Cancel from '../../assets/images/cancel.png';
 import AddTextValue from '../AddTextValue/AddTextValue';
@@ -30,6 +30,7 @@ type State = {
   isEditAnyFields: boolean;
   boardId: string;
   isClickOnBoardsPick: boolean;
+  containerRef: RefObject<HTMLDivElement>;
 };
 
 class EditTask extends React.Component<Props, State> {
@@ -47,12 +48,18 @@ class EditTask extends React.Component<Props, State> {
       isEditAnyFields: false,
       boardId: props.boardId,
       isClickOnBoardsPick: false,
+      containerRef: createRef<HTMLDivElement>(),
     };
   }
 
   componentDidMount(): void {
     document.addEventListener('keydown', this.pressEscToExitEditTask);
     document.addEventListener('click', this.handleClickOutside);
+  }
+
+  componentDidUpdate(): void {
+    const { isTypeComment } = this.state;
+    if (isTypeComment) this.scrollDown();
   }
 
   componentWillUnmount(): void {
@@ -97,7 +104,8 @@ class EditTask extends React.Component<Props, State> {
       const newComment: TaskCommentType = {
         commentDate: new Date().getTime(),
         commentText: value,
-        isCommentEdit: false,
+        isCommentEdited: false,
+        isCommentEditing: false,
       };
       const prevTaskComments = this.state.taskComments;
       const newTaskComments = [...prevTaskComments, newComment];
@@ -123,6 +131,12 @@ class EditTask extends React.Component<Props, State> {
 
   startChangingBoard = (e: React.MouseEvent<HTMLDivElement>) => {
     this.setState({ isClickOnBoardsPick: true });
+  };
+
+  startEditTaskComment = (taskIndex: number) => {
+    const { taskComments } = this.state;
+    taskComments[taskIndex].isCommentEditing = true;
+    this.setState({ taskComments });
   };
 
   collectTaskData = (): EditTaskDataType => {
@@ -156,6 +170,37 @@ class EditTask extends React.Component<Props, State> {
     this.setState({ boardId: newId, isEditAnyFields: true, isClickOnBoardsPick: false });
   };
 
+  deleteTaskComment = (commentText: string, taskIndex: number) => {
+    const { taskComments } = this.state;
+    const filteredTaskComments = taskComments.filter((item, index) => {
+      return !(item.commentText === commentText && taskIndex === index);
+    });
+    this.setState( { taskComments: filteredTaskComments, isEditAnyFields: true });
+  };
+
+  saveEditedTaskCommentCarrying = (taskIndex: number) => {
+    return (isCancel: boolean, value: string) => {
+      const { taskComments } = this.state;
+      if (isCancel) {
+        taskComments[taskIndex].isCommentEditing = false;
+        this.setState({ taskComments });
+      } else {
+        taskComments[taskIndex] = {
+          ...taskComments[taskIndex],
+          isCommentEditing: false,
+          commentText: value,
+          isCommentEdited: true, };
+        this.setState({ taskComments, isEditAnyFields: true });
+      }
+    };
+  };
+
+  scrollDown = () => {
+    const elem = this.state.containerRef;
+    if (elem.current === null) return;
+    elem.current.scrollTop = elem.current.scrollHeight;
+  };
+
   render() {
     const {
       taskText,
@@ -168,6 +213,7 @@ class EditTask extends React.Component<Props, State> {
       isTypeComment,
       boardId,
       isClickOnBoardsPick,
+      containerRef,
     } = this.state;
 
     const { boardsInfo } = this.props;
@@ -192,8 +238,22 @@ class EditTask extends React.Component<Props, State> {
       </p>
     );
 
-    const viewTaskComments = taskComments.map((task) => {
-      return <TaskComment {...task} key={task.commentDate} />;
+    const viewTaskComments = taskComments.map((task, index) => {
+      if (task.isCommentEditing) {
+        return <AddFormatText
+          startValue={task.commentText}
+          returnValueAction={this.saveEditedTaskCommentCarrying(index)}
+          key={task.commentDate}
+        />;
+      } 
+      return <TaskComment
+        {...task}
+        key={task.commentDate}
+        index={index}
+        deleteTaskComment={this.deleteTaskComment}
+        startEditTaskComment={this.startEditTaskComment}
+      />;
+      
     });
 
     const viewNewComment = isTypeComment ? (
@@ -239,7 +299,7 @@ class EditTask extends React.Component<Props, State> {
     );
 
     return (
-      <div className="EditTask">
+      <div className="EditTask" ref={containerRef}>
         <div className="EditTask-header">
           <div onClick={this.hendleClickCloseButton} role="button" tabIndex={0}>
             <img src={Cancel} alt="Close window" />
@@ -258,7 +318,9 @@ class EditTask extends React.Component<Props, State> {
                 Show: <span>Comments</span>
               </p>
               {viewTaskComments}
-              {viewNewComment}
+              <div className="EditTask-typeNewComment">
+                {viewNewComment}
+              </div>
             </div>
           </div>
           <div className="right">

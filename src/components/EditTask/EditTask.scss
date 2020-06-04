@@ -4,7 +4,40 @@
   display: flex;
   width: 50vw;
   flex-direction: column;
-  padding: 5px 5px 20px 20px;
+  padding: 5px 5px 0 20px;
+  max-height: 700px;
+  overflow: auto;
+
+  .AddFormatText {
+
+    textarea {
+      margin-bottom: 5px;
+    }
+
+    button {
+      margin-right: 10px;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      padding: 5px 10px;
+    }
+    button:hover {
+      cursor: pointer;
+    }
+
+    .positive {
+      background-color: $main_blue;
+      color: white;
+    }
+
+    .positive:hover {
+      background-color: lighten($main_blue, 10%);
+    }
+
+    .negative:hover {
+      background-color: lighten(lightgray, 5%);
+    }
+  }
 }
 .EditTask-header {
   width: 100%;
@@ -29,7 +62,7 @@
   justify-content: space-between;
 
   .left {
-    width: 69%;
+    width: 65%;
   }
 
   .right {
@@ -45,6 +78,8 @@
   line-height: 31px;
   vertical-align: middle;
   border: 2px solid transparent;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .EditTask-taskText:hover {
@@ -128,19 +163,44 @@
   }
 
   .TaskComment {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
+
+    span {
+      font-size: 12px;
+      font-weight: bold;
+      color: black;
+      background-color: transparent;
+    }
   }
 
   .EditTask-newComment {
     border: 1px solid lightgrey;
     padding-top: 5px;
     padding-bottom: 5px;
+    margin: 0;
   }
 
   .EditTask-newComment:hover {
     cursor: text;
     border-color: gray;
   }
+  .AddFormatText {
+    margin-bottom: 10px;
+    textarea {
+      height: 100px;
+    }
+  }
+
+  .EditTask-typeNewComment {
+    position: sticky;
+    bottom: 0;
+    padding: 10px 0 10px 0;
+    background-color: #f3f3f3;
+  }
+}
+
+.right {
+  position: relative;
 }
 
 .EditTask-board {
@@ -185,5 +245,15 @@
         background-color: lighten($main_blue, 31%);
       }
     }
+  }
+}
+
+.EditTask-taskDate {
+  margin-top: 30px;
+
+  p {
+    padding: 0;
+    margin: 0 0 5px 0;
+    font-size: 12px;
   }
 }
