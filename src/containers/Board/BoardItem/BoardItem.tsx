@@ -18,6 +18,10 @@ interface IProps extends BoardType {
   tasks: Array<TaskType>;
   triggerPopUp: (status: boolean, viewComponent: JSX.Element | null) => void;
   boardsInfo: Array<BoardData>;
+  hendleStartDragTask: (e:React.MouseEvent<HTMLDivElement>, 
+    boardId: string,
+    taskId: string,
+    position: number) => void;
 }
 
 type State = {
@@ -147,6 +151,7 @@ class BoardItem extends React.Component<IProps, State> {
       tasks,
       triggerPopUp,
       boardsInfo,
+      hendleStartDragTask,
     } = this.props;
     const {
       isAddingTask,
@@ -176,6 +181,7 @@ class BoardItem extends React.Component<IProps, State> {
           triggerPopUp={triggerPopUp}
           isSingle={arr.length === 1}
           {...item}
+          hendleStartDragTask={hendleStartDragTask}
         />
       ));
 

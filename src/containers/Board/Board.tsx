@@ -89,6 +89,17 @@ class Board extends React.Component<IProps, StateType> {
     this.setState({ isShowPopUp: status, popupContent: viewComponent });
   };
 
+  hendleStartDragTask(
+    e: React.MouseEvent<HTMLDivElement>,
+    boardId: string,
+    taskId: string,
+    position: number) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e.currentTarget);
+    console.log('boardId ', boardId, 'taskId ', taskId, 'position ', position);
+  };
+
   render() {
     const { boards } = this.props;
     const { isAddingBoard, containerRef, boardHeight, isShowPopUp, popupContent } = this.state;
@@ -105,6 +116,7 @@ class Board extends React.Component<IProps, StateType> {
           updateBoards={this.props.getBoards}
           triggerPopUp={this.triggerPopUp}
           boardsInfo={boardsInfo}
+          hendleStartDragTask={this.hendleStartDragTask}
         />
       );
     });

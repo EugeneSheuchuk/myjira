@@ -14,6 +14,10 @@ interface IProps extends TaskType {
   triggerPopUp: (status: boolean, viewComponent: JSX.Element | null) => void;
   boardsInfo: Array<BoardData>;
   isSingle: boolean;
+  hendleStartDragTask: (e:React.MouseEvent<HTMLDivElement>,
+    boardId: string,
+    taskId: string,
+    position: number) => void;
 }
 
 type State = 'visible' | 'hidden';
@@ -31,6 +35,7 @@ const Task: React.FC<IProps> = ({
   taskComments,
   boardsInfo,
   isSingle,
+  hendleStartDragTask,
 }) => {
   const [visible, setVisible] = useState<State>('hidden');
 
@@ -122,12 +127,15 @@ const Task: React.FC<IProps> = ({
 
   const taskDropMenu: DropDownProps = isSingle ? DropMenu : [...DropMenu, ...additionalOptions];
 
+
+
   return (
     <div
       className="Task"
       onMouseOver={mouseAboveElement}
       onMouseOut={mouseOutElement}
       onClick={openEditPopup}
+      onMouseDown={(e) => hendleStartDragTask(e, boardId, taskId, position)}
     >
       <p>{taskText}</p>
       <DropDownMenu actions={taskDropMenu} visibility={visible} styleClassName="Task-dropDown" />
