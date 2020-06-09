@@ -94,9 +94,6 @@ class Board extends React.Component<IProps, StateType> {
     boardId: string,
     taskId: string,
     position: number) {
-    e.preventDefault();
-    e.stopPropagation();
-
     const target = e.currentTarget;
     target.classList.add('dragged');
     const shiftX: number = e.clientX - target.getBoundingClientRect().left;
@@ -119,7 +116,7 @@ class Board extends React.Component<IProps, StateType> {
 
     document.addEventListener('mousemove', onMouseMove);
     target.ondragstart = () => false;
-  };
+  }
 
   render() {
     const { boards } = this.props;

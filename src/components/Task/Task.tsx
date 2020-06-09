@@ -127,6 +127,16 @@ const Task: React.FC<IProps> = ({
 
   const taskDropMenu: DropDownProps = isSingle ? DropMenu : [...DropMenu, ...additionalOptions];
 
+  const hendleOnMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // @ts-ignore
+    if(e.nativeEvent.target.tagName.toLowerCase() === 'p') {
+      setVisible('hidden');
+      hendleStartDragTask(e, boardId, taskId, position);
+    }
+  };
+
 
 
   return (
@@ -135,10 +145,7 @@ const Task: React.FC<IProps> = ({
       onMouseOver={mouseAboveElement}
       onMouseOut={mouseOutElement}
       onClick={openEditPopup}
-      onMouseDown={(e) => {
-        setVisible('hidden');
-        hendleStartDragTask(e, boardId, taskId, position);
-      }}
+      onMouseDown={hendleOnMouseDown}
     >
       <p>{taskText}</p>
       <DropDownMenu actions={taskDropMenu} visibility={visible} styleClassName="Task-dropDown" />
