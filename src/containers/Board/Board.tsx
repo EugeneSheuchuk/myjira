@@ -96,8 +96,29 @@ class Board extends React.Component<IProps, StateType> {
     position: number) {
     e.preventDefault();
     e.stopPropagation();
-    console.log(e.currentTarget);
-    console.log('boardId ', boardId, 'taskId ', taskId, 'position ', position);
+
+    const target = e.currentTarget;
+    target.classList.add('dragged');
+    const shiftX: number = e.clientX - target.getBoundingClientRect().left;
+    const shiftY: number = e.clientY - target.getBoundingClientRect().top;
+
+    target.style.position = 'absolute';
+    target.style.zIndex = '1500';
+    document.body.append(target);
+
+    moveAt(e.pageX, e.pageY);
+
+    function moveAt(pageX: number, pageY: number) {
+      target.style.left = `${pageX - shiftX  }px`;
+      target.style.top = `${pageY - shiftY  }px`;
+    }
+
+    function onMouseMove(event: MouseEvent) {
+      moveAt(event.pageX, event.pageY);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    target.ondragstart = () => false;
   };
 
   render() {

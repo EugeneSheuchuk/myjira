@@ -42,3 +42,7 @@
     right: 0;
   }
 }
+
+.dragged {
+  @extend .Task;
+}
