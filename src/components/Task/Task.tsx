@@ -135,7 +135,10 @@ const Task: React.FC<IProps> = ({
       onMouseOver={mouseAboveElement}
       onMouseOut={mouseOutElement}
       onClick={openEditPopup}
-      onMouseDown={(e) => hendleStartDragTask(e, boardId, taskId, position)}
+      onMouseDown={(e) => {
+        setVisible('hidden');
+        hendleStartDragTask(e, boardId, taskId, position);
+      }}
     >
       <p>{taskText}</p>
       <DropDownMenu actions={taskDropMenu} visibility={visible} styleClassName="Task-dropDown" />
