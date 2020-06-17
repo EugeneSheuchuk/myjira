@@ -3,6 +3,7 @@ import './Board.scss';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { AxiosResponse } from 'axios';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { getBoardsFromState } from '../../store/selectors';
 import { getBoardsFromServer, ActionSetBoards } from '../../store/actions';
 import BoardItem from './BoardItem/BoardItem';
@@ -89,34 +90,10 @@ class Board extends React.Component<IProps, StateType> {
     this.setState({ isShowPopUp: status, popupContent: viewComponent });
   };
 
-  hendleStartDragTask(
-    e: React.MouseEvent<HTMLDivElement>,
-    boardId: string,
-    taskId: string,
-    position: number) {
-    const target = e.currentTarget;
-    target.classList.add('dragged');
-    const shiftX: number = e.clientX - target.getBoundingClientRect().left;
-    const shiftY: number = e.clientY - target.getBoundingClientRect().top;
+  onDragEnd = (result: DropResult):void => {
+    console.log('result', result);
+  };
 
-    target.style.position = 'absolute';
-    target.style.zIndex = '1500';
-    document.body.append(target);
-
-    moveAt(e.pageX, e.pageY);
-
-    function moveAt(pageX: number, pageY: number) {
-      target.style.left = `${pageX - shiftX  }px`;
-      target.style.top = `${pageY - shiftY  }px`;
-    }
-
-    function onMouseMove(event: MouseEvent) {
-      moveAt(event.pageX, event.pageY);
-    }
-
-    document.addEventListener('mousemove', onMouseMove);
-    target.ondragstart = () => false;
-  }
 
   render() {
     const { boards } = this.props;
@@ -134,7 +111,6 @@ class Board extends React.Component<IProps, StateType> {
           updateBoards={this.props.getBoards}
           triggerPopUp={this.triggerPopUp}
           boardsInfo={boardsInfo}
-          hendleStartDragTask={this.hendleStartDragTask}
         />
       );
     });
@@ -147,16 +123,18 @@ class Board extends React.Component<IProps, StateType> {
 
     return (
       <div className="Board-container" ref={containerRef}>
-        <div className="Board">
-          {viewBoards}
-          {newBoard}
-          <AddButton
-            width={25}
-            height={25}
-            action={this.addBoardByMouse}
-            keyAction={this.addBoardByKeyboard}
-          />
-        </div>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <div className="Board">
+            {viewBoards}
+            {newBoard}
+            <AddButton
+              width={25}
+              height={25}
+              action={this.addBoardByMouse}
+              keyAction={this.addBoardByKeyboard}
+            />
+          </div>
+        </DragDropContext>
         {popUp}
       </div>
     );

@@ -1,6 +1,7 @@
 import React, { createRef, RefObject } from 'react';
 import './BoardItem.scss';
 import { AxiosResponse } from 'axios';
+import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
 import { BoardType, TaskType } from '../../../types/boardReducerTypes';
 import AddButton from '../../../components/AddButton/AddButton';
 import API from '../../../API';
@@ -18,10 +19,6 @@ interface IProps extends BoardType {
   tasks: Array<TaskType>;
   triggerPopUp: (status: boolean, viewComponent: JSX.Element | null) => void;
   boardsInfo: Array<BoardData>;
-  hendleStartDragTask: (e:React.MouseEvent<HTMLDivElement>, 
-    boardId: string,
-    taskId: string,
-    position: number) => void;
 }
 
 type State = {
@@ -142,6 +139,8 @@ class BoardItem extends React.Component<IProps, State> {
     this.setState({ isOnFocusElement: false });
   };
 
+
+
   render() {
     const {
       boardName,
@@ -151,7 +150,6 @@ class BoardItem extends React.Component<IProps, State> {
       tasks,
       triggerPopUp,
       boardsInfo,
-      hendleStartDragTask,
     } = this.props;
     const {
       isAddingTask,
@@ -173,6 +171,7 @@ class BoardItem extends React.Component<IProps, State> {
     const viewedTasks = tasks
       .sort(sortBoardTasks)
       .map((item, index, arr) => (
+        // @ts-ignore
         <Task
           updateBoards={updateBoards}
           boardId={id}
@@ -181,7 +180,6 @@ class BoardItem extends React.Component<IProps, State> {
           triggerPopUp={triggerPopUp}
           isSingle={arr.length === 1}
           {...item}
-          hendleStartDragTask={hendleStartDragTask}
         />
       ));
 
@@ -205,6 +203,8 @@ class BoardItem extends React.Component<IProps, State> {
         action: () => triggerPopUp(true, deleteWarning),
       },
     ];
+
+
 
     return (
       <div className="BoardItem-container" ref={borderRef}>
@@ -230,17 +230,24 @@ class BoardItem extends React.Component<IProps, State> {
               styleClassName="BoardItem-name-dropDown"
             />
           )}
-          <div className="BoardItem-tasks" ref={containerRef}>
-            {viewedTasks}
-            {newTask}
-            <AddButton
-              width={16}
-              height={16}
-              description="Create issue"
-              action={this.addNewTaskTextByMouse}
-              keyAction={this.addNewTaskTextByKeyBoard}
-            />
-          </div>
+          <Droppable droppableId={id}>
+            {(provided:DroppableProvided) => (
+              <div ref={containerRef}>
+                <div className="BoardItem-tasks" ref={provided.innerRef} {...provided.droppableProps}>
+                  {viewedTasks}
+                  {newTask}
+                  <AddButton
+                    width={16}
+                    height={16}
+                    description="Create issue"
+                    action={this.addNewTaskTextByMouse}
+                    keyAction={this.addNewTaskTextByKeyBoard}
+                  />
+                  {provided.placeholder}
+                </div>
+              </div>
+            )}
+          </Droppable>
         </div>
       </div>
     );
