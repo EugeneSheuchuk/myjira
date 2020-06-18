@@ -42,6 +42,19 @@ router.put('/sort', async (req, res) => {
 
   }
 });
+router.put('/move', async (req, res) => {
+  try {
+    const { startBoardId, endBoardId, taskId, position } = req.body;
+    const result = await mongodb.moveTaskByDnD(startBoardId, endBoardId, taskId, position);
+    if (result) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
+  } catch (e) {
+
+  }
+});
 router.put('/', async (req, res) => {
   try {
     const { taskId, taskData } = req.body;

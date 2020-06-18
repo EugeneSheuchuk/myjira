@@ -24,5 +24,5 @@ export const getBoardsFromServer = (): ThunkAction<void, {}, {}, ActionSetBoards
     }
   };
 };
-/* tslint:enable */
+
 export type BoardReducerActionsType = ActionSetBoards;

@@ -64,7 +64,7 @@ class Board extends React.Component<IProps, StateType> {
 
   addNewBoard = async (boardName: string) => {
     const res: AxiosResponse<boolean> = await API.addNewBoard(boardName);
-    if (res) {
+    if (res.data) {
       this.cancelIsAddingBoard();
       this.props.getBoards();
     } else {
@@ -90,8 +90,22 @@ class Board extends React.Component<IProps, StateType> {
     this.setState({ isShowPopUp: status, popupContent: viewComponent });
   };
 
-  onDragEnd = (result: DropResult):void => {
+  onDragEnd = async (result: DropResult):Promise<void> => {
     console.log('result', result);
+    const {  destination, source, draggableId } = result;
+    if (destination?.droppableId) {
+      const res: AxiosResponse<boolean> = await API.moveTask(
+        source.droppableId,
+        destination?.droppableId,
+        draggableId,
+        destination?.index);
+      if (res.data) {
+        this.props.getBoards();
+      } else {
+        alert('Some error has occurred, the task position wasn\'t changing.');
+      }
+    }
+
   };
 
 

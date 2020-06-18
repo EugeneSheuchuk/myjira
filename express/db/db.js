@@ -166,9 +166,7 @@ module.exports = {
           ...taskData,
           updateTime: new Date().getTime(),
           position: 0 });
-      const isDecreaseOldBoardTasksPosition = await this.decreaseOldBoardTaskPosition(oldTaskBoardId, oldTaskPosition);
-      if (!isDecreaseOldBoardTasksPosition) return false;
-      return true;
+      return await this.decreaseOldBoardTaskPosition(oldTaskBoardId, oldTaskPosition);
     } catch (e) {
       return false;
     }
@@ -190,7 +188,7 @@ module.exports = {
     try {
       const tasks = await Task.find({ boardId });
       const promises = [];
-      tasks.foreEach(item => {
+      tasks.forEach(item => {
         if (item.position > taskPosition) {
           item.position -= 1;
           promises.push(item.save());
@@ -198,6 +196,40 @@ module.exports = {
       });
       await Promise.all(promises);
       return true;
+    } catch (e) {
+      return false;
+    }
+  },
+  async moveTaskByDnD(startBoardId, endBoardId, taskId, position) {
+    try {
+      if (startBoardId === endBoardId) {
+        const dbTaskData = await Task.findOne({ _id: taskId });
+        const tasks = await Task.find({ boardId: endBoardId });
+        const promises = [];
+        if (dbTaskData.position > position) {
+          tasks.forEach(item => {
+            if (item._id.toString() === taskId.toString()) {
+              item.position = position;
+              promises.push(item.save());
+            } else if (item.position <= dbTaskData.position) {
+              item.position += 1;
+              promises.push(item.save());
+            }
+          });
+        } else {
+          tasks.forEach(item => {
+            if (item._id.toString() === taskId.toString()) {
+              item.position = position;
+              promises.push(item.save());
+            } else if (item.position >= dbTaskData.position) {
+              item.position -= 1;
+              promises.push(item.save());
+            }
+          });
+        }
+        await Promise.all(promises);
+        return true;
+      }
     } catch (e) {
       return false;
     }

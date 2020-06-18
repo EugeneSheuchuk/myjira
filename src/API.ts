@@ -21,13 +21,19 @@ interface IAPI {
   saveNewBoardText: (boardId: string, boardName: string) => Promise<AxiosResponse>;
   deleteBoard: (boardId: string) => Promise<AxiosResponse>;
   deleteTask: (taskId: string) => Promise<AxiosResponse>;
-  moveTask: (
+  sortTasks: (
     boardId: string,
     taskId: string,
     direction: SortTasks,
     position: number
   ) => Promise<AxiosResponse>;
   changeTaskData: (taskId: string, taskData: EditTaskDataType) => Promise<AxiosResponse>;
+  moveTask: (
+    startBoardId: string,
+    endBoardId: string,
+    taskId: string,
+    position: number
+  ) => Promise<AxiosResponse>;
 }
 
 const API: IAPI = {
@@ -49,7 +55,7 @@ const API: IAPI = {
   deleteTask(taskId: string): Promise<AxiosResponse<boolean>> {
     return axiosInstance.delete('tasks', { data: { taskId } });
   },
-  moveTask(
+  sortTasks(
     boardId: string,
     taskId: string,
     direction: SortTasks,
@@ -60,6 +66,14 @@ const API: IAPI = {
   changeTaskData(taskId: string, taskData: EditTaskDataType): Promise<AxiosResponse<boolean>> {
     return axiosInstance.put('tasks', { taskId, taskData });
   },
+  moveTask(
+    startBoardId: string,
+    endBoardId: string,
+    taskId: string,
+    position: number
+  ): Promise<AxiosResponse<boolean>> {
+    return axiosInstance.put('tasks/move', { startBoardId, endBoardId, taskId, position });
+  }
 };
 
 export default API;
