@@ -98,6 +98,7 @@ class Board extends React.Component<IProps, StateType> {
         source.droppableId,
         destination?.droppableId,
         draggableId,
+        source.index,
         destination?.index);
       if (res.data) {
         this.props.getBoards();

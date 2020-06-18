@@ -32,7 +32,8 @@ interface IAPI {
     startBoardId: string,
     endBoardId: string,
     taskId: string,
-    position: number
+    oldPosition: number,
+    newPosition: number
   ) => Promise<AxiosResponse>;
 }
 
@@ -70,9 +71,11 @@ const API: IAPI = {
     startBoardId: string,
     endBoardId: string,
     taskId: string,
-    position: number
+    oldPosition: number,
+    newPosition: number
   ): Promise<AxiosResponse<boolean>> {
-    return axiosInstance.put('tasks/move', { startBoardId, endBoardId, taskId, position });
+    return axiosInstance.put('tasks/move',
+      { startBoardId, endBoardId, taskId, oldPosition, newPosition });
   }
 };
 

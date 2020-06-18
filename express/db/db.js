@@ -200,18 +200,17 @@ module.exports = {
       return false;
     }
   },
-  async moveTaskByDnD(startBoardId, endBoardId, taskId, position) {
+  async moveTaskByDnD(startBoardId, endBoardId, taskId, oldPosition, newPosition) {
     try {
-      if (startBoardId === endBoardId) {
-        const dbTaskData = await Task.findOne({ _id: taskId });
+      if (startBoardId.toString() === endBoardId.toString()) {
         const tasks = await Task.find({ boardId: endBoardId });
         const promises = [];
-        if (dbTaskData.position > position) {
+        if (oldPosition > newPosition) {
           tasks.forEach(item => {
             if (item._id.toString() === taskId.toString()) {
-              item.position = position;
+              item.position = newPosition;
               promises.push(item.save());
-            } else if (item.position <= dbTaskData.position) {
+            } else if (item.position <= oldPosition && item.position >= newPosition) {
               item.position += 1;
               promises.push(item.save());
             }
@@ -219,15 +218,28 @@ module.exports = {
         } else {
           tasks.forEach(item => {
             if (item._id.toString() === taskId.toString()) {
-              item.position = position;
+              item.position = newPosition;
               promises.push(item.save());
-            } else if (item.position >= dbTaskData.position) {
+            } else if (item.position >= oldPosition) {
               item.position -= 1;
               promises.push(item.save());
             }
           });
         }
         await Promise.all(promises);
+        return true;
+      } else {
+        await this.decreaseOldBoardTaskPosition(startBoardId, oldPosition);
+        const tasks = await Task.find({ boardId: endBoardId });
+        const promises = [];
+        tasks.forEach(item => {
+          if (item.position >= newPosition) {
+            item.position += 1;
+            promises.push(item.save());
+          }
+        });
+        await Promise.all(promises);
+        await Task.updateOne({_id: taskId}, {boardId: endBoardId, position: newPosition});
         return true;
       }
     } catch (e) {
