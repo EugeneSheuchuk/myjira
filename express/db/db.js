@@ -220,7 +220,7 @@ module.exports = {
             if (item._id.toString() === taskId.toString()) {
               item.position = newPosition;
               promises.push(item.save());
-            } else if (item.position >= oldPosition) {
+            } else if (item.position >= oldPosition && item.position <= newPosition) {
               item.position -= 1;
               promises.push(item.save());
             }

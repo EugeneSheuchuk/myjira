@@ -25,4 +25,5 @@ export const getBoardsFromServer = (): ThunkAction<void, {}, {}, ActionSetBoards
   };
 };
 
+
 export type BoardReducerActionsType = ActionSetBoards;

@@ -32,3 +32,62 @@ export function getCurrentDateAsString(ms) {
   return `${month} ${day}, ${year}, ${hours}:${min}`;
 }
 
+export function calculateNewTasksPositions(
+  boards,
+  startBoardId,
+  endBoardId,
+  taskId,
+  oldPosition,
+  newPosition,
+) {
+  let copyBoards;
+  let updateTasks;
+  const tasks = [...boards.find(item => item.id === endBoardId).tasks];
+  if ( startBoardId.toString() === endBoardId.toString() ) {
+    if ( oldPosition > newPosition ) {
+      updateTasks = tasks.map(item => {
+        const updateItem = { ...item };
+        if ( item.taskId.toString() === taskId.toString() ) {
+          updateItem.position = newPosition;
+        } else if ( item.position < oldPosition && item.position >= newPosition ) {
+          updateItem.position += 1;
+        }
+        return updateItem;
+      });
+    } else {
+      updateTasks = tasks.map(item => {
+        const updateItem = item;
+        if ( item.taskId.toString() === taskId.toString() ) {
+          updateItem.position = newPosition;
+        } else if (item.position >= oldPosition && item.position <= newPosition) {
+          updateItem.position -= 1;
+        }
+        return updateItem;
+      });
+    }
+    copyBoards = boards.map(board => {
+      if (board.id === endBoardId) {
+        return { ...board, tasks: updateTasks };
+      }
+      return board;
+    });
+  }
+  // else {
+  //   await this.decreaseOldBoardTaskPosition(startBoardId, oldPosition);
+  //   const tasks = await Task.find({ boardId: endBoardId });
+  //   const promises = [];
+  //   tasks.forEach(item => {
+  //     if ( item.position >= newPosition ) {
+  //       item.position += 1;
+  //       promises.push(item.save());
+  //     }
+  //   });
+  //   await Promise.all(promises);
+  //   await Task.updateOne({ _id: taskId }, { boardId: endBoardId, position: newPosition });
+  //   return true;
+  //
+  // }
+  return copyBoards;
+}
+
+

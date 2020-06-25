@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { AxiosResponse } from 'axios';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { getBoardsFromState } from '../../store/selectors';
-import { getBoardsFromServer, ActionSetBoards } from '../../store/actions';
+import { getBoardsFromServer, ActionSetBoards, setBoards } from '../../store/actions';
 import BoardItem from './BoardItem/BoardItem';
 import { IState } from '../../store/rootReducer';
 import { BoardType } from '../../types/boardReducerTypes';
@@ -13,10 +13,12 @@ import AddButton from '../../components/AddButton/AddButton';
 import AddBoard from '../../components/AddBoard/AddBoard';
 import API from '../../API';
 import PopUp from '../PopUp/PopUp';
+import { calculateNewTasksPositions } from '../../assets/helperFunctions';
 
 interface IProps {
   boards: Array<BoardType>;
   getBoards: () => void;
+  updateBoards: (boards: Array<BoardType>) => void;
 }
 
 type StateType = {
@@ -91,22 +93,34 @@ class Board extends React.Component<IProps, StateType> {
   };
 
   onDragEnd = async (result: DropResult):Promise<void> => {
-    console.log('result', result);
+    const { boards } = this.props;
     const {  destination, source, draggableId } = result;
+    if ( !destination?.droppableId ) {
+      return;
+    }
+    if (source.droppableId === destination?.droppableId && source.index === destination?.index) {
+      return;
+    }
     if (destination?.droppableId) {
+      const updateBoards = calculateNewTasksPositions(
+        boards,
+        source.droppableId,
+        destination?.droppableId,
+        draggableId,
+        source.index,
+        destination?.index );
+      this.props.updateBoards(updateBoards);
       const res: AxiosResponse<boolean> = await API.moveTask(
         source.droppableId,
         destination?.droppableId,
         draggableId,
         source.index,
         destination?.index);
-      if (res.data) {
+      if (!res.data) {
+        alert('Some error has occurred, the task position wasn\'t changing and the data will reload.');
         this.props.getBoards();
-      } else {
-        alert('Some error has occurred, the task position wasn\'t changing.');
       }
     }
-
   };
 
 
@@ -172,6 +186,9 @@ const mapDispatchToProps = (
   getBoards() {
     dispatch(getBoardsFromServer());
   },
+  updateBoards(boards: Array<BoardType>) {
+    dispatch(setBoards(boards));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
