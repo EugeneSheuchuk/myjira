@@ -114,9 +114,10 @@ module.exports = {
       return false;
     }
   },
-  async deleteTask(taskId) {
+  async deleteTask(taskId, boardId, position) {
     try {
       await Task.findOneAndDelete({ _id: taskId });
+      await Task.updateMany({boardId, 'position': {$gt : position} }, {$inc: {'position': -1}});
       return true;
     } catch (e) {
       return false;

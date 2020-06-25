@@ -36,10 +36,10 @@ class Task extends React.Component<IProps, State> {
   mouseOutElement = (e: React.MouseEvent) => this.setState({ handlerVisibleDropDownMenu: 'hidden' });
 
   deleteTask = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { updateBoards, triggerPopUp, taskId } = this.props;
+    const { updateBoards, triggerPopUp, taskId, boardId, position } = this.props;
     e.preventDefault();
     e.stopPropagation();
-    const res: AxiosResponse<boolean> = await API.deleteTask(taskId);
+    const res: AxiosResponse<boolean> = await API.deleteTask(taskId, boardId, position);
     if (res) {
       updateBoards();
       triggerPopUp(false, null);

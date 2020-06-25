@@ -22,8 +22,8 @@ router.post('/', async (req, res) => {
 });
 router.delete('/', async (req, res) => {
   try {
-    const taskId = req.body.taskId;
-    const result = await mongodb.deleteTask(taskId);
+    const { taskId, boardId, position } = req.body;
+    const result = await mongodb.deleteTask(taskId, boardId, position);
     res.send(result);
   } catch (e) {
 
