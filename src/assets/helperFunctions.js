@@ -59,35 +59,54 @@ export function calculateNewTasksPositions(
         const updateItem = item;
         if ( item.taskId.toString() === taskId.toString() ) {
           updateItem.position = newPosition;
-        } else if (item.position >= oldPosition && item.position <= newPosition) {
+        } else if ( item.position >= oldPosition && item.position <= newPosition ) {
           updateItem.position -= 1;
         }
         return updateItem;
       });
     }
     copyBoards = boards.map(board => {
-      if (board.id === endBoardId) {
+      if ( board.id === endBoardId ) {
         return { ...board, tasks: updateTasks };
       }
       return board;
     });
+  } else {
+    const draggableTask = boards.find(item => item.id === startBoardId)
+      .tasks.find(task => task.taskId === taskId);
+    draggableTask.position = newPosition;
+    const updateNewTasks = tasks.map(task => {
+      if ( task.position >= newPosition ) {
+        return {
+          ...task,
+          position: task.position + 1,
+        };
+      }
+      return task;
+    });
+    updateNewTasks.push(draggableTask);
+    copyBoards = boards.map(board => {
+      if ( board.id === startBoardId ) {
+        return {
+          ...board, tasks: board.tasks.map(task => {
+            if ( task.position > oldPosition ) {
+              return {
+                ...task,
+                position: task.position - 1,
+              };
+            }
+            return task;
+          }).filter(task => task.taskId !== taskId),
+        };
+      }
+      if (board.id === endBoardId) {
+        return {
+          ...board,
+          tasks: updateNewTasks,
+        };
+      }
+      return board;
+    });
   }
-  // else {
-  //   await this.decreaseOldBoardTaskPosition(startBoardId, oldPosition);
-  //   const tasks = await Task.find({ boardId: endBoardId });
-  //   const promises = [];
-  //   tasks.forEach(item => {
-  //     if ( item.position >= newPosition ) {
-  //       item.position += 1;
-  //       promises.push(item.save());
-  //     }
-  //   });
-  //   await Promise.all(promises);
-  //   await Task.updateOne({ _id: taskId }, { boardId: endBoardId, position: newPosition });
-  //   return true;
-  //
-  // }
   return copyBoards;
 }
-
-
