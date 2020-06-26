@@ -8,15 +8,30 @@ type Props = {
   height: number;
   action: (e: React.MouseEvent<HTMLDivElement>) => void;
   keyAction: (e: React.KeyboardEvent<HTMLDivElement>) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  innerRef?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  provided?: any;
 };
 
-const AddButton: React.FC<Props> = ({ description, width, height, action, keyAction }) => {
+
+const AddButton: React.FC<Props> = (
+  { description,
+    width,
+    height,
+    action,
+    keyAction,
+    innerRef,
+    provided,
+  }) => {
   const text = description ? <div className="AddButton-description">{description}</div> : null;
   const style = {
     backgroundImage: `url(${Add})`,
     width: `${width}px`,
     height: `${height}px`,
   };
+  const draggableProps = provided ? provided.draggableProps : '';
+  const dragHandleProps = provided ? provided.dragHandleProps : '';
 
   return (
     <div
@@ -25,6 +40,9 @@ const AddButton: React.FC<Props> = ({ description, width, height, action, keyAct
       onKeyDown={(e) => keyAction(e)}
       role="button"
       tabIndex={0}
+      ref={innerRef}
+      {...draggableProps}
+      {...dragHandleProps}
     >
       <div className="AddButton-img" style={style} />
       {text}

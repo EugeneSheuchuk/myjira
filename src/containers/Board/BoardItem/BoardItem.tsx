@@ -140,7 +140,6 @@ class BoardItem extends React.Component<IProps, State> {
   };
 
 
-
   render() {
     const {
       boardName,
@@ -168,11 +167,37 @@ class BoardItem extends React.Component<IProps, State> {
       />
     ) : null;
 
-    const viewedTasks = tasks
-      .sort(sortBoardTasks)
-      .map((item, index, arr) => (
+    tasks.sort(sortBoardTasks);
+
+    const lastTasksItem: TaskType = {
+      taskId: `${id}+last`,
+      position: tasks.length,
+      taskText: 'add button',
+      createTime: 0,
+      taskComments: [],
+      taskDescription: '$addButtonTask',
+      updateTime: 0,
+    };
+    const extendedTasks = [...tasks, lastTasksItem];
+
+    const viewedTasks = extendedTasks
+      .map((item, index, arr) => {
+        if (arr.length - 1 === index) {
+          // @ts-ignore
+          return <Task
+            updateBoards={updateBoards}
+            boardId={id}
+            boardsInfo={boardsInfo}
+            key={item.taskId}
+            triggerPopUp={triggerPopUp}
+            isSingle={arr.length === 1}
+            action={this.addNewTaskTextByMouse}
+            keyAction={this.addNewTaskTextByKeyBoard}
+            {...item}
+          />;
+        }
         // @ts-ignore
-        <Task
+        return <Task
           updateBoards={updateBoards}
           boardId={id}
           boardsInfo={boardsInfo}
@@ -180,17 +205,17 @@ class BoardItem extends React.Component<IProps, State> {
           triggerPopUp={triggerPopUp}
           isSingle={arr.length === 1}
           {...item}
-        />
-      ));
+        />;
+      });
 
     const viewBoardName = !isEditBoardName ? (
       <span className="BoardItem-name-text">{boardName}</span>
     ) : (
-      <AddTextValue startValue={boardName} returnValueAction={this.saveNewBoardName} />
+      <AddTextValue startValue={boardName} returnValueAction={this.saveNewBoardName}/>
     );
 
     const deleteWarning: JSX.Element = (
-      <DeleteBoard confirmAction={this.deleteBoard} cancelAction={this.cancelDeleteBoard} />
+      <DeleteBoard confirmAction={this.deleteBoard} cancelAction={this.cancelDeleteBoard}/>
     );
 
     const boardDropMenu: DropDownProps = [
@@ -203,7 +228,6 @@ class BoardItem extends React.Component<IProps, State> {
         action: () => triggerPopUp(true, deleteWarning),
       },
     ];
-
 
 
     return (
@@ -221,7 +245,7 @@ class BoardItem extends React.Component<IProps, State> {
             tabIndex={0}
           >
             {viewBoardName}
-            <div className="BoardItem-name-border" />
+            <div className="BoardItem-name-border"/>
           </div>
           {isEditBoardName ? null : (
             <DropDownMenu
@@ -231,18 +255,11 @@ class BoardItem extends React.Component<IProps, State> {
             />
           )}
           <Droppable droppableId={id}>
-            {(provided:DroppableProvided) => (
+            {(provided: DroppableProvided) => (
               <div ref={containerRef}>
                 <div className="BoardItem-tasks" ref={provided.innerRef} {...provided.droppableProps}>
                   {viewedTasks}
                   {newTask}
-                  <AddButton
-                    width={16}
-                    height={16}
-                    description="Create issue"
-                    action={this.addNewTaskTextByMouse}
-                    keyAction={this.addNewTaskTextByKeyBoard}
-                  />
                   {provided.placeholder}
                 </div>
               </div>

@@ -8,6 +8,7 @@ import { BoardData, DropDownProps, EditTaskDataType } from '../../types/types';
 import API, { SortTasks } from '../../API';
 import DeleteTask from '../Warnings/DeleteTask/DeleteTask';
 import EditTask from '../EditTask/EditTask';
+import AddButton from '../AddButton/AddButton';
 
 interface IProps extends TaskType {
   updateBoards: () => void;
@@ -17,6 +18,8 @@ interface IProps extends TaskType {
   isSingle: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   innerRef: any;
+  action?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  keyAction?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 type State = {
@@ -106,7 +109,7 @@ class Task extends React.Component<IProps, State> {
     triggerPopUp(true, editTask);
   };
 
-  render(){
+  render() {
     const {
       taskId,
       taskText,
@@ -118,7 +121,7 @@ class Task extends React.Component<IProps, State> {
     const { handlerVisibleDropDownMenu } = this.state;
 
     const deleteWarning: JSX.Element = (
-      <DeleteTask confirmAction={this.deleteTask} cancelAction={this.cancelDeleteTask} />
+      <DeleteTask confirmAction={this.deleteTask} cancelAction={this.cancelDeleteTask}/>
     );
 
 
@@ -147,23 +150,48 @@ class Task extends React.Component<IProps, State> {
 
     const taskDropMenu: DropDownProps = isSingle ? DropMenu : [...DropMenu, ...additionalOptions];
 
-    return(
-      <Draggable draggableId={taskId} index={position}>
-        {(provided: DraggableProvided) => (
-          // @ts-ignore
-          <div
-            className="Task"
-            onMouseOver={this.mouseAboveElement}
-            onMouseOut={this.mouseOutElement}
-            onClick={this.openEditPopup}
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <p>{taskText}</p>
-            <DropDownMenu actions={taskDropMenu} visibility={handlerVisibleDropDownMenu} styleClassName="Task-dropDown" />
-          </div>
-        )}
+    return (
+      <Draggable
+        draggableId={taskId}
+        index={position}
+        isDragDisabled={this.props.taskDescription === '$addButtonTask'
+        && this.props.taskText === 'add button'}>
+        {
+          (provided: DraggableProvided) => {
+            if (this.props.taskDescription === '$addButtonTask'
+                && this.props.taskText === 'add button') {
+              // @ts-ignore
+              return <AddButton
+                width={16}
+                height={16}
+                description="Create issue"
+                // @ts-ignore
+                action={this.props.action}
+                // @ts-ignore
+                keyAction={this.props.keyAction}
+                innerRef={provided.innerRef}
+                provided={provided}
+              />;
+            }
+            // @ts-ignore
+            return <div
+              className="Task"
+              onMouseOver={this.mouseAboveElement}
+              onMouseOut={this.mouseOutElement}
+              onClick={this.openEditPopup}
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
+              <p>{taskText}</p>
+              <DropDownMenu
+                actions={taskDropMenu}
+                visibility={handlerVisibleDropDownMenu}
+                styleClassName="Task-dropDown"
+              />
+            </div>;
+          }
+        }
       </Draggable>
     );
   }
